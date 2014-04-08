@@ -2,14 +2,8 @@ Feature: Use Wheelie
 
   Scenario: Generate Model
     Given a pristine Rails application
-      And a file named "lib/wheelie/metamodel.rb" with:
-      """
-      Wheelie.metamodel 'CRM' do
-        
-        model 'User' do
-        end
+      And I install wheelie
 
-      end
-      """
-    When I successfully run `rake wheelie:generate`
+    When I successfully run `bundle exec rails generate wheelie:model`
     Then a file named "Gemfile" should exist
+      And the output should contain "foo"
