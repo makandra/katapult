@@ -4,7 +4,6 @@ module Wheelie
   
     def setup_lib
       create_file 'lib/wheelie/metamodel.rb', '# wheelie metamodel file'
-      create_file 'lib/tasks/wheelie.rake', '# wheelie rake tasks file'
     end
 
   end
