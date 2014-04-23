@@ -1,9 +1,14 @@
 module Wheelie
   class Metamodel
     
-    def initialize(name)
+    def initialize(path_to_metamodel)
+      instance_eval File.read(path_to_metamodel), path_to_metamodel
+    end
+    
+    def metamodel(name, &block)
       @name = name
       @models = []
+      instance_eval(&block)
     end
   
     def model(name, &block)

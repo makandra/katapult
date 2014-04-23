@@ -1,6 +1,6 @@
 require 'wheelie/version'
-require 'wheelie/renderer'
 require 'wheelie/model'
+require 'wheelie/metamodel'
 
 module Wheelie
   

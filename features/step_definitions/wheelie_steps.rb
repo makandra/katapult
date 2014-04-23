@@ -9,6 +9,6 @@ end
 
 When /^the metamodel is rendered$/ do
   Bundler.with_clean_env do
-    run_simple 'bundle exec rails generate wheelie:render'
+    run_simple 'bundle exec rails generate wheelie:render --path lib/wheelie/metamodel.rb'
   end
 end
