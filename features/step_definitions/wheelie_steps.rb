@@ -4,11 +4,17 @@ Given /^I install wheelie$/ do
   append_to_file 'Gemfile', %{gem 'wheelie', :path => '#{Dir.pwd}'\n}
 
   run_simple 'bundle exec rails generate wheelie:install'
-  assert_success true # needed?
 end
 
-When /^the metamodel is rendered$/ do
+Given /^I copy the "(.*?)" driver to "(.*?)"$/ do |source, target|
+  run_simple "bundle exec rails generate wheelie:driver #{target} --source #{source}"
+end
+
+When /^the metamodel is rendered(?: driven by "(.*?)")?$/ do |driver|
+  command = 'bundle exec rails generate wheelie:render lib/wheelie/metamodel.rb'
+  command << " --driver #{ driver }" if driver
+
   Bundler.with_clean_env do
-    run_simple 'bundle exec rails generate wheelie:render --path lib/wheelie/metamodel.rb'
+    run_simple(command)
   end
 end

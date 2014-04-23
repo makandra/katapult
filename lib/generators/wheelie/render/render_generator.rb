@@ -1,11 +1,14 @@
+require 'wheelie/driver'
+
 module Wheelie
   class RenderGenerator < Rails::Generators::Base
     desc 'Render the Wheelie metamodel'
     
-    class_option :path, type: :string, required: true, description: 'The path to the metamodel file'
+    argument :path, required: true, type: :string, description: 'The path to the metamodel file'
+    class_option :driver, default: 'makandra', type: :string, description: 'The driver used for rendering'
   
     def render_metamodel
-      Wheelie::Metamodel.new(options[:path]).render
+      Wheelie::Driver.new(options[:driver]).render(path)
     end
 
   end
