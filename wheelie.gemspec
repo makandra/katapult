@@ -25,5 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'aruba'
   spec.add_development_dependency 'guard-cucumber'
+  spec.add_development_dependency 'sequel'
+  spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'pry'
 end

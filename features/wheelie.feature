@@ -16,9 +16,14 @@ Feature: Use Wheelie
   Scenario: Generate Model
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
-      metamodel 'Cars' do |cars|
-        cars.model 'Car'
+      metamodel 'Test' do |test|
+        test.model 'Car'
       end
       """
       And the metamodel is rendered
-    Then a file named "app/models/car.rb" should exist
+    Then the file "app/models/car.rb" should contain exactly:
+      """
+      class Car < ActiveRecord::Base
+      end
+
+      """
