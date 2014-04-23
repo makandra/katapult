@@ -3,10 +3,17 @@ module Wheelie
     
     def initialize(name)
       @name = name
+      @models = []
     end
   
-    def model(name)
-      Rails::Generators.invoke('model', [name]) # Rails generator
+    def model(name, &block)
+      model = Model.new(name)
+      model.instance_eval(&block) if block_given?
+      @models << model
+    end
+    
+    def render
+      @models.each &:render
     end
 
   end

@@ -3,7 +3,7 @@ module Wheelie
     desc 'Render the Wheelie metamodel'
   
     def render_metamodel
-      Wheelie::Renderer.new(File.join %w[lib wheelie metamodel.rb]).go
+      Wheelie::Renderer.new(File.join %w[lib wheelie metamodel.rb]).render
     end
 
   end
