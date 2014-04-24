@@ -17,7 +17,7 @@ Feature: Wheelie in general
         test.model 'Car'
       end
       """
-    And the metamodel is rendered
+    And I successfully render the metamodel
 
     Then the output should contain "Wheelie::RenderGenerator::RenderError"
     But the file "app/models/car.rb" should not exist

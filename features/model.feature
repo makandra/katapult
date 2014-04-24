@@ -1,10 +1,10 @@
-Feature: Use Wheelie
+Feature: Generate Models
 
   Background:
     Given a pristine Rails application
-      And I install wheelie
+      And wheelie is installed
 
-  @announce
+
   Scenario: Generate ActiveRecord Model
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
@@ -12,7 +12,7 @@ Feature: Use Wheelie
         test.model 'Car'
       end
       """
-    And the metamodel is rendered
+    And I successfully render the metamodel
     Then the file "app/models/car.rb" should contain exactly:
       """
       class Car < ActiveRecord::Base
@@ -32,7 +32,7 @@ Feature: Use Wheelie
 
       """
 
-  @announce
+
   Scenario: Generate ActiveRecord Model with attributes
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
@@ -43,7 +43,7 @@ Feature: Use Wheelie
         end
       end
       """
-      And the metamodel is rendered
+    And I successfully render the metamodel
     Then the file "app/models/car.rb" should contain exactly:
       """
       class Car < ActiveRecord::Base

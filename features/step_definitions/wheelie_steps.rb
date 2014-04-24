@@ -6,7 +6,7 @@ Given /^I install wheelie|wheelie is installed$/ do
   run_simple 'bundle exec rails generate wheelie:install'
 end
 
-When /^the metamodel is( successfully)? rendered$/ do |require_success|
+When /^I( successfully)? render the metamodel$/ do |require_success|
   in_test_app do
     run_simple('bundle exec rails generate wheelie:render lib/wheelie/metamodel.rb', !!require_success)
   end
