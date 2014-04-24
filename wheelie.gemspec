@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'rails', '~> 4.0.4' # tests don't run with spring
+  spec.add_runtime_dependency 'rails'
 
   # Development
   spec.add_development_dependency 'bundler', '~> 1.5'

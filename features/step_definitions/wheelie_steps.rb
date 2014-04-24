@@ -14,7 +14,7 @@ When /^the metamodel is rendered(?: driven by "(.*?)")?$/ do |driver|
   command = 'bundle exec rails generate wheelie:render lib/wheelie/metamodel.rb'
   command << " --driver #{ driver }" if driver
 
-  Bundler.with_clean_env do
+  in_test_app do
     run_simple(command)
   end
 end
