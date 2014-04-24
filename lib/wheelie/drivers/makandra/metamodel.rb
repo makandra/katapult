@@ -6,6 +6,7 @@ module Wheelie
       class Metamodel
 
         def initialize(path_to_metamodel)
+          @models = []
           instance_eval File.read(path_to_metamodel), path_to_metamodel
         end
 
@@ -13,21 +14,17 @@ module Wheelie
           @models.each &:render
         end
 
-        # warum darf diese Methode nicht private sein?
-        def model(name, &block)
-          model = Model.new(name)
-          model.instance_eval(&block) if block_given?
-          @models << model
-        end
-
-        private
-
-        def metamodel(name, &block)
+        def metamodel(name)
           @name = name
           @models = []
-          instance_eval(&block)
+
+          yield self
         end
-        
+
+        def model(name, &block)
+          @models << Model.new(name, &block)
+        end
+
       end
     end
   end

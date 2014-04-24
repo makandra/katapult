@@ -6,6 +6,8 @@ module Wheelie
         def initialize(name)
           @name = name
           @string_attrs = []
+
+          yield(self) if block_given?
         end
 
         def attr(name, options = {})
