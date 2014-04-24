@@ -16,7 +16,6 @@ module Wheelie
 
         def metamodel(name)
           @name = name
-          @models = []
 
           yield self
         end
