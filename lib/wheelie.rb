@@ -1,9 +1,7 @@
 require 'wheelie/version'
+require 'wheelie/metamodel'
+require 'wheelie/model'
 
 module Wheelie
-  
-  def self.driver_root
-    File.join File.dirname(__dir__), 'lib', 'wheelie', 'drivers'
-  end
 
 end

@@ -6,15 +6,8 @@ Given /^I install wheelie|wheelie is installed$/ do
   run_simple 'bundle exec rails generate wheelie:install'
 end
 
-Given /^I copy the "(.*?)" driver to "(.*?)"$/ do |source, target|
-  run_simple "bundle exec rails generate wheelie:driver #{target} --source #{source}"
-end
-
-When /^the metamodel is( successfully)? rendered(?: driven by "(.*?)")?$/ do |require_success, driver|
-  command = 'bundle exec rails generate wheelie:render lib/wheelie/metamodel.rb'
-  command << " --driver #{ driver }" if driver
-
+When /^the metamodel is( successfully)? rendered$/ do |require_success|
   in_test_app do
-    run_simple(command, !!require_success)
+    run_simple('bundle exec rails generate wheelie:render lib/wheelie/metamodel.rb', !!require_success)
   end
 end

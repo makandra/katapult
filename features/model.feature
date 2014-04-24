@@ -4,7 +4,7 @@ Feature: Use Wheelie
     Given a pristine Rails application
       And I install wheelie
 
-
+  @announce
   Scenario: Generate ActiveRecord Model
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
@@ -32,7 +32,7 @@ Feature: Use Wheelie
 
       """
 
-
+  @announce
   Scenario: Generate ActiveRecord Model with attributes
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
