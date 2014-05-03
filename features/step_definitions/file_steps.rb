@@ -1,5 +1,5 @@
 When /^I replace "(.*?)" with "(.*?)" inside "(.*?)"$/ do |a, b, path|
-  in_test_app do
+  in_current_dir do
     content = File.read(path)
     content.gsub! a, b
     File.open(path, 'w') { |file| file.puts(content) }
