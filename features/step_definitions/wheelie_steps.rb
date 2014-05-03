@@ -1,4 +1,4 @@
-Given /^I install wheelie$/ do
+Given /^I install wheelie|wheelie is installed$/ do
   @aruba_timeout_seconds = 20
 
   append_to_file 'Gemfile', %{gem 'wheelie', :path => '#{Dir.pwd}'\n}
