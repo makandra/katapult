@@ -13,12 +13,12 @@ module Wheelie
     end
 
     def render
-      params = [@name]
+      params = [@name.downcase]
       @string_attrs.each do |attr|
         params << (attr + ':string')
       end
 
-      Rails::Generators.invoke('model', params)
+      Rails::Generators.invoke('wheelie:model', params)
     end
 
   end
