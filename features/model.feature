@@ -56,8 +56,7 @@ Feature: Generate Models
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base
-        has_defaults {:homepage=>'http://www.makandra.de'}
-
+        has_defaults {:homepage=>"http://www.makandra.de"}
         include DoesFlag[:locked, default: false]
       end
 
@@ -94,3 +93,28 @@ Feature: Generate Models
       """
     And I render the metamodel
     Then the output should contain "Option ':invalid_option' is not supported. (Wheelie::Attribute::UnknownOptionError)"
+
+
+  Scenario: Specify assignable_values
+    When I overwrite "lib/wheelie/metamodel.rb" with:
+      """
+      metamodel 'Test' do |test|
+        test.model 'Person' do |person|
+          person.attr :hobby, assignable_values: %w[soccer baseball], default: 'soccer', allow_blank: true
+          person.attr :age, assignable_values: 9..99
+        end
+      end
+      """
+    And I successfully render the metamodel
+    Then the file "app/models/person.rb" should contain exactly:
+      """
+      class Person < ActiveRecord::Base
+        assignable_values_for :age, {} do
+          9..99
+        end
+        assignable_values_for :hobby, {:allow_blank=>true, :default=>"soccer"} do
+          ["soccer", "baseball"]
+        end
+      end
+
+      """

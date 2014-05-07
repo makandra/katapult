@@ -28,6 +28,28 @@ module Wheelie
         template 'model.rb', model_file_path
       end
 
+
+      # model file modifications
+
+      def write_assignable_values
+        restricted_attrs = @model.attrs.select(&:assignable_values)
+
+        if restricted_attrs.any?
+          gem 'assignable_values'
+
+          restricted_attrs.each do |attr|
+            opts = attr.options.slice(:allow_blank, :default)
+            assignable_values = <<-CODE
+  assignable_values_for :#{attr.name}, #{opts} do
+    #{attr.assignable_values}
+  end
+            CODE
+
+            inject_into_class model_file_path, class_name, assignable_values
+          end
+        end
+      end
+
       def write_traits
         flags = @model.attrs.select(&:flag?)
 
@@ -44,10 +66,10 @@ module Wheelie
       end
 
       def write_attribute_defaults
-        defaults = @model.defaults
+        defaults = @model.has_defaults
 
         if defaults.any?
-          defaults_string = "  has_defaults #{defaults.to_s.gsub(/\"/, "'")}\n\n"
+          defaults_string = "  has_defaults #{defaults}\n"
           inject_into_class model_file_path, class_name, defaults_string
         end
       end

@@ -3,17 +3,22 @@ module Wheelie
 
     UnknownOptionError = Class.new(StandardError)
 
-    attr_accessor :name, :type, :default
+    attr_accessor :name, :type, :default, :assignable_values, :allow_blank, :options
 
     def initialize(name, options)
       self.name = name.to_s
       self.type = :string
+      self.options = options
 
-      set_attributes_from(options)
+      set_attributes
     end
 
     def flag?
       type == :flag
+    end
+
+    def has_defaults?
+      default and not [flag?, assignable_values].any?
     end
 
     def to_s
@@ -33,7 +38,7 @@ module Wheelie
 
     private
 
-    def set_attributes_from(options)
+    def set_attributes
       options.each_pair do |option, value|
         setter = "#{option}="
 
