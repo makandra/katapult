@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+irb_options = [
+  '-Ilib',     # add lib/ to load_path
+  '-d',        # set $DEBUG = true
+  '-rwheelie', # require wheelie
+  '-f'         # don't read ~/.irbrc
+]
+
+exec 'irb', *irb_options
