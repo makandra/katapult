@@ -12,7 +12,7 @@ Feature: Configure Wheelie
         test.model 'Car'
       end
       """
-    And a file named "lib/templates/active_record/model/model.rb" with:
+    And a file named "lib/templates/wheelie/model/model.rb" with:
       """
       # custom model template for <%= class_name %>
 
