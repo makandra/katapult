@@ -1,8 +1,7 @@
 Feature: Generate Models
 
   Background:
-    Given a pristine Rails application
-      And wheelie is installed
+    Given a pristine Rails application with wheelie installed
 
 
   Scenario: Generate ActiveRecord Model
