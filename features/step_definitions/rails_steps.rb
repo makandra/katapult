@@ -19,6 +19,15 @@ Given /^a pristine Rails application with wheelie installed$/ do
     end
   end
 
+  # ensure cached_test_app is bundled
+  Bundler.with_clean_env do
+    bundle_check = "cd #{cache_path}; bundle check &>/dev/null"
+    bundle_install = "cd #{cache_path}; bundle install"
+
+    system(bundle_check) or system(bundle_install)
+  end
+
+  # cd to test_app
   FileUtils.cp_r cache_path, app_path
   cd app_name
 end
