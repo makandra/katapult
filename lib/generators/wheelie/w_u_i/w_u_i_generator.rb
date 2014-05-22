@@ -5,6 +5,8 @@ module Wheelie
     class WUIGenerator < Rails::Generators::NamedBase
       include Rails::Generators::ResourceHelpers
 
+      attr_accessor :wui
+
       desc 'Generate a Web User Interface'
 
       check_class_collision suffix: 'Controller'
@@ -18,7 +20,11 @@ module Wheelie
       end
 
       def create_controller_file
-        template 'controller.rb', controller_file_path
+        template 'controller.rb', File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
+      end
+
+      hook_for :template_engine, required: true do |wui_generator, template_engine|
+        wui_generator.invoke template_engine, [ wui_generator.wui, wui_generator.wui.name ]
       end
 
       private
@@ -28,13 +34,9 @@ module Wheelie
       # before calling super, so the generator doesn't notice.
       def extract_smuggled_object(args)
         if args.first.is_a? Wheelie::WUI
-          @wui = args.shift
-          args.unshift @wui.name.underscore
+          self.wui = args.shift
+          args.unshift wui.name.underscore
         end
-      end
-
-      def controller_file_path
-        File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
       end
 
     end
