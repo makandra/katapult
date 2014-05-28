@@ -27,8 +27,12 @@ module Wheelie
       actions.select { |action| RAILS_VIEW_ACTIONS.include? action.name }
     end
 
+    def rails_actions
+      actions.select { |action| RAILS_ACTIONS.include? action.name }
+    end
+
     def custom_actions
-      actions.reject { |action| RAILS_ACTIONS.include? action.name }
+      actions - rails_actions
     end
 
     def has_action?(action_name)

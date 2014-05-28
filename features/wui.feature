@@ -22,7 +22,7 @@ Feature: Web User Interface
       """
 
 
-  Scenario: Generate actions
+  Scenario: Generate a Web User interface with actions
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
       metamodel 'Test' do |test|
@@ -32,7 +32,7 @@ Feature: Web User Interface
           wui.action :create
           wui.action :update
           wui.action :destroy
-          wui.action :custom_action
+          wui.action :custom_action, method: :post, scope: :member
         end
       end
       """
@@ -68,10 +68,22 @@ Feature: Web User Interface
       end
 
       """
+    And the file "config/routes.rb" should contain exactly:
+      """
+      Rails.application.routes.draw do
+
+        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+          member do
+            post 'custom_action'
+          end
+        end
+
+      end
+
+      """
     And a file named "app/views/cars/index.html.haml" should exist
     And a file named "app/views/cars/show.html.haml" should exist
     And a file named "app/views/cars/new.html.haml" should exist
     And a file named "app/views/cars/edit.html.haml" should exist
     And a file named "app/views/cars/_form.html.haml" should exist
     And a file named "app/views/cars/custom_action.html.haml" should exist
-

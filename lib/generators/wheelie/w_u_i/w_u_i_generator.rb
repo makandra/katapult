@@ -20,7 +20,7 @@ module Wheelie
       end
 
       def create_controller_file
-        template 'controller.rb', File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
+        template 'controller.rb', File.join('app', 'controllers', "#{file_name}_controller.rb")
       end
 
       hook_for :template_engine, required: true do |wui_generator, template_engine|
