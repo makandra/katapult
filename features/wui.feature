@@ -20,6 +20,15 @@ Feature: Web User Interface
       end
 
       """
+    And the file "config/routes.rb" should contain:
+      """
+        resources :cars, only: [] do
+          member do
+          end
+          collection do
+          end
+        end
+      """
 
 
   Scenario: Generate a Web User interface with actions
