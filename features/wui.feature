@@ -33,6 +33,7 @@ Feature: Web User Interface
           wui.action :update
           wui.action :destroy
           wui.action :custom_action, method: :post, scope: :member
+          wui.action :other_action, method: :get, scope: :collection
         end
       end
       """
@@ -65,21 +66,22 @@ Feature: Web User Interface
         def custom_action
         end
 
-      end
-
-      """
-    And the file "config/routes.rb" should contain exactly:
-      """
-      Rails.application.routes.draw do
-
-        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-          member do
-            post 'custom_action'
-          end
+        def other_action
         end
 
       end
 
+      """
+    And the file "config/routes.rb" should contain:
+      """
+        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+          member do
+            post 'custom_action'
+          end
+          collection do
+            get 'other_action'
+          end
+        end
       """
     And a file named "app/views/cars/index.html.haml" should exist
     And a file named "app/views/cars/show.html.haml" should exist
@@ -87,3 +89,4 @@ Feature: Web User Interface
     And a file named "app/views/cars/edit.html.haml" should exist
     And a file named "app/views/cars/_form.html.haml" should exist
     And a file named "app/views/cars/custom_action.html.haml" should exist
+    And a file named "app/views/cars/other_action.html.haml" should exist

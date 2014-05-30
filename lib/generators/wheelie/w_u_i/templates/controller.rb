@@ -9,18 +9,22 @@ class <%= controller_class_name %>Controller < ApplicationController
   def show
   end
 <% end -%>
-<% if wui.has_action? :create -%>
+<% if wui.has_action? :new -%>
 
   def new
   end
+<% end -%>
+<% if wui.has_action? :create -%>
 
   def create
   end
 <% end -%>
-<% if wui.has_action? :update -%>
+<% if wui.has_action? :edit -%>
 
   def edit
   end
+<% end -%>
+<% if wui.has_action? :update -%>
 
   def update
   end

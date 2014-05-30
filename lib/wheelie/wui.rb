@@ -18,9 +18,9 @@ module Wheelie
     def action(name, options = {})
       name = name.to_s
 
-      actions << Action.new(name, options)
       actions << Action.new('new', options) if name == 'create'
       actions << Action.new('edit', options) if name == 'update'
+      actions << Action.new(name, options)
     end
 
     def rails_view_actions
@@ -33,6 +33,14 @@ module Wheelie
 
     def custom_actions
       actions - rails_actions
+    end
+
+    def member_actions
+      custom_actions.select(&:member?)
+    end
+
+    def collection_actions
+      custom_actions.select(&:collection?)
     end
 
     def has_action?(action_name)

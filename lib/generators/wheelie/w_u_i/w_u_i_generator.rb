@@ -23,6 +23,10 @@ module Wheelie
         template 'controller.rb', File.join('app', 'controllers', "#{file_name}_controller.rb")
       end
 
+      def add_route
+        route render_template('route.rb')
+      end
+
       hook_for :template_engine, required: true do |wui_generator, template_engine|
         wui_generator.invoke template_engine, [ wui_generator.wui, wui_generator.wui.name ]
       end
@@ -37,6 +41,11 @@ module Wheelie
           self.wui = args.shift
           args.unshift wui.name.underscore
         end
+      end
+
+      def render_template(template_path)
+        path = File.join(self.class.source_root, template_path)
+        ERB.new(::File.binread(path), nil, '%').result(binding)
       end
 
     end
