@@ -3,9 +3,9 @@ module Wheelie
 
     private
 
-    def render_partial(template_path, binding = nil)
+    def render_partial(template_path, given_binding = nil)
       path = File.join(self.class.source_root, template_path)
-      ERB.new(::File.binread(path), nil, '%').result(binding || self.binding)
+      ERB.new(::File.binread(path), nil, '%').result(given_binding || binding)
     end
 
     # Normally, generators don't take objects as argument. However, we need a

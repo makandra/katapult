@@ -1,4 +1,4 @@
-# @announce
+@announce
 Feature: Web User Interface
 
   Background:

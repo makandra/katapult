@@ -1,7 +1,7 @@
-module Wheelie
-  class Attribute
+require 'wheelie/element'
 
-    UnknownOptionError = Class.new(StandardError)
+module Wheelie
+  class Attribute < Element
 
     attr_accessor :name, :type, :default, :assignable_values, :allow_blank, :options
 
@@ -10,7 +10,7 @@ module Wheelie
       self.type = :string
       self.options = options
 
-      set_attributes
+      set_attributes(options)
     end
 
     def flag?
@@ -34,20 +34,6 @@ module Wheelie
       end
 
       name + ':' + db_type
-    end
-
-    private
-
-    def set_attributes
-      options.each_pair do |option, value|
-        setter = "#{option}="
-
-        if respond_to? setter
-          self.send(setter, value)
-        else
-          raise UnknownOptionError, "Option '#{option.inspect}' is not supported."
-        end
-      end
     end
 
   end
