@@ -31,7 +31,7 @@ Feature: Web User Interface
       """
 
 
-  Scenario: Generate a Web User interface with actions
+  Scenario: Generate a Web User Interface with actions
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
       metamodel 'Test' do |test|
@@ -99,3 +99,109 @@ Feature: Web User Interface
     And a file named "app/views/cars/_form.html.haml" should exist
     And a file named "app/views/cars/custom_action.html.haml" should exist
     And a file named "app/views/cars/other_action.html.haml" should exist
+
+
+  Scenario: Generate a Web User Interface connected to a model
+    When I overwrite "lib/wheelie/metamodel.rb" with:
+      """
+      metamodel 'Test' do |test|
+        model 'Car'
+
+        test.wui 'Car', model: 'Car' do |wui|
+          wui.action :index
+          wui.action :show
+          wui.action :create
+          wui.action :update
+          wui.action :destroy
+          wui.action :member_action, method: :post, scope: :member
+          wui.action :collection_action, method: :get, scope: :collection
+        end
+      end
+      """
+    And I successfully render the metamodel
+    Then the file "app/controllers/cars_controller.rb" should contain exactly:
+      """
+      class CarsController < ApplicationController
+
+        def index
+          load_collection
+        end
+
+        def show
+          load_object
+        end
+
+        def new
+          build_object
+        end
+
+        def create
+          build_object
+        end
+
+        def edit
+          load_object
+        end
+
+        def update
+          load_object
+        end
+
+        def destroy
+          load_object
+        end
+
+        def member_action
+          load_object
+        end
+
+        def collection_action
+          load_collection
+        end
+
+        private
+
+        def build_object
+          @object ||= Car.build
+          @object.attributes = params[:car]
+        end
+
+        def load_object
+          @object ||= Car.find(params[:id])
+        end
+
+        def load_collection
+          @collection ||= Car.all
+        end
+
+      end
+
+      """
+    And the file "app/views/cars/index.html.haml" should contain exactly:
+      """
+
+      """
+    And the file "app/views/cars/show.html.haml" should contain exactly:
+      """
+
+      """
+    And the file "app/views/cars/new.html.haml" should contain exactly:
+      """
+
+      """
+    And the file "app/views/cars/edit.html.haml" should contain exactly:
+      """
+
+      """
+    And the file "app/views/cars/_form.html.haml" should contain exactly:
+      """
+
+      """
+    And the file "app/views/cars/member_action.html.haml" should contain exactly:
+      """
+
+      """
+    And the file "app/views/cars/collection_action.html.haml" should contain exactly:
+      """
+
+      """

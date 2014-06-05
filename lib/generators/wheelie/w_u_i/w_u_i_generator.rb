@@ -20,7 +20,13 @@ module Wheelie
       end
 
       def create_controller_file
-        template 'controller.rb', File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
+        controller_path = File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
+
+        if wui.model
+          template 'controller.rb', controller_path
+        else
+          template 'controller_without_model.rb', controller_path
+        end
       end
 
       def add_route

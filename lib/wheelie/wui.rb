@@ -9,9 +9,9 @@ module Wheelie
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     RAILS_VIEW_ACTIONS = %w[ index show new edit ]
 
-    def initialize(name, options = {}, &block)
+    def initialize(*args)
       self.actions = []
-      super(name, options, &block)
+      super
     end
 
     def action(name, options = {})
@@ -48,6 +48,11 @@ module Wheelie
 
     def render
       Rails::Generators.invoke 'wheelie:w_u_i', [ self, '--template_engine=haml' ]
+    end
+
+    def model=(model)
+      model = Reference.instance.model(model) if model.is_a?(String)
+      @model = model
     end
 
   end
