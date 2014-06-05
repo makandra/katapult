@@ -1,6 +1,10 @@
+require 'wheelie/generator'
+
 module Wheelie
   module Generators
-    class ModelGenerator < Rails::Generators::NamedBase
+    class ModelGenerator < Wheelie::Generator
+
+      attr_accessor :model
 
       desc 'Generate a Model'
       argument :attrs, type: :array, default: []
@@ -10,8 +14,7 @@ module Wheelie
 
 
       def initialize(args = [], options = {}, config = {})
-        extract_smuggled_object(args)
-
+        extract_smuggled(Wheelie::Model, :model, args)
         super
       end
 
@@ -38,14 +41,7 @@ module Wheelie
           gem 'assignable_values'
 
           restricted_attrs.each do |attr|
-            opts = attr.options.slice(:allow_blank, :default)
-            assignable_values = <<-CODE
-  assignable_values_for :#{attr.name}, #{opts} do
-    #{attr.assignable_values}
-  end
-            CODE
-
-            inject_into_class model_file_path, class_name, assignable_values
+            inject_into_class model_file_path, class_name, render_partial('_assignable_values.rb', binding)
           end
         end
       end
@@ -75,16 +71,6 @@ module Wheelie
       end
 
       private
-
-      # Normally, generators don't take objects as argument. However, we need a
-      # model object for generating it. Replace the model object with its name
-      # before calling super, so the generator doesn't notice.
-      def extract_smuggled_object(args)
-        if args.first.is_a? Wheelie::Model
-          @model = args.shift
-          args.unshift @model.name.underscore
-        end
-      end
 
       def model_file_path
         File.join('app', 'models', "#{file_name}.rb")

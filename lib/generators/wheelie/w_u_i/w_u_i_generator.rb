@@ -1,8 +1,9 @@
 require 'rails/generators/resource_helpers'
+require 'wheelie/generator'
 
 module Wheelie
   module Generators
-    class WUIGenerator < Rails::Generators::NamedBase
+    class WUIGenerator < Wheelie::Generator
       include Rails::Generators::ResourceHelpers
 
       attr_accessor :wui
@@ -14,8 +15,7 @@ module Wheelie
 
 
       def initialize(args = [], options = {}, config = {})
-        extract_smuggled_object(args)
-
+        extract_smuggled(Wheelie::WUI, :wui, args)
         super
       end
 
@@ -24,28 +24,11 @@ module Wheelie
       end
 
       def add_route
-        route render_template('route.rb')
+        route render_partial('_route.rb')
       end
 
       hook_for :template_engine, required: true do |wui_generator, template_engine|
         wui_generator.invoke template_engine, [ wui_generator.wui, wui_generator.wui.name ]
-      end
-
-      private
-
-      # Normally, generators don't take objects as argument. However, we need a
-      # model object for generating it. Replace the model object with its name
-      # before calling super, so the generator doesn't notice.
-      def extract_smuggled_object(args)
-        if args.first.is_a? Wheelie::WUI
-          self.wui = args.shift
-          args.unshift wui.name.underscore
-        end
-      end
-
-      def render_template(template_path)
-        path = File.join(self.class.source_root, template_path)
-        ERB.new(::File.binread(path), nil, '%').result(binding)
       end
 
     end
