@@ -5,13 +5,6 @@ module Wheelie
 
     attr_accessor :name, :options, :method, :scope
 
-    def initialize(name, options)
-      self.name = name.to_s
-      self.options = options
-
-      set_attributes(options)
-    end
-
     def member?
       scope.to_s == 'member'
     end

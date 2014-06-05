@@ -5,12 +5,9 @@ module Wheelie
 
     attr_accessor :name, :type, :default, :assignable_values, :allow_blank, :options
 
-    def initialize(name, options)
-      self.name = name.to_s
+    def initialize(*args)
       self.type = :string
-      self.options = options
-
-      set_attributes(options)
+      super
     end
 
     def flag?

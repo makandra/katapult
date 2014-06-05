@@ -91,7 +91,7 @@ Feature: Generate Models
       end
       """
     And I render the metamodel
-    Then the output should contain "Option ':invalid_option' is not supported. (Wheelie::Attribute::UnknownOptionError)"
+    Then the output should contain "Wheelie::Attribute does not support option :invalid_option. (Wheelie::Element::UnknownOptionError)"
 
 
   Scenario: Specify assignable_values

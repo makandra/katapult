@@ -1,15 +1,14 @@
+require 'wheelie/element'
 require 'wheelie/attribute'
 
 module Wheelie
-  class Model
+  class Model < Element
 
-    attr_accessor :name, :attrs
+    attr_accessor :attrs
 
-    def initialize(name)
-      self.name = name
+    def initialize(*args)
       self.attrs = []
-
-      yield(self) if block_given?
+      super
     end
 
     def attr(attr_name, options = {})

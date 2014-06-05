@@ -1,18 +1,17 @@
+require 'wheelie/element'
 require 'wheelie/action'
 
 module Wheelie
-  class WUI
+  class WUI < Element
 
-    attr_accessor :name, :actions
+    attr_accessor :model, :actions
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     RAILS_VIEW_ACTIONS = %w[ index show new edit ]
 
-    def initialize(name)
-      self.name = name
+    def initialize(name, options = {}, &block)
       self.actions = []
-
-      yield(self) if block_given?
+      super(name, options, &block)
     end
 
     def action(name, options = {})
