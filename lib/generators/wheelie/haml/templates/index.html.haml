@@ -1,0 +1,15 @@
+.title
+  <%= names.human_plural.capitalize %>
+
+.tools
+  = link_to 'Add <%= names.human_singular %>', <%= routes.new %>, class: 'button'
+
+<% object = names.variable -%>
+%table.items
+  - @collection.each do |<%= object %>|
+    %tr
+      %td
+        = link_to <%= object %>.to_s, <%= routes.show(object) %>, class: 'hyperlink'
+      %td.items__actions
+        = link_to 'Edit', <%= routes.edit(object) %>, class: 'items__action'
+        = link_to 'Destroy', <%= routes.destroy(object) %>, method: :delete, class: 'items__action', confirm: 'Really destroy?'

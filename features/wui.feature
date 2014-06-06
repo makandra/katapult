@@ -105,7 +105,9 @@ Feature: Web User Interface
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
       metamodel 'Test' do |test|
-        model 'Car'
+        model 'Car' do |car|
+          car.attr :brand, type: :string
+        end
 
         test.wui 'Car', model: 'Car' do |wui|
           wui.action :index
@@ -179,29 +181,83 @@ Feature: Web User Interface
       """
     And the file "app/views/cars/index.html.haml" should contain exactly:
       """
+      .title
+        Cars
+
+      .tools
+        = link_to 'Add car', new_car_path, class: 'button'
+
+      %table.items
+        - @collection.each do |car|
+          %tr
+            %td
+              = link_to car.to_s, car_path(car), class: 'hyperlink'
+            %td.items__actions
+              = link_to 'Edit', edit_car_path(car), class: 'items__action'
+              = link_to 'Destroy', car_path(car), method: :delete, class: 'items__action', confirm: 'Really destroy?'
 
       """
     And the file "app/views/cars/show.html.haml" should contain exactly:
       """
+      .title
+        = @object.to_s
+
+      .tools
+        = link_to 'All cars', cars_path, class: 'button'
+        = link_to 'Edit', edit_car_path(@object), class: 'button is_primary'
+        = link_to 'Destroy', car_path(@object), method: :delete, class: 'button', confirm: 'Really destroy?'
+
+      %dl.values
+        %dt
+          = Car.human_attribute_name(:brand)
+        %dd
+          = @object.brand
 
       """
     And the file "app/views/cars/new.html.haml" should contain exactly:
       """
+      .title
+        Add car
+
+      = render 'form'
 
       """
     And the file "app/views/cars/edit.html.haml" should contain exactly:
       """
+      .title
+        = @object.to_s
+
+      = render 'form'
 
       """
     And the file "app/views/cars/_form.html.haml" should contain exactly:
       """
+      = form_for @object do |form|
+
+        .tools
+          = button_tag 'Save', class: 'button is_primary'
+          - cancel_path = @object.new_record? ? cars_path : car_path(@object)
+          = link_to 'Cancel', cancel_path, class: 'button'
+
+        %dl.controls
+          %dt
+            = form.label :brand
+          %dd
+            = form.text_field :brand
 
       """
     And the file "app/views/cars/member_action.html.haml" should contain exactly:
       """
+      .title
+        Member Action
+
+      .tools
+        = link_to 'All cars', cars_path, class: 'button'
 
       """
     And the file "app/views/cars/collection_action.html.haml" should contain exactly:
       """
+      .title
+        Collection Action
 
       """

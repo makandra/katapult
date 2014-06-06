@@ -1,0 +1,27 @@
+= form_for @object do |form|
+
+  .tools
+    = button_tag 'Save', class: 'button is_primary'
+    - cancel_path = @object.new_record? ? <%= routes.index %> : <%= routes.show('@object') %>
+    = link_to 'Cancel', cancel_path, class: 'button'
+
+  %dl.controls
+<% wui.model.attrs.each do |attribute| -%>
+    %dt
+      = form.label :<%= attribute.name %>
+    %dd
+<% case attribute.type -%>
+<% when :date, :datetime -%>
+      = form.date_picker :<%= attribute.name %>
+<% when :text -%>
+      = form.text_area :<%= attribute.name %>, rows: 5
+<% when :markdown -%>
+      = form.text_area :<%= attribute.name %>, rows: 15
+<% when :boolean -%>
+      = form.check_box :<%= attribute.name %>
+<% when :email -%>
+      = form.email_field :<%= attribute.name %>
+<% else -%>
+      = form.text_field :<%= attribute.name %>
+<% end -%>
+<% end -%>

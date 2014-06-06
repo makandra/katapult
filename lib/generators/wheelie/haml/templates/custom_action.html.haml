@@ -1,0 +1,7 @@
+.title
+  <%= @action.name.humanize.titleize %>
+<% if @action.member? -%>
+
+.tools
+  = link_to 'All <%= names.human_plural %>', <%= routes.index %>, class: 'button'
+<% end -%>

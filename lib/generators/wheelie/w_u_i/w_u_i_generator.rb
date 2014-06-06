@@ -1,5 +1,6 @@
 require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
+require 'wheelie/names'
 
 module Wheelie
   module Generators
@@ -35,6 +36,12 @@ module Wheelie
 
       hook_for :template_engine, required: true do |wui_generator, template_engine|
         wui_generator.invoke template_engine, [ wui_generator.wui, wui_generator.wui.name ]
+      end
+
+      private
+
+      def names
+        @names ||= Names.new(wui.model)
       end
 
     end

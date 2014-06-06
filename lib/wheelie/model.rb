@@ -23,10 +23,6 @@ module Wheelie
       end
     end
 
-    def singular_name
-      name.downcase
-    end
-
     def render
       Rails::Generators.invoke('wheelie:model', [self])
     end

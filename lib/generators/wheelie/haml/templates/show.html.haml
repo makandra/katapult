@@ -1,0 +1,31 @@
+.title
+  = @object.to_s
+
+.tools
+  = link_to 'All <%= names.human_plural %>', <%= routes.index %>, class: 'button'
+  = link_to 'Edit', <%= routes.edit('@object') %>, class: 'button is_primary'
+  = link_to 'Destroy', <%= routes.destroy('@object') %>, method: :delete, class: 'button', confirm: 'Really destroy?'
+
+%dl.values
+<% wui.model.attrs.each do |attribute| -%>
+<% getter = "@object.#{attribute.name}" -%>
+  %dt
+    = <%= names.class_name %>.human_attribute_name(:<%= attribute.name %>)
+  %dd
+<% case attribute.type -%>
+<% when :date, :datetime -%>
+    = l(<%= getter %>)
+<% when :text -%>
+    = simple_format(<%= getter %>)
+<% when :markdown -%>
+    = markdown(<%= getter %>)
+<% when :boolean -%>
+    = yes_no(<%= getter %>)
+<% when :email -%>
+    = mail_to(<%= getter %>, <%= getter %>, class: 'hyperlink')
+<% when :url -%>
+    = link_to(<%= getter %>, <%= getter %>, class: 'hyperlink')
+<% else -%>
+    = <%= getter %>
+<% end -%>
+<% end -%>

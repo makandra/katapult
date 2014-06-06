@@ -55,16 +55,16 @@ class <%= controller_class_name %>Controller < ApplicationController
   private
 
   def build_object
-    @object ||= <%= wui.model.name %>.build
-    @object.attributes = params[:<%= wui.model.singular_name %>]
+    @object ||= <%= names.class_name %>.build
+    @object.attributes = params[<%= names.symbol %>]
   end
 
   def load_object
-    @object ||= <%= wui.model.name %>.find(params[:id])
+    @object ||= <%= names.class_name %>.find(params[:id])
   end
 
   def load_collection
-    @collection ||= <%= wui.model.name %>.all
+    @collection ||= <%= names.class_name %>.all
   end
 
 end

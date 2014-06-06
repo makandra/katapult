@@ -1,5 +1,7 @@
 require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
+require 'wheelie/names'
+require 'wheelie/router'
 
 module Wheelie
   module Generators
@@ -25,8 +27,9 @@ module Wheelie
 
       def create_rails_standard_action_views
         wui.rails_view_actions.each do |action|
-          action_file = "#{action.name}.html.haml"
-          template action_file, File.join(views_path, action_file)
+          file_name = "#{action.name}.html.haml"
+
+          create_view file_name, File.join(views_path, file_name)
         end
       end
 
@@ -34,14 +37,16 @@ module Wheelie
         _form_actions = (wui.actions.map(&:name) & %w[new edit])
 
         if _form_actions.any?
-          action_file = '_form.html.haml'
-          template action_file, File.join(views_path, action_file)
+          file_name = '_form.html.haml'
+
+          create_view file_name, File.join(views_path, file_name)
         end
       end
 
       def create_views_for_custom_actions
         wui.custom_actions.each do |action|
-          template 'custom_action.html.haml', File.join(views_path, "#{action.name}.html.haml")
+          @action = action # Make the action object accessible in templates
+          create_view 'custom_action.html.haml', File.join(views_path, "#{action.name}.html.haml")
         end
       end
 
@@ -49,6 +54,24 @@ module Wheelie
 
       def views_path
         File.join('app', 'views', controller_file_name)
+      end
+
+      def routes
+        @router ||= Router.new(wui.model)
+      end
+
+      def names
+        @names ||= Names.new(wui.model)
+      end
+
+      # Rails views depend heavily on models. If the WUI has no model, do not
+      # use the templates but create empty files instead.
+      def create_view(template, destination)
+        if wui.model
+          template template, destination
+        else
+          create_file destination
+        end
       end
 
     end
