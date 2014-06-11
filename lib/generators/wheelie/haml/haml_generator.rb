@@ -1,7 +1,5 @@
 require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
-require 'wheelie/names'
-require 'wheelie/router'
 
 module Wheelie
   module Generators
@@ -57,11 +55,11 @@ module Wheelie
       end
 
       def routes
-        @router ||= Router.new(wui.model)
+        wui.model.routes
       end
 
       def names
-        @names ||= Names.new(wui.model)
+        wui.model.names
       end
 
       # Rails views depend heavily on models. If the WUI has no model, do not

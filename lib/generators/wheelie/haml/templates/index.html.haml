@@ -4,12 +4,12 @@
 .tools
   = link_to 'Add <%= names.human_singular %>', <%= routes.new %>, class: 'button'
 
-<% object = names.variable -%>
+<% object_name = names.variable -%>
 %table.items
-  - @collection.each do |<%= object %>|
+  - @collection.each do |<%= object_name %>|
     %tr
       %td
-        = link_to <%= object %>.to_s, <%= routes.show(object) %>, class: 'hyperlink'
+        = link_to <%= object_name %>.to_s, <%= routes.show(object_name) %>, class: 'hyperlink'
       %td.items__actions
-        = link_to 'Edit', <%= routes.edit(object) %>, class: 'items__action'
-        = link_to 'Destroy', <%= routes.destroy(object) %>, method: :delete, class: 'items__action', confirm: 'Really destroy?'
+        = link_to 'Edit', <%= routes.edit(object_name) %>, class: 'items__action'
+        = link_to 'Destroy', <%= routes.destroy(object_name) %>, method: :delete, class: 'items__action', confirm: 'Really destroy?'

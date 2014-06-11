@@ -1,5 +1,5 @@
 module Wheelie
-  class Router
+  class Routes
 
     attr_accessor :model
 

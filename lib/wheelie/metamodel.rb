@@ -1,6 +1,6 @@
-require 'wheelie/reference'
 require 'wheelie/model'
 require 'wheelie/wui'
+require 'wheelie/reference'
 
 module Wheelie
   class Metamodel

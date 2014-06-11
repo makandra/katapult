@@ -1,6 +1,5 @@
 require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
-require 'wheelie/names'
 
 module Wheelie
   module Generators
@@ -41,7 +40,7 @@ module Wheelie
       private
 
       def names
-        @names ||= Names.new(wui.model)
+        wui.model.names
       end
 
     end

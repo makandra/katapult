@@ -1,13 +1,18 @@
 require 'wheelie/element'
+require 'wheelie/names'
+require 'wheelie/routes'
 require 'wheelie/attribute'
 
 module Wheelie
   class Model < Element
 
-    attr_accessor :attrs
+    attr_accessor :attrs, :names, :routes
 
     def initialize(*args)
       self.attrs = []
+      self.names = Names.new(self)
+      self.routes = Routes.new(self)
+
       super
     end
 

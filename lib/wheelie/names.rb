@@ -12,24 +12,24 @@ module Wheelie
     end
 
     def variable
-      name.underscore
+      model_name.underscore
     end
 
     def human_plural
-      name.pluralize
+      model_name.pluralize
     end
 
     def human_singular
-      name
+      model_name
     end
 
     def class_name
-      name.classify
+      model_name.classify
     end
 
     private
 
-    def name
+    def model_name
       model.name.downcase
     end
 
