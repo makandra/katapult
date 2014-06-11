@@ -16,7 +16,7 @@ module Wheelie
     end
 
     def edit(variable)
-      "edit_#{singular_path}(#{variable})"
+      member :edit, variable
     end
 
     def show(variable)
@@ -25,6 +25,14 @@ module Wheelie
 
     def destroy(variable)
       "#{singular_path}(#{variable})"
+    end
+
+    def member(action_name, variable)
+      "#{action_name}_#{singular_path}(#{variable})"
+    end
+
+    def collection(action_name)
+      "#{action_name}_#{plural_path}"
     end
 
     private

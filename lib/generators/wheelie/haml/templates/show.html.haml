@@ -5,6 +5,9 @@
   = link_to 'All <%= names.human_plural %>', <%= routes.index %>, class: 'button'
   = link_to 'Edit', <%= routes.edit('@object') %>, class: 'button is_primary'
   = link_to 'Destroy', <%= routes.destroy('@object') %>, method: :delete, class: 'button', confirm: 'Really destroy?'
+<% wui.member_actions.each do |action| -%>
+  = link_to '<%= action.name.humanize.titleize %>', <%= routes.member(action.name, '@object') %>, class: 'button'
+<% end -%>
 
 %dl.values
 <% wui.model.attrs.each do |attribute| -%>
@@ -19,12 +22,15 @@
     = simple_format(<%= getter %>)
 <% when :markdown -%>
     = markdown(<%= getter %>)
-<% when :boolean -%>
+<% when :flag -%>
     = yes_no(<%= getter %>)
 <% when :email -%>
-    = mail_to(<%= getter %>, <%= getter %>, class: 'hyperlink')
+    = mail_to <%= getter %>, class: 'hyperlink'
 <% when :url -%>
-    = link_to(<%= getter %>, <%= getter %>, class: 'hyperlink')
+    = link_to <%= getter %>, <%= getter %>, class: 'hyperlink'
+<% when :money -%>
+    = <%= getter %>
+    €
 <% else -%>
     = <%= getter %>
 <% end -%>

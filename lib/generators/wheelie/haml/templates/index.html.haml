@@ -3,6 +3,9 @@
 
 .tools
   = link_to 'Add <%= names.human_singular %>', <%= routes.new %>, class: 'button'
+<% wui.collection_actions.each do |action| -%>
+  = link_to '<%= action.name.humanize.titleize %>', <%= routes.collection(action.name) %>, class: 'button'
+<% end -%>
 
 <% object_name = names.variable -%>
 %table.items

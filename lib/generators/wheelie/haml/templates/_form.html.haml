@@ -15,12 +15,19 @@
       = form.date_picker :<%= attribute.name %>
 <% when :text -%>
       = form.text_area :<%= attribute.name %>, rows: 5
+<% when :integer -%>
+      = form.number_field :<%= attribute.name %>
 <% when :markdown -%>
       = form.text_area :<%= attribute.name %>, rows: 15
 <% when :boolean -%>
       = form.check_box :<%= attribute.name %>
-<% when :email -%>
-      = form.email_field :<%= attribute.name %>
+<% when :xxx_email -%>
+      = form.text :<%= attribute.name %>
+<% when :money -%>
+      = form.number_field :<%= attribute.name %>
+      €
+<% when :flag -%>
+      = form.check_box :<%= attribute.name %>
 <% else -%>
       = form.text_field :<%= attribute.name %>
 <% end -%>

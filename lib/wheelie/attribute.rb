@@ -6,8 +6,9 @@ module Wheelie
     attr_accessor :name, :type, :default, :assignable_values, :allow_blank, :options
 
     def initialize(*args)
-      self.type = :string
       super
+      self.type ||= :email if name.to_s =~ /email/
+      self.type ||= :string
     end
 
     def flag?

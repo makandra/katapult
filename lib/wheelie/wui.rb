@@ -11,7 +11,10 @@ module Wheelie
 
     def initialize(*args)
       self.actions = []
+
       super
+
+      self.model = Reference.instance.model(model) if model.is_a?(String)
     end
 
     def action(name, options = {})
@@ -48,11 +51,6 @@ module Wheelie
 
     def render
       Rails::Generators.invoke 'wheelie:w_u_i', [ self, '--template_engine=haml' ]
-    end
-
-    def model=(model)
-      model = Reference.instance.model(model) if model.is_a?(String)
-      @model = model
     end
 
   end

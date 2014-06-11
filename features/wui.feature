@@ -105,11 +105,17 @@ Feature: Web User Interface
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
       metamodel 'Test' do |test|
-        model 'Car' do |car|
-          car.attr :brand, type: :string
+        model 'Customer' do |customer|
+          customer.attr :name
+          customer.attr :age, type: :integer
+
+          customer.attr :email
+          customer.attr :revenue, type: :money
+          customer.attr :homepage, type: :url, default: 'http://www.makandra.de'
+          customer.attr :locked, type: :flag, default: false
         end
 
-        test.wui 'Car', model: 'Car' do |wui|
+        test.wui 'Customer', model: 'Customer' do |wui|
           wui.action :index
           wui.action :show
           wui.action :create
@@ -121,9 +127,9 @@ Feature: Web User Interface
       end
       """
     And I successfully render the metamodel
-    Then the file "app/controllers/cars_controller.rb" should contain exactly:
+    Then the file "app/controllers/customers_controller.rb" should contain exactly:
       """
-      class CarsController < ApplicationController
+      class CustomersController < ApplicationController
 
         def index
           load_collection
@@ -164,65 +170,88 @@ Feature: Web User Interface
         private
 
         def build_object
-          @object ||= Car.build
-          @object.attributes = params[:car]
+          @object ||= Customer.build
+          @object.attributes = params[:customer]
         end
 
         def load_object
-          @object ||= Car.find(params[:id])
+          @object ||= Customer.find(params[:id])
         end
 
         def load_collection
-          @collection ||= Car.all
+          @collection ||= Customer.all
         end
 
       end
 
       """
-    And the file "app/views/cars/index.html.haml" should contain exactly:
+    And the file "app/views/customers/index.html.haml" should contain exactly:
       """
       .title
-        Cars
+        Customers
 
       .tools
-        = link_to 'Add car', new_car_path, class: 'button'
+        = link_to 'Add customer', new_customer_path, class: 'button'
+        = link_to 'Collection Action', collection_action_customers_path, class: 'button'
 
       %table.items
-        - @collection.each do |car|
+        - @collection.each do |customer|
           %tr
             %td
-              = link_to car.to_s, car_path(car), class: 'hyperlink'
+              = link_to customer.to_s, customer_path(customer), class: 'hyperlink'
             %td.items__actions
-              = link_to 'Edit', edit_car_path(car), class: 'items__action'
-              = link_to 'Destroy', car_path(car), method: :delete, class: 'items__action', confirm: 'Really destroy?'
+              = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
+              = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
 
       """
-    And the file "app/views/cars/show.html.haml" should contain exactly:
+    And the file "app/views/customers/show.html.haml" should contain exactly:
       """
       .title
         = @object.to_s
 
       .tools
-        = link_to 'All cars', cars_path, class: 'button'
-        = link_to 'Edit', edit_car_path(@object), class: 'button is_primary'
-        = link_to 'Destroy', car_path(@object), method: :delete, class: 'button', confirm: 'Really destroy?'
+        = link_to 'All customers', customers_path, class: 'button'
+        = link_to 'Edit', edit_customer_path(@object), class: 'button is_primary'
+        = link_to 'Destroy', customer_path(@object), method: :delete, class: 'button', confirm: 'Really destroy?'
+        = link_to 'Member Action', member_action_customer_path(@object), class: 'button'
 
       %dl.values
         %dt
-          = Car.human_attribute_name(:brand)
+          = Customer.human_attribute_name(:name)
         %dd
-          = @object.brand
+          = @object.name
+        %dt
+          = Customer.human_attribute_name(:age)
+        %dd
+          = @object.age
+        %dt
+          = Customer.human_attribute_name(:email)
+        %dd
+          = mail_to @object.email, class: 'hyperlink'
+        %dt
+          = Customer.human_attribute_name(:revenue)
+        %dd
+          = @object.revenue
+          €
+        %dt
+          = Customer.human_attribute_name(:homepage)
+        %dd
+          = link_to @object.homepage, @object.homepage, class: 'hyperlink'
+        %dt
+          = Customer.human_attribute_name(:locked)
+        %dd
+          = yes_no(@object.locked)
 
       """
-    And the file "app/views/cars/new.html.haml" should contain exactly:
+    And the file "app/views/customers/new.html.haml" should contain exactly:
       """
       .title
-        Add car
+        Add customer
 
       = render 'form'
 
       """
-    And the file "app/views/cars/edit.html.haml" should contain exactly:
+    And the file "app/views/customers/edit.html.haml" should contain exactly:
       """
       .title
         = @object.to_s
@@ -230,32 +259,53 @@ Feature: Web User Interface
       = render 'form'
 
       """
-    And the file "app/views/cars/_form.html.haml" should contain exactly:
+    And the file "app/views/customers/_form.html.haml" should contain exactly:
       """
       = form_for @object do |form|
 
         .tools
           = button_tag 'Save', class: 'button is_primary'
-          - cancel_path = @object.new_record? ? cars_path : car_path(@object)
+          - cancel_path = @object.new_record? ? customers_path : customer_path(@object)
           = link_to 'Cancel', cancel_path, class: 'button'
 
         %dl.controls
           %dt
-            = form.label :brand
+            = form.label :name
           %dd
-            = form.text_field :brand
+            = form.text_field :name
+          %dt
+            = form.label :age
+          %dd
+            = form.number_field :age
+          %dt
+            = form.label :email
+          %dd
+            = form.text_field :email
+          %dt
+            = form.label :revenue
+          %dd
+            = form.number_field :revenue
+            €
+          %dt
+            = form.label :homepage
+          %dd
+            = form.text_field :homepage
+          %dt
+            = form.label :locked
+          %dd
+            = form.check_box :locked
 
       """
-    And the file "app/views/cars/member_action.html.haml" should contain exactly:
+    And the file "app/views/customers/member_action.html.haml" should contain exactly:
       """
       .title
         Member Action
 
       .tools
-        = link_to 'All cars', cars_path, class: 'button'
+        = link_to 'All customers', customers_path, class: 'button'
 
       """
-    And the file "app/views/cars/collection_action.html.haml" should contain exactly:
+    And the file "app/views/customers/collection_action.html.haml" should contain exactly:
       """
       .title
         Collection Action
