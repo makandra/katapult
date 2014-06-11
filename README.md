@@ -1,24 +1,78 @@
 # Wheelie
 
-TODO: Write a gem description
+Wheelie is a kickstart framework for Rails applications. It makes starting
+Rails applications a bliss.
+
+Wheelie will always support current Versions of Ruby and Rails, at the moment
+it's Rails 4.1 and Ruby 2.1.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+As Wheelie is designed to *start* Rails applications, it works best with a
+clean new Rails app. To create one, run
 
-    gem 'wheelie'
+    rails new choose_your_name
 
-And then execute:
+Add `gem 'wheelie'` to the Gemfile, `bundle` and then run
 
-    $ bundle
+    rails generate wheelie:install
 
-Or install it yourself as:
+This will create `lib/wheelie/metamodel.rb` where you will draft your
+application.
 
-    $ gem install wheelie
 
 ## Usage
 
-TODO: Write usage instructions here
+After installation, you'll find a file `lib/wheelie/metamodel.rb` where you will define the fundamentals of your application. Inside this file, you'll use Wheelie's simple DSL (domain specific language) to express yourself.
+
+Wheelie brings several basic elements: Model, Attribute, WUI (which stands for *Web User Interface*) and Action. Each Wheelie element has the same syntax, taking a name, options and a block:
+
+    parent.element 'name', options: 'go here' do |element|
+      element.method
+    end
+
+
+### Model
+Defined on Metamodel. Takes a name and a block:
+
+    meta.model 'Customer' do |customer|
+      # ...
+    end
+
+
+#### Attribute
+Defined on Model. Takes a name and options:
+
+    model.attr :email
+    model.attr :age, type: :integer
+    model.attr :income, type: :money
+    model.attr :homepage, type: :url, default: 'http://www.makandra.de'
+    model.attr :locked, type: :flag, default: false
+
+
+### WUI (Web User Interface)
+Defined on Metamodel. Takes a name, options and a block:
+
+    meta.wui 'Customer', model: 'User' do |wui|
+      # ...
+    end
+
+
+#### Action
+Defined on WUI. Takes a name and options:
+
+    wui.action :index
+    wui.action :show
+    wui.action :create
+    wui.action :update
+    wui.action :destroy
+    wui.action :custom_action, method: :post, scope: :member
+    wui.action :other_action, method: :get, scope: :collection
+
+
+## Extending Wheelie
+
+Wheelie is (planned to be) easily extendable with plugins.
 
 ## Contributing
 
@@ -27,3 +81,10 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+Wheelie caches a pristine Rails application inside its `tmp/` directory. Keep this in mind, as it may lead to issues when switching Ruby versions or installing a new version of the Rails gem.
+
+
+## Credits
+
+Dominik Schöler from [makandra](makandra.com)
