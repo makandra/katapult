@@ -3,7 +3,7 @@ require 'wheelie/element'
 module Wheelie
   class Attribute < Element
 
-    attr_accessor :name, :type, :default, :assignable_values, :allow_blank, :options
+    attr_accessor :type, :default, :assignable_values, :allow_blank
 
     def initialize(*args)
       super
