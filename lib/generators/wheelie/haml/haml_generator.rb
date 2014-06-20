@@ -49,19 +49,13 @@ module Wheelie
       end
 
       no_tasks do
-
-        def routes
-          wui.model.routes
-        end
-
-        def names
-          wui.model.names
+        def model_name(kind = nil)
+          wui.model.name(kind)
         end
 
         def views_path
           File.join('app', 'views', controller_file_name)
         end
-
       end
 
       private

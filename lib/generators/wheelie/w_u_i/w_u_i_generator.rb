@@ -38,26 +38,20 @@ module Wheelie
       end
 
       no_tasks do
-
         def method_name(name)
           case name
-          when :load_collection then "load_#{names.variables}"
-          when :load_object then "load_#{names.variable}"
-          when :build then "build_#{names.variable}"
-          when :save then "save_#{names.variable}"
-          when :params then "#{names.variable}_params"
-          when :scope then "#{names.variable}_scope"
+          when :load_collection then "load_#{model_name :variables}"
+          when :load_object     then "load_#{model_name :variable}"
+          when :build           then "build_#{model_name :variable}"
+          when :save            then "save_#{model_name :variable}"
+          when :params          then "#{model_name :variable}_params"
+          when :scope           then "#{model_name :variable}_scope"
           end
         end
 
-        def names
-          wui.model.names
+        def model_name(kind = nil)
+          wui.model.name(kind)
         end
-
-        def routes
-          wui.model.routes
-        end
-
       end
 
     end

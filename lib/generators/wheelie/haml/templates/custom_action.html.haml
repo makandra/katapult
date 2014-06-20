@@ -3,5 +3,5 @@
 <% if @action.member? -%>
 
 .tools
-  = link_to 'All <%= names.human_plural %>', <%= routes.index %>, class: 'button'
+  = link_to 'All <%= model_name(:human_plural) %>', <%= wui.path(:index) %>, class: 'button'
 <% end -%>

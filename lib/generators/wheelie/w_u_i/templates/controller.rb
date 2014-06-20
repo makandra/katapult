@@ -1,37 +1,37 @@
 class <%= controller_class_name %>Controller < ApplicationController
-<% if wui.has_action? :index -%>
+<% if wui.find_action :index -%>
 
   def index
     <%= method_name(:load_collection) %>
   end
 <% end -%>
-<% if wui.has_action? :show -%>
+<% if wui.find_action :show -%>
 
   def show
     <%= method_name(:load_object) %>
   end
 <% end -%>
-<% if wui.has_action? :new -%>
+<% if wui.find_action :new -%>
 
   def new
     <%= method_name(:build) %>
   end
 <% end -%>
-<% if wui.has_action? :create -%>
+<% if wui.find_action :create -%>
 
   def create
     <%= method_name(:build) %>
     <%= method_name(:save) %> or render :new
   end
 <% end -%>
-<% if wui.has_action? :edit -%>
+<% if wui.find_action :edit -%>
 
   def edit
     <%= method_name(:load_object) %>
     <%= method_name(:build) %>
   end
 <% end -%>
-<% if wui.has_action? :update -%>
+<% if wui.find_action :update -%>
 
   def update
     <%= method_name(:load_object) %>
@@ -39,12 +39,12 @@ class <%= controller_class_name %>Controller < ApplicationController
     <%= method_name(:save) %> or render :edit
   end
 <% end -%>
-<% if wui.has_action? :destroy -%>
+<% if wui.find_action :destroy -%>
 
   def destroy
     <%= method_name(:load_object) %>
-    <%= names.ivar %>.destroy
-    redirect_to <%= routes.index %>
+    <%= model_name(:ivar) %>.destroy
+    redirect_to <%= wui.path(:index) %>
   end
 <% end -%>
 <% wui.custom_actions.each do |action|  -%>
@@ -53,7 +53,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% if action.member? -%>
     <%= method_name(:load_object) %>
   <%- if action.post? -%>
-    redirect_to <%= names.ivar %>
+    redirect_to <%= model_name(:ivar) %>
   <%- end -%>
 <% elsif action.collection? -%>
     <%= method_name(:load_collection) %>
@@ -64,31 +64,31 @@ class <%= controller_class_name %>Controller < ApplicationController
   private
 
   def <%= method_name(:load_collection) %>
-    <%= names.ivars %> ||= <%= method_name(:scope) %>.to_a
+    <%= model_name(:ivars) %> ||= <%= method_name(:scope) %>.to_a
   end
 
   def <%= method_name(:load_object) %>
-    <%= names.ivar %> ||= <%= method_name(:scope) %>.find(params[:id])
+    <%= model_name(:ivar) %> ||= <%= method_name(:scope) %>.find(params[:id])
   end
 
   def <%= method_name(:build) %>
-    <%= names.ivar %> ||= <%= method_name(:scope) %>.build
-    <%= names.ivar %>.attributes = <%= method_name(:params) %>
+    <%= model_name(:ivar) %> ||= <%= method_name(:scope) %>.build
+    <%= model_name(:ivar) %>.attributes = <%= method_name(:params) %>
   end
 
   def <%= method_name(:save) %>
-    if <%= names.ivar %>.save
-      redirect_to <%= names.ivar %>
+    if <%= model_name(:ivar) %>.save
+      redirect_to <%= model_name(:ivar) %>
     end
   end
 
   def <%= method_name(:params) %>
-    <%= method_name(:params) %> = params[:<%= names.variable %>] || {}
+    <%= method_name(:params) %> = params[:<%= model_name(:variable) %>] || {}
     <%= method_name(:params) %>.permit(<%= wui.model.attrs.map(&:name).map(&:to_sym) %>)
   end
 
   def <%= method_name(:scope) %>
-    <%= names.class_name %>.scoped
+    <%= model_name(:class_name) %>.scoped
   end
 
 end

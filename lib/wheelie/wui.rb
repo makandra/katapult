@@ -46,8 +46,22 @@ module Wheelie
       custom_actions.select(&:collection?)
     end
 
-    def has_action?(action_name)
-      actions.collect(&:name).include? action_name.to_s
+    def find_action(action_name)
+      actions.find { |a| a.name == action_name.to_s }
+    end
+
+    def path(action, object_name = nil)
+      action = find_action(action) unless action.is_a? Action
+
+      member_path = "#{model.name(:variable)}_path"
+      collection_path = "#{model.name(:variables)}_path"
+
+      path = ''
+      path << action.name << '_' unless %w[index show destroy].include?(action.name)
+      path << (action.member? ? member_path : collection_path)
+      path << "(#{object_name})" if object_name
+
+      path
     end
 
     def render

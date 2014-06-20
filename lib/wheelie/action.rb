@@ -7,6 +7,12 @@ module Wheelie
 
     attr_accessor :name, :options, :method, :scope
 
+    def initialize(*args)
+      super
+
+      @scope ||= (name == 'index') ? 'collection' : 'member'
+    end
+
     delegate :post?, :get?, :put?, to: :method
     delegate :member?, :collection?, to: :scope
 
