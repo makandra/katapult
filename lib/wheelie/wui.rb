@@ -4,7 +4,7 @@ require 'wheelie/action'
 module Wheelie
   class WUI < Element
 
-    attr_accessor :model, :actions
+    attr_accessor :model, :actions, :views
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     RAILS_VIEW_ACTIONS = %w[ index show new edit ]
@@ -14,6 +14,7 @@ module Wheelie
 
       super
 
+      self.views ||= 'haml'
       self.model = Reference.instance.model(model) if model.is_a?(String)
     end
 
@@ -50,7 +51,7 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke 'wheelie:w_u_i', [ self, '--template_engine=haml' ] # todo view_engine als option mit haml-default
+      Rails::Generators.invoke 'wheelie:w_u_i', [ self, "--template_engine=#{views}" ]
     end
 
   end
