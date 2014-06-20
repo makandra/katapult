@@ -41,8 +41,9 @@ Feature: Web User Interface
           wui.action :create
           wui.action :update
           wui.action :destroy
-          wui.action :custom_action, method: :post, scope: :member
-          wui.action :other_action, method: :get, scope: :collection
+          wui.action :get_member, method: :get, scope: :member
+          wui.action :post_member, method: :post, scope: :member
+          wui.action :get_collection, method: :get, scope: :collection
         end
       end
       """
@@ -72,10 +73,13 @@ Feature: Web User Interface
         def destroy
         end
 
-        def custom_action
+        def get_member
         end
 
-        def other_action
+        def post_member
+        end
+
+        def get_collection
         end
 
       end
@@ -85,10 +89,11 @@ Feature: Web User Interface
       """
         resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
           member do
-            post 'custom_action'
+            get 'get_member'
+            post 'post_member'
           end
           collection do
-            get 'other_action'
+            get 'get_collection'
           end
         end
       """
@@ -97,8 +102,9 @@ Feature: Web User Interface
     And a file named "app/views/cars/new.html.haml" should exist
     And a file named "app/views/cars/edit.html.haml" should exist
     And a file named "app/views/cars/_form.html.haml" should exist
-    And a file named "app/views/cars/custom_action.html.haml" should exist
-    And a file named "app/views/cars/other_action.html.haml" should exist
+    And a file named "app/views/cars/get_member.html.haml" should exist
+    And a file named "app/views/cars/get_collection.html.haml" should exist
+    But a file named "app/views/cars/post_member.html.haml" should not exist
 
 
   Scenario: Generate a Web User Interface connected to a model

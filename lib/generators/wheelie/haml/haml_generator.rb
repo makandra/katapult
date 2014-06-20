@@ -42,7 +42,7 @@ module Wheelie
       end
 
       def create_views_for_custom_actions
-        wui.custom_actions.each do |action|
+        wui.custom_actions.select(&:get?).each do |action|
           @action = action # Make the action object accessible in templates
           create_view 'custom_action.html.haml', File.join(views_path, "#{action.name}.html.haml")
         end
