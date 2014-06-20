@@ -1,17 +1,23 @@
 .title
-  = @object.to_s
+  = <%= names.ivar %>.to_s
 
 .tools
   = link_to 'All <%= names.human_plural %>', <%= routes.index %>, class: 'button'
-  = link_to 'Edit', <%= routes.edit('@object') %>, class: 'button is_primary'
-  = link_to 'Destroy', <%= routes.destroy('@object') %>, method: :delete, class: 'button', confirm: 'Really destroy?'
+  = link_to 'Edit', <%= routes.edit(names.ivar) %>, class: 'button is_primary'
+  = link_to 'Destroy', <%= routes.destroy(names.ivar) %>, method: :delete, class: 'button', confirm: 'Really destroy?'
 <% wui.member_actions.each do |action| -%>
-  = link_to '<%= action.name.humanize.titleize %>', <%= routes.member(action.name, '@object') %>, class: 'button'
+  = link_to '<%=
+      action.name.humanize.titleize
+    %>', <%=
+      routes.member(action.name, names.ivar)
+    %>, class: 'button'<%=
+      ", method: :#{action.method}" unless action.get?
+    %>
 <% end -%>
 
 %dl.values
 <% wui.model.attrs.each do |attribute| -%>
-<% getter = "@object.#{attribute.name}" -%>
+<% getter = "#{names.ivar}.#{attribute.name}" -%>
   %dt
     = <%= names.class_name %>.human_attribute_name(:<%= attribute.name %>)
   %dd

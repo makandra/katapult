@@ -48,19 +48,23 @@ module Wheelie
         end
       end
 
+      no_tasks do
+
+        def routes
+          wui.model.routes
+        end
+
+        def names
+          wui.model.names
+        end
+
+        def views_path
+          File.join('app', 'views', controller_file_name)
+        end
+
+      end
+
       private
-
-      def views_path
-        File.join('app', 'views', controller_file_name)
-      end
-
-      def routes
-        wui.model.routes
-      end
-
-      def names
-        wui.model.names
-      end
 
       # Rails views depend heavily on models. If the WUI has no model, do not
       # use the templates but create empty files instead.

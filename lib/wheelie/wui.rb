@@ -50,7 +50,7 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke 'wheelie:w_u_i', [ self, '--template_engine=haml' ]
+      Rails::Generators.invoke 'wheelie:w_u_i', [ self, '--template_engine=haml' ] # todo view_engine als option mit haml-default
     end
 
   end

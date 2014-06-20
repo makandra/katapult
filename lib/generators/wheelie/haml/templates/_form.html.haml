@@ -1,8 +1,8 @@
-= form_for @object do |form|
+= form_for <%= names.ivar %> do |form|
 
   .tools
     = button_tag 'Save', class: 'button is_primary'
-    - cancel_path = @object.new_record? ? <%= routes.index %> : <%= routes.show('@object') %>
+    - cancel_path = <%= names.ivar %>.new_record? ? <%= routes.index %> : <%= routes.show(names.ivar) %>
     = link_to 'Cancel', cancel_path, class: 'button'
 
   %dl.controls

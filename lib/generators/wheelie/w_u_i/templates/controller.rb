@@ -2,69 +2,93 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% if wui.has_action? :index -%>
 
   def index
-    load_collection
+    <%= method_name(:load_collection) %>
   end
 <% end -%>
 <% if wui.has_action? :show -%>
 
   def show
-    load_object
+    <%= method_name(:load_object) %>
   end
 <% end -%>
 <% if wui.has_action? :new -%>
 
   def new
-    build_object
+    <%= method_name(:build) %>
   end
 <% end -%>
 <% if wui.has_action? :create -%>
 
   def create
-    build_object
+    <%= method_name(:build) %>
+    <%= method_name(:save) %> or render :new
   end
 <% end -%>
 <% if wui.has_action? :edit -%>
 
   def edit
-    load_object
+    <%= method_name(:load_object) %>
+    <%= method_name(:build) %>
   end
 <% end -%>
 <% if wui.has_action? :update -%>
 
   def update
-    load_object
+    <%= method_name(:load_object) %>
+    <%= method_name(:build) %>
+    <%= method_name(:save) %> or render :edit
   end
 <% end -%>
 <% if wui.has_action? :destroy -%>
 
   def destroy
-    load_object
+    <%= method_name(:load_object) %>
+    <%= names.ivar %>.destroy
+    redirect_to <%= routes.index %>
   end
 <% end -%>
 <% wui.custom_actions.each do |action|  -%>
 
   def <%= action.name %>
 <% if action.member? -%>
-    load_object
+    <%= method_name(:load_object) %>
+  <%- if action.post? -%>
+    redirect_to <%= names.ivar %>
+  <%- end -%>
 <% elsif action.collection? -%>
-    load_collection
+    <%= method_name(:load_collection) %>
 <% end -%>
   end
 <% end -%>
 
   private
 
-  def build_object
-    @object ||= <%= names.class_name %>.build
-    @object.attributes = params[<%= names.symbol %>]
+  def <%= method_name(:load_collection) %>
+    <%= names.ivars %> ||= <%= method_name(:scope) %>.to_a
   end
 
-  def load_object
-    @object ||= <%= names.class_name %>.find(params[:id])
+  def <%= method_name(:load_object) %>
+    <%= names.ivar %> ||= <%= method_name(:scope) %>.find(params[:id])
   end
 
-  def load_collection
-    @collection ||= <%= names.class_name %>.all
+  def <%= method_name(:build) %>
+    <%= names.ivar %> ||= <%= method_name(:scope) %>.build
+    <%= names.ivar %>.attributes = <%= method_name(:params) %>
+  end
+
+  def <%= method_name(:save) %>
+    if <%= names.ivar %>.save
+      redirect_to <%= names.ivar %>
+    end
+  end
+
+  def <%= method_name(:params) %>
+    <%= method_name(:params) %> = params[:<%= names.variable %>] || {}
+    <%= method_name(:params) %>.permit(<%= wui.model.attrs.map(&:name).map(&:to_sym) %>)
+  end
+
+  def <%= method_name(:scope) %>
+    <%= names.class_name %>.scoped
   end
 
 end

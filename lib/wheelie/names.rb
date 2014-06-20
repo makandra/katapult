@@ -15,6 +15,18 @@ module Wheelie
       model_name.underscore
     end
 
+    def variables
+      variable.pluralize
+    end
+
+    def ivar
+      "@#{variable}"
+    end
+
+    def ivars
+      "@#{variable.pluralize}"
+    end
+
     def human_plural
       model_name.pluralize
     end

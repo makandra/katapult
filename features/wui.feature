@@ -127,8 +127,9 @@ Feature: Web User Interface
           wui.action :create
           wui.action :update
           wui.action :destroy
-          wui.action :member_action, method: :post, scope: :member
-          wui.action :collection_action, method: :get, scope: :collection
+          wui.action :get_member, method: :get, scope: :member
+          wui.action :post_member, method: :post, scope: :member
+          wui.action :get_collection, method: :get, scope: :collection
         end
       end
       """
@@ -138,54 +139,80 @@ Feature: Web User Interface
       class CustomersController < ApplicationController
 
         def index
-          load_collection
+          load_customers
         end
 
         def show
-          load_object
+          load_customer
         end
 
         def new
-          build_object
+          build_customer
         end
 
         def create
-          build_object
+          build_customer
+          save_customer or render :new
         end
 
         def edit
-          load_object
+          load_customer
+          build_customer
         end
 
         def update
-          load_object
+          load_customer
+          build_customer
+          save_customer or render :edit
         end
 
         def destroy
-          load_object
+          load_customer
+          @customer.destroy
+          redirect_to customers_path
         end
 
-        def member_action
-          load_object
+        def get_member
+          load_customer
         end
 
-        def collection_action
-          load_collection
+        def post_member
+          load_customer
+          redirect_to @customer
+        end
+
+        def get_collection
+          load_customers
         end
 
         private
 
-        def build_object
-          @object ||= Customer.build
-          @object.attributes = params[:customer]
+        def load_customers
+          @customers ||= customer_scope.to_a
         end
 
-        def load_object
-          @object ||= Customer.find(params[:id])
+        def load_customer
+          @customer ||= customer_scope.find(params[:id])
         end
 
-        def load_collection
-          @collection ||= Customer.all
+        def build_customer
+          @customer ||= customer_scope.build
+          @customer.attributes = customer_params
+        end
+
+        def save_customer
+          if @customer.save
+            redirect_to @customer
+          end
+        end
+
+        def customer_params
+          customer_params = params[:customer] || {}
+          customer_params.permit([:name, :age, :email, :revenue, :homepage, :locked])
+        end
+
+        def customer_scope
+          Customer.scoped
         end
 
       end
@@ -198,7 +225,7 @@ Feature: Web User Interface
 
       .tools
         = link_to 'Add customer', new_customer_path, class: 'button'
-        = link_to 'Collection Action', collection_action_customers_path, class: 'button'
+        = link_to 'Get Collection', get_collection_customers_path, class: 'button'
 
       %table.items
         - @collection.each do |customer|
@@ -208,45 +235,48 @@ Feature: Web User Interface
             %td.items__actions
               = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
               = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
+              = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
+              = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
 
       """
     And the file "app/views/customers/show.html.haml" should contain exactly:
       """
       .title
-        = @object.to_s
+        = @customer.to_s
 
       .tools
         = link_to 'All customers', customers_path, class: 'button'
-        = link_to 'Edit', edit_customer_path(@object), class: 'button is_primary'
-        = link_to 'Destroy', customer_path(@object), method: :delete, class: 'button', confirm: 'Really destroy?'
-        = link_to 'Member Action', member_action_customer_path(@object), class: 'button'
+        = link_to 'Edit', edit_customer_path(@customer), class: 'button is_primary'
+        = link_to 'Destroy', customer_path(@customer), method: :delete, class: 'button', confirm: 'Really destroy?'
+        = link_to 'Get Member', get_member_customer_path(@customer), class: 'button'
+        = link_to 'Post Member', post_member_customer_path(@customer), class: 'button', method: :post
 
       %dl.values
         %dt
           = Customer.human_attribute_name(:name)
         %dd
-          = @object.name
+          = @customer.name
         %dt
           = Customer.human_attribute_name(:age)
         %dd
-          = @object.age
+          = @customer.age
         %dt
           = Customer.human_attribute_name(:email)
         %dd
-          = mail_to @object.email, class: 'hyperlink'
+          = mail_to @customer.email, class: 'hyperlink'
         %dt
           = Customer.human_attribute_name(:revenue)
         %dd
-          = @object.revenue
+          = @customer.revenue
           €
         %dt
           = Customer.human_attribute_name(:homepage)
         %dd
-          = link_to @object.homepage, @object.homepage, class: 'hyperlink'
+          = link_to @customer.homepage, @customer.homepage, class: 'hyperlink'
         %dt
           = Customer.human_attribute_name(:locked)
         %dd
-          = yes_no(@object.locked)
+          = yes_no(@customer.locked)
 
       """
     And the file "app/views/customers/new.html.haml" should contain exactly:
@@ -260,18 +290,18 @@ Feature: Web User Interface
     And the file "app/views/customers/edit.html.haml" should contain exactly:
       """
       .title
-        = @object.to_s
+        = @customer.to_s
 
       = render 'form'
 
       """
     And the file "app/views/customers/_form.html.haml" should contain exactly:
       """
-      = form_for @object do |form|
+      = form_for @customer do |form|
 
         .tools
           = button_tag 'Save', class: 'button is_primary'
-          - cancel_path = @object.new_record? ? customers_path : customer_path(@object)
+          - cancel_path = @customer.new_record? ? customers_path : customer_path(@customer)
           = link_to 'Cancel', cancel_path, class: 'button'
 
         %dl.controls
@@ -302,18 +332,18 @@ Feature: Web User Interface
             = form.check_box :locked
 
       """
-    And the file "app/views/customers/member_action.html.haml" should contain exactly:
+    And the file "app/views/customers/get_member.html.haml" should contain exactly:
       """
       .title
-        Member Action
+        Get Member
 
       .tools
         = link_to 'All customers', customers_path, class: 'button'
 
       """
-    And the file "app/views/customers/collection_action.html.haml" should contain exactly:
+    And the file "app/views/customers/get_collection.html.haml" should contain exactly:
       """
       .title
-        Collection Action
+        Get Collection
 
       """

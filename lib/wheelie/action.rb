@@ -7,11 +7,6 @@ module Wheelie
 
     attr_accessor :name, :options, :method, :scope
 
-    def initialize(*args)
-
-      super
-    end
-
     delegate :post?, :get?, :put?, to: :method
     delegate :member?, :collection?, to: :scope
 
