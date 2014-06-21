@@ -11,7 +11,7 @@ Given /^a pristine Rails application with wheelie installed$/ do
     Bundler.with_clean_env do
       system <<-INSTALL_WHEELIE
         cd #{cache_path}
-        echo "gem 'wheelie', :path => '#{Dir.pwd}'\n" >> Gemfile
+        echo "gem 'wheelie', path: '../../..'" >> Gemfile
         bundle install
         bundle exec rails generate wheelie:install
       INSTALL_WHEELIE

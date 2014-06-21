@@ -1,4 +1,3 @@
-@announce
 Feature: Wheelie in general
 
   Scenario: Install Wheelie
@@ -26,20 +25,24 @@ Feature: Wheelie in general
       """
 
 
-  Scenario: Compiling a(n empty) metamodel generates basic files and settings
+  Scenario: Generate basic files and settings
     Given a pristine Rails application with wheelie installed
-    When I successfully render the metamodel
+    When I generate wheelie basics
     Then the file "Gemfile" should contain exactly:
       """
       source 'https://rubygems.org'
 
-      # basic
-      gem 'rails', '~> 4.1.0'
+      # from original Gemfile
+      gem 'rails', '4.1.0'
       gem 'mysql2'
+      gem 'jquery-rails'
+      gem 'jbuilder', '~> 2.0'
+      gem 'spring',        group: :development
+      gem 'wheelie', :path => '/Users/makandra/repositories/wheelie'
+
 
       # engines
       gem 'haml-rails'
-      gem 'jquery-rails'
 
       # internal
       gem 'exception_notification'
@@ -54,7 +57,6 @@ Feature: Wheelie in general
       gem 'has_defaults'
       gem 'assignable_values'
 
-      # gem 'jbuilder'
       # gem 'carrierwave'
       # gem 'mini_magick'
 

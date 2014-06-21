@@ -1,8 +1,8 @@
-@announce
 Feature: Web User Interface
 
   Background:
     Given a pristine Rails application with wheelie installed
+    And I generate wheelie basics
 
 
   Scenario: Generate a basic Web User Interface

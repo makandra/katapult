@@ -16,8 +16,6 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke('wheelie:basics')
-
       models.each &:render
       wuis.each &:render
     end

@@ -1,12 +1,10 @@
 source 'https://rubygems.org'
 
-# basic
-gem 'rails', '~> <%= @rails_version %>'
-gem 'mysql2'
+# from original Gemfile
+<%= @original_gems.join %>
 
 # engines
 gem 'haml-rails'
-gem 'jquery-rails'
 
 # internal
 gem 'exception_notification'
@@ -21,7 +19,6 @@ gem 'andand'
 gem 'has_defaults'
 gem 'assignable_values'
 
-# gem 'jbuilder'
 # gem 'carrierwave'
 # gem 'mini_magick'
 

@@ -2,6 +2,7 @@ Feature: Configure Wheelie
 
   Background:
     Given a pristine Rails application with wheelie installed
+    And I generate wheelie basics
 
 
   Scenario: Custom model template

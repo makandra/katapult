@@ -1,8 +1,8 @@
-@announce
 Feature: Generate Models
 
   Background:
     Given a pristine Rails application with wheelie installed
+    And I generate wheelie basics
 
 
   Scenario: Generate ActiveRecord Model

@@ -1,33 +1,32 @@
 require 'wheelie/generator'
-require 'bundler'
 
 module Wheelie
   module Generators
-    class BasicsGenerator < Wheelie::Generator
+    class BasicsGenerator < Rails::Generators::Base
+
+      SKIP_GEMS = %w(sass-rails coffee-rails turbolinks sdoc uglifier)
 
       desc 'Generate basics like test directories and gems'
-
       source_root File.expand_path('../templates', __FILE__)
 
-      # We don't want to overwrite the database.yml file once we generated it so
-      # a user can make configurations. The sample file is taken as indicator
-      # that we've already generated it.
       def write_database_ymls
-        unless File.exists?('config/database.sample.yml')
-          template 'config/database.yml', force: true
-          template 'config/database.sample.yml'
-        end
+        template 'config/database.yml', force: true
+        template 'config/database.sample.yml'
       end
 
-      def install_gemfile
-        Bundler.with_clean_env do
-          @rails_version = `bundle exec rails -v`[/Rails (\d.\d.\d)/, 1]
+      # Overwrite Gemfile with the template, but transfer all gems that are
+      # skipped (see SKIP_GEMS).
+      def enhance_gemfile
+        gem_lines = File.readlines('Gemfile').select{ |line| line =~ /^gem/ }
+        @original_gems = gem_lines.reject do |line|
+          line =~ /'(#{ SKIP_GEMS.join '|' })'/
         end
 
         template 'Gemfile', force: true
+      end
 
-        say_status :run, 'bundle install'
-        Bundler.clean_system 'bundle install'
+      def bundle_install
+        run 'bundle install'
       end
 
       # Modularity traits are put into /shared directories.
@@ -48,7 +47,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       def install_rspec
         generate 'rspec:install'
 
-        # Do not show Ruby warnings in RSpec runs == do not be $VERBOSE.
+        # Do not show Ruby warnings in RSpec runs = do not be $VERBOSE.
         gsub_file '.rspec', "--warnings\n", ''
       end
 
