@@ -1,6 +1,7 @@
+@announce
 Feature: Wheelie in general
 
-  Scenario: Have Wheelie installed (see Background)
+  Scenario: Install Wheelie
     Given a pristine Rails application with wheelie installed
     Then the file "lib/wheelie/metamodel.rb" should contain exactly:
       """

@@ -43,7 +43,7 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke('wheelie:model', [self])
+      Rails::Generators.invoke('wheelie:model', [self, '--unit-tests=model_specs'])
     end
 
   end

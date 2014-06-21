@@ -1,3 +1,4 @@
+@announce
 Feature: Generate Models
 
   Background:
@@ -27,6 +28,15 @@ Feature: Generate Models
             t.timestamps
           end
         end
+      end
+
+      """
+    And the file "spec/models/car_spec.rb" should contain exactly:
+      """
+      require 'rails_helper'
+
+      describe Car do
+
       end
 
       """
@@ -79,6 +89,23 @@ Feature: Generate Models
       end
 
       """
+    And the file "spec/models/person_spec.rb" should contain exactly:
+      """
+      require 'rails_helper'
+
+      describe Person do
+        it { is_expected.to_not be_locked }
+
+        describe '#homepage' do
+          it 'has a default' do
+            expect( subject.homepage ).to eql("http://www.makandra.de")
+          end
+        end
+
+      end
+
+      """
+    And the specs should pass
 
 
   Scenario: Get a helpful error message when an attribute has an unknown option
@@ -117,3 +144,20 @@ Feature: Generate Models
       end
 
       """
+    And the file "spec/models/person_spec.rb" should contain exactly:
+      """
+      require 'rails_helper'
+
+      describe Person do
+
+        describe '#hobby' do
+          it 'has a default' do
+            expect( subject.hobby ).to eql("soccer")
+          end
+        end
+
+      end
+
+      """
+    And the specs should pass
+

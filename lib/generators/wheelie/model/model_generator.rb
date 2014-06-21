@@ -68,6 +68,10 @@ module Wheelie
         end
       end
 
+      hook_for :unit_tests, required: true do |model_generator, template_engine|
+        model_generator.invoke template_engine, [ model_generator.model, model_generator.model.name ]
+      end
+
       private
 
       def model_file_path
