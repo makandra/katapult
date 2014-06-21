@@ -74,15 +74,22 @@ Defined on WUI. Takes a name and options:
 
 Wheelie is (planned to be) easily extendable with plugins.
 
+
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/wheelie/fork )
+<!-- 1. Fork it ( http://github.com/<my-github-username>/wheelie/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+5. Create new Pull Request -->
 
 Wheelie caches a pristine Rails application inside its `tmp/` directory. Keep this in mind, as it may lead to issues when switching Ruby versions or installing a new version of the Rails gem.
+
+Since Wheelie has full-stack integration tests, it requires a MySQL account. Create a dedicated account by running this command in a MySQL console (as-is):
+
+    GRANT ALL ON *.* TO 'wheelie'@'localhost' IDENTIFIED BY 'secret';
+
+The user `wheelie` is hereby granted any action (SELECT, UPDATE, etc. except for granting privileges) on any database and table (`*.*`).
 
 
 ## Credits

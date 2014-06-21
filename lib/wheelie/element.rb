@@ -1,7 +1,8 @@
 # The base class for all Wheelie elements to inherit from.
 
-# Every Wheelie element has a name. All options passed will be mapped to
-# attributes. Afterwards, the optional block will be yielded with self.
+# Every Wheelie element has a name which is a String. All options passed will be
+# mapped to attributes. Afterwards, the optional block will be yielded with
+# self.
 
 module Wheelie
   class Element

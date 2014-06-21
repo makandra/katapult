@@ -1,0 +1,13 @@
+common: &common
+  adapter: mysql2
+  encoding: utf8
+  username: wheelie
+  password: secret
+
+development:
+  <<: *common
+  database: <%= app_name %>_development
+
+test:
+  <<: *common
+  database: <%= app_name %>_test<%%= ENV['TEST_ENV_NUMBER'] %>

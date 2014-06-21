@@ -38,8 +38,6 @@ module Wheelie
         restricted_attrs = @model.attrs.select(&:assignable_values)
 
         if restricted_attrs.any?
-          gem 'assignable_values'
-
           restricted_attrs.each do |attr|
             inject_into_class model_file_path, class_name, render_partial('_assignable_values.rb', binding)
           end
