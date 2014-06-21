@@ -65,7 +65,7 @@ Feature: Generate Models
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base
-        has_defaults {:homepage=>"http://www.makandra.de"}
+        has_defaults({:homepage=>"http://www.makandra.de"})
         include DoesFlag[:locked, default: false]
       end
 

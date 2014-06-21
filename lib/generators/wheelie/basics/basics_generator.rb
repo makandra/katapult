@@ -30,6 +30,17 @@ module Wheelie
         Bundler.clean_system 'bundle install'
       end
 
+      # Modularity traits are put into /shared directories.
+      def add_load_paths
+        # This results in correct formatting :)
+        application <<-'LOAD_PATHS'
+config.autoload_paths << "#{Rails.root}/app/controllers/shared"
+    config.autoload_paths << "#{Rails.root}/app/models/shared"
+    config.autoload_paths << "#{Rails.root}/app/util"
+    config.autoload_paths << "#{Rails.root}/app/util/shared"
+        LOAD_PATHS
+      end
+
       # def install_cucumber
       #   generate 'cucumber:install'
       # end

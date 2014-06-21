@@ -48,7 +48,7 @@ module Wheelie
         flags = @model.attrs.select(&:flag?)
 
         if flags.any?
-          template 'does_flag.rb', File.join(%w[app util shared does_flag.rb])
+          template 'does_flag.rb', File.join(%w[app models shared does_flag.rb])
 
           flags.each do |attr|
             flag = ":#{attr.name}, default: #{attr.default}"
@@ -63,7 +63,7 @@ module Wheelie
         defaults = @model.has_defaults
 
         if defaults.any?
-          defaults_string = "  has_defaults #{defaults}\n"
+          defaults_string = "  has_defaults(#{defaults})\n"
           inject_into_class model_file_path, class_name, defaults_string
         end
       end
