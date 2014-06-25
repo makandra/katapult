@@ -18,6 +18,11 @@ module Wheelie
     def render
       models.each &:render
       wuis.each &:render
+
+      <<-`SYSTEM`
+        bundle exec rake db:drop db:create db:migrate RAILS_ENV=development
+        bundle exec rake db:drop db:create db:migrate RAILS_ENV=test
+      SYSTEM
     end
 
     def metamodel(name)

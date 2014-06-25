@@ -2,15 +2,17 @@ require 'aruba/cucumber'
 require 'pry'
 
 Before do
-  @aruba_timeout_seconds = 120 # bundling takes time
+  @aruba_timeout_seconds = 30
 end
 
-# Use this method to wrap any system calls to the test application
-def prepare_environment(&block)
-  Bundler.with_clean_env do
-    # Spring leads to all kinds of unexpected behavior in tests.
+module Customization
+
+  # Improve the internal #run method provided by Aruba::Api to run commands
+  # with a clean bundler environment and without spring.
+  def run(cmd, timeout = nil)
     ENV['DISABLE_SPRING'] = '1'
-
-    block.call
+    Bundler.with_clean_env { super }
   end
+
 end
+World(Customization)

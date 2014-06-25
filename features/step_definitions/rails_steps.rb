@@ -1,4 +1,7 @@
 Given /^a pristine Rails application with wheelie installed$/ do
+  original_aruba_timeout = @aruba_timeout_seconds
+  @aruba_timeout_seconds = 120 # bundling takes time
+
   app_name, cache_name = 'wheelie_test_app', 'cached_test_app'
   app_path = File.join('tmp', 'aruba', app_name)
   cache_path = File.join('tmp', cache_name)
@@ -25,6 +28,8 @@ Given /^a pristine Rails application with wheelie installed$/ do
 
     system(bundle_check) or system(bundle_install)
   end
+
+  @aruba_timeout_seconds = original_aruba_timeout # reset
 
   # cd to test_app
   FileUtils.cp_r cache_path, app_path
