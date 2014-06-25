@@ -87,7 +87,8 @@ Feature: Wheelie in general
 
         gem 'guard-livereload', require: false
         gem 'rack-livereload'
-        gem 'pivotal-tracker'
+        gem 'spring-commands-rspec'
+        gem 'spring-commands-cucumber'
       end
 
       group :development, :test do

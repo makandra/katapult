@@ -19,10 +19,11 @@ module Wheelie
       models.each &:render
       wuis.each &:render
 
-      <<-`SYSTEM`
-        bundle exec rake db:drop db:create db:migrate RAILS_ENV=development
-        bundle exec rake db:drop db:create db:migrate RAILS_ENV=test
-      SYSTEM
+      # Finalize rendering
+      <<-`MIGRATE`
+        spring rake db:drop db:create db:migrate RAILS_ENV=development
+        spring rake db:drop db:create db:migrate RAILS_ENV=test
+      MIGRATE
     end
 
     def metamodel(name)
