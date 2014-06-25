@@ -1,37 +1,35 @@
-Given /^a pristine Rails application with wheelie installed$/ do
-  original_aruba_timeout = @aruba_timeout_seconds
-  @aruba_timeout_seconds = 120 # bundling takes time
+module WheelieRailsHelper
 
-  app_name, cache_name = 'wheelie_test_app', 'cached_test_app'
-  app_path = File.join('tmp', 'aruba', app_name)
-  cache_path = File.join('tmp', cache_name)
+  def with_aruba_timeout(timeout, &block)
+    original_aruba_timeout = @aruba_timeout_seconds
+    @aruba_timeout_seconds = timeout
 
-  unless File.directory?(cache_path)
-    puts 'Generating a cached rails app for testing ...'
-    command = "cd tmp; bundle exec rails new #{cache_name} --skip-test-unit --skip-bundle --database mysql"
-    system(command) or raise "Rails app generation failed"
+    block.call
+  ensure
+    @aruba_timeout_seconds = original_aruba_timeout
+  end
 
-    Bundler.with_clean_env do
-      system <<-INSTALL_WHEELIE
-        cd #{cache_path}
-        echo "gem 'wheelie', path: '../../..'" >> Gemfile
-        bundle install
-        bundle exec rails generate wheelie:install
-      INSTALL_WHEELIE
+  def create_cached_app(name)
+    job = 'Cached Rails app generation'
+    rails_new_command = "bundle exec rails new #{name} --skip-test-unit --database mysql"
+
+    puts "#{job} started (in #{Dir.pwd})"
+    system(rails_new_command) or raise "#{job} failed"
+    puts "#{job} done."
+  end
+
+end
+World(WheelieRailsHelper)
+
+
+Given /^a pristine Rails application$/ do
+  with_aruba_timeout(120) do
+    Dir.chdir('tmp') do
+      create_cached_app('cached_test_app') unless File.directory?('cached_test_app')
     end
+
+    # copy cached app to aruba directory
+    FileUtils.cp_r('tmp/cached_test_app', File.join(current_dir, 'wheelie_test_app'))
+    cd 'wheelie_test_app' # Aruba::Api method
   end
-
-  # ensure cached_test_app is bundled
-  Bundler.with_clean_env do
-    bundle_check = "cd #{cache_path}; bundle check &>/dev/null"
-    bundle_install = "cd #{cache_path}; bundle install"
-
-    system(bundle_check) or system(bundle_install)
-  end
-
-  @aruba_timeout_seconds = original_aruba_timeout # reset
-
-  # cd to test_app
-  FileUtils.cp_r cache_path, app_path
-  cd app_name
 end

@@ -1,3 +1,8 @@
+When /^I install wheelie$/ do
+  append_to_file 'Gemfile', "gem 'wheelie', path: '../../..'"
+  run_simple('bin/rails generate wheelie:install')
+end
+
 # This step is required for any feature because it generates config/database.yml
 When /^I generate wheelie basics$/ do
   run_simple('bundle exec rails generate wheelie:basics')

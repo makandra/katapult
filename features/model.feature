@@ -1,7 +1,8 @@
 Feature: Generate Models
 
   Background:
-    Given a pristine Rails application with wheelie installed
+    Given a pristine Rails application
+    And I install wheelie
     And I generate wheelie basics
 
 

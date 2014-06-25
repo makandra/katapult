@@ -26,7 +26,10 @@ module Wheelie
       end
 
       def bundle_install
-        run 'bundle install'
+        # run 'spring stop' # to pick up changes
+        Bundler.with_clean_env do
+          run 'bundle install'
+        end
       end
 
       # Modularity traits are put into /shared directories.

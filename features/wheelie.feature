@@ -1,7 +1,10 @@
 Feature: Wheelie in general
 
+  Background:
+    Given a pristine Rails application
+
   Scenario: Install Wheelie
-    Given a pristine Rails application with wheelie installed
+    When I install wheelie
     Then the file "lib/wheelie/metamodel.rb" should contain exactly:
       """
       metamodel 'kickstart' do |meta|
@@ -26,7 +29,7 @@ Feature: Wheelie in general
 
 
   Scenario: Generate basic files and settings
-    Given a pristine Rails application with wheelie installed
+    Given I install wheelie
     When I generate wheelie basics
     Then the file "Gemfile" should contain exactly:
       """
