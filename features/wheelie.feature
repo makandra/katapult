@@ -41,8 +41,7 @@ Feature: Wheelie in general
       gem 'jquery-rails'
       gem 'jbuilder', '~> 2.0'
       gem 'spring',        group: :development
-      gem 'wheelie', :path => '/Users/makandra/repositories/wheelie'
-
+      gem 'wheelie', path: '../../..'
 
       # engines
       gem 'haml-rails'

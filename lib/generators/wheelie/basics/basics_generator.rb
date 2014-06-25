@@ -14,7 +14,7 @@ module Wheelie
         template 'config/database.sample.yml'
       end
 
-      # Overwrite Gemfile with the template, but transfer all gems that are
+      # Overwrite Gemfile with the template, but transfer all gems that are not
       # skipped (see SKIP_GEMS).
       def enhance_gemfile
         gem_lines = File.readlines('Gemfile').select{ |line| line =~ /^gem/ }
