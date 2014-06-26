@@ -52,8 +52,12 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       def install_rspec
         generate 'rspec:install'
 
-        # Do not show Ruby warnings in RSpec runs = do not be $VERBOSE.
+        # Do not show Ruby warnings in RSpec runs.
         gsub_file '.rspec', "--warnings\n", ''
+
+        inject_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
+          "require 'shoulda/matchers'"
+        end
       end
 
       # def install_capistrano

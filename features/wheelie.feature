@@ -110,7 +110,7 @@ Feature: Wheelie in general
         gem 'spreewald'
 
         gem 'rspec_candy'
-        gem 'shoulda-matchers'
+        gem 'shoulda-matchers', require: false
       end
 
       """
@@ -155,9 +155,10 @@ Feature: Wheelie in general
     #   """
     #   require 'cucumber/rails'
     #   """
-    And the file "spec/spec_helper.rb" should contain:
+    And the file "spec/rails_helper.rb" should contain:
       """
-      RSpec.configure do |config|
+      require 'rspec/rails'
+      require 'shoulda/matchers'
       """
     # And the file "config/deploy.rb" should contain exactly:
     #   """

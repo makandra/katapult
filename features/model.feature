@@ -152,9 +152,17 @@ Feature: Generate Models
       describe Person do
 
         describe '#hobby' do
+          it { is_expected.to allow_value("baseball").for(:hobby) }
+          it { is_expected.to_not allow_value("baseball-unassignable").for(:hobby) }
+
           it 'has a default' do
             expect( subject.hobby ).to eql("soccer")
           end
+        end
+
+        describe '#age' do
+          it { is_expected.to allow_value(99).for(:age) }
+          it { is_expected.to_not allow_value(100).for(:age) }
         end
 
       end

@@ -25,6 +25,24 @@ module Wheelie
         def attrs_with_default
           model.attrs.select{ |attr| attr.default != nil }
         end
+
+        def assignable_value_for(attr)
+          attr.assignable_values.last
+        end
+
+        # Try to find a value that is not assignable
+        def unassignable_value_for(attr)
+          assignable = assignable_value_for(attr)
+
+          case assignable
+          when Integer
+            assignable += 1
+          when String
+            assignable += '-unassignable'
+          else
+            raise 'Not supported yet.'
+          end
+        end
       end
 
       private

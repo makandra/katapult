@@ -70,5 +70,5 @@ group :test do
   gem 'spreewald'
 
   gem 'rspec_candy'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', require: false
 end
