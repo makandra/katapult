@@ -25,15 +25,17 @@ module Wheelie
         template 'Gemfile', force: true
       end
 
-      def bundle_install
-        # run 'spring stop' # to pick up changes
-        Bundler.with_clean_env do
-          run 'bundle install'
-        end
+      def setup_spring
+        bundle 'exec spring binstub --all'
+        template 'config/spring.rb'
+        run 'spring stop' # reload
       end
 
-      # Modularity traits are put into /shared directories.
-      def add_load_paths
+      def bundle_install
+        bundle 'install'
+      end
+
+      def add_modularity_load_paths
         # This results in correct formatting :)
         application <<-'LOAD_PATHS'
 config.autoload_paths << "#{Rails.root}/app/controllers/shared"
@@ -63,6 +65,12 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
       def app_name
         File.basename(Dir.pwd)
+      end
+
+      def bundle(command)
+        Bundler.with_clean_env do
+          run 'bundle ' + command
+        end
       end
 
     end

@@ -4,8 +4,7 @@ require 'pry'
 Before do
   @aruba_timeout_seconds = 30
 
-  # Clean up in case the After hook did non run
-  run_simple 'spring stop &>/dev/null'
+  run_simple 'spring stop # Clean up in case the After hook did not run'
 end
 
 After do
