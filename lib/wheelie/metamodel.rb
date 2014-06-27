@@ -18,12 +18,6 @@ module Wheelie
     def render
       models.each &:render
       wuis.each &:render
-
-      # Finalize rendering
-      <<-`MIGRATE`
-        spring rake db:drop db:create db:migrate RAILS_ENV=development
-        spring rake db:drop db:create db:migrate RAILS_ENV=test
-      MIGRATE
     end
 
     def metamodel(name)

@@ -8,5 +8,12 @@ module Wheelie
       Wheelie::Metamodel.new(path).render
     end
 
+    def migrate
+      <<-`MIGRATE`
+        bin/rake db:drop db:create db:migrate RAILS_ENV=development
+        bin/rake db:drop db:create db:migrate RAILS_ENV=test
+      MIGRATE
+    end
+
   end
 end
