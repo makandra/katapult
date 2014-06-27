@@ -13,12 +13,6 @@ module Wheelie
       check_class_collision suffix: 'Controller'
       source_root File.expand_path('../templates', __FILE__)
 
-
-      def initialize(args = [], options = {}, config = {})
-        extract_smuggled(Wheelie::WUI, :wui, args)
-        super
-      end
-
       def create_controller_file
         controller_path = File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
 
@@ -33,8 +27,8 @@ module Wheelie
         route render_partial('_route.rb')
       end
 
-      hook_for :template_engine, required: true do |wui_generator, template_engine|
-        wui_generator.invoke template_engine, [ wui_generator.wui, wui_generator.wui.name ]
+      def generate_views
+        invoke wui.views, [ wui.name ], { wheelie_model: 'wui' }
       end
 
       no_tasks do
@@ -50,8 +44,14 @@ module Wheelie
         end
 
         def model_name(kind = nil)
-          wui.model.name(kind)
+          wui.model_name(kind)
         end
+      end
+
+      private
+
+      def set_wheelie_model(wui)
+        self.wui = wui
       end
 
     end

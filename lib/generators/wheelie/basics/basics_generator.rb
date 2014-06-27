@@ -1,5 +1,3 @@
-require 'wheelie/generator'
-
 module Wheelie
   module Generators
     class BasicsGenerator < Rails::Generators::Base
@@ -45,9 +43,16 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         LOAD_PATHS
       end
 
-      # def install_cucumber
-      #   generate 'cucumber:install'
-      # end
+      def install_cucumber
+        generate 'cucumber:install'
+
+        template 'features/support/paths.rb'
+        inject_into_file 'features/support/env.rb', <<-ENV, after: "require 'cucumber/rails'\n"
+require 'rspec_candy/all'
+require 'spreewald/all_steps'
+
+        ENV
+      end
 
       def install_rspec
         generate 'rspec:install'
@@ -56,7 +61,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         gsub_file '.rspec', "--warnings\n", ''
 
         inject_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
-          "require 'shoulda/matchers'"
+          "require 'shoulda/matchers'\n"
         end
       end
 

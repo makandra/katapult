@@ -350,3 +350,12 @@ Feature: Web User Interface
         Get Collection
 
       """
+    And the file "features/customers.feature" should contain exactly:
+      """
+      Feature: Customers
+
+        Scenario: CRUD
+          And it should work
+
+      """
+    And the features should pass

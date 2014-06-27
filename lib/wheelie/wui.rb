@@ -4,7 +4,7 @@ require 'wheelie/action'
 module Wheelie
   class WUI < Element
 
-    attr_accessor :model, :actions, :views
+    attr_accessor :model, :actions, :views, :integration_tests
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     RAILS_VIEW_ACTIONS = %w[ index show new edit ]
@@ -14,7 +14,8 @@ module Wheelie
 
       super
 
-      self.views ||= 'haml'
+      self.views ||= 'wheelie:haml'
+      self.integration_tests ||= 'wheelie:cucumber_features'
       self.model = Reference.instance.model(model) if model.is_a?(String)
     end
 
@@ -64,8 +65,12 @@ module Wheelie
       path
     end
 
+    def model_name(kind = nil)
+      model.andand.name(kind)
+    end
+
     def render
-      Rails::Generators.invoke 'wheelie:w_u_i', [ self, "--template_engine=#{views}" ]
+      Rails::Generators.invoke 'wheelie:w_u_i', [ self.name, '--wheelie-model=wui' ]
     end
 
   end

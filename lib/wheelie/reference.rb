@@ -18,5 +18,11 @@ module Wheelie
       end
     end
 
+    def wui(name)
+      metamodel.wuis.find do |wui|
+        wui.name == name
+      end
+    end
+
   end
 end

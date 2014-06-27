@@ -114,6 +114,7 @@ Feature: Wheelie in general
       end
 
       """
+
     And the file "config/database.yml" should contain exactly:
       """
       common: &common
@@ -126,10 +127,12 @@ Feature: Wheelie in general
         <<: *common
         database: wheelie_test_app_development
 
-      test:
+      test: &test
         <<: *common
         database: wheelie_test_app_test<%= ENV['TEST_ENV_NUMBER'] %>
 
+      cucumber:
+        <<: *test
       """
     And the file "config/database.sample.yml" should contain exactly:
       """
@@ -151,10 +154,14 @@ Feature: Wheelie in general
         <<: *test
 
       """
-    # And the file "features/support/env.rb" should contain:
-    #   """
-    #   require 'cucumber/rails'
-    #   """
+
+    And the file "features/support/env.rb" should contain:
+      """
+      require 'rspec_candy/all'
+      require 'spreewald/all_steps'
+      """
+    And a file named "features/support/paths.rb" should exist
+
     And the file "spec/rails_helper.rb" should contain:
       """
       require 'rspec/rails'

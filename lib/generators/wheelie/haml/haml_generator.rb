@@ -12,11 +12,6 @@ module Wheelie
       source_root File.expand_path('../templates', __FILE__)
 
 
-      def initialize(args = [], options = {}, config = {})
-        extract_smuggled(Wheelie::WUI, :wui, args)
-        super
-      end
-
       def create_views_directory
         wui.actions.any? or return 'Have no actions, get no views'
 
@@ -48,9 +43,15 @@ module Wheelie
         end
       end
 
+      def generate_integration_tests
+        if wui.model.present?
+          invoke wui.integration_tests, [ wui.name ], { wheelie_model: 'wui' }
+        end
+      end
+
       no_tasks do
         def model_name(kind = nil)
-          wui.model.name(kind)
+          wui.model_name(kind)
         end
 
         def views_path
@@ -68,6 +69,10 @@ module Wheelie
         else
           create_file destination
         end
+      end
+
+      def set_wheelie_model(wui)
+        self.wui = wui
       end
 
     end
