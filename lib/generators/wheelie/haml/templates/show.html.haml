@@ -22,19 +22,19 @@
     = <%= model_name(:class_name) %>.human_attribute_name(:<%= attribute.name %>)
   %dd
 <% case attribute.type -%>
-<% when :date, :datetime -%>
+<% when 'date', 'datetime' -%>
     = l(<%= getter %>)
-<% when :text -%>
+<% when 'text' -%>
     = simple_format(<%= getter %>)
-<% when :markdown -%>
+<% when 'markdown' -%>
     = markdown(<%= getter %>)
-<% when :flag -%>
+<% when 'flag' -%>
     = yes_no(<%= getter %>)
-<% when :email -%>
+<% when 'email' -%>
     = mail_to <%= getter %>, class: 'hyperlink'
-<% when :url -%>
+<% when 'url' -%>
     = link_to <%= getter %>, <%= getter %>, class: 'hyperlink'
-<% when :money -%>
+<% when 'money' -%>
     = <%= getter %>
     €
 <% else -%>

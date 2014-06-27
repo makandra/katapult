@@ -11,22 +11,20 @@
       = form.label :<%= attribute.name %>
     %dd
 <% case attribute.type -%>
-<% when :date, :datetime -%>
+<% when 'date', 'datetime' -%>
       = form.date_picker :<%= attribute.name %>
-<% when :text -%>
+<% when 'text' -%>
       = form.text_area :<%= attribute.name %>, rows: 5
-<% when :integer -%>
+<% when 'integer' -%>
       = form.number_field :<%= attribute.name %>
-<% when :markdown -%>
+<% when 'markdown' -%>
       = form.text_area :<%= attribute.name %>, rows: 15
-<% when :boolean -%>
-      = form.check_box :<%= attribute.name %>
-<% when :xxx_email -%>
+<% when 'xxx_email' -%>
       = form.text :<%= attribute.name %>
-<% when :money -%>
+<% when 'money' -%>
       = form.number_field :<%= attribute.name %>
       €
-<% when :flag -%>
+<% when 'flag' -%>
       = form.check_box :<%= attribute.name %>
 <% else -%>
       = form.text_field :<%= attribute.name %>

@@ -95,11 +95,18 @@ Feature: Generate Models
       require 'rails_helper'
 
       describe Person do
-        it { is_expected.to_not be_locked }
 
         describe '#homepage' do
+
           it 'has a default' do
             expect( subject.homepage ).to eql("http://www.makandra.de")
+          end
+        end
+
+        describe '#locked' do
+
+          it 'has a default' do
+            expect( subject.locked ).to eql(false)
           end
         end
 

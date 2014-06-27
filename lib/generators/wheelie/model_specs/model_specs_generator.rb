@@ -22,15 +22,17 @@ module Wheelie
       end
 
       no_tasks do
-        def attrs_with_default
-          model.attrs.select{ |attr| attr.default != nil }
+        def specable_attrs
+          model.attrs.select do |attr|
+            attr.assignable_values.present? or attr.default != nil
+          end
         end
 
         def assignable_value_for(attr)
           attr.assignable_values.last
         end
 
-        # Try to find a value that is not assignable
+        # Try to guess a value that is not assignable
         def unassignable_value_for(attr)
           assignable = assignable_value_for(attr)
 
@@ -40,7 +42,7 @@ module Wheelie
           when String
             assignable += '-unassignable'
           else
-            raise 'Not supported yet.'
+            raise "Assignable values of type #{assignable.class.name} not supported"
           end
         end
       end

@@ -1,4 +1,6 @@
 require 'wheelie/element'
+require 'active_support/core_ext/module/delegation'
+require 'active_support/core_ext/string/inquiry'
 
 module Wheelie
   class Attribute < Element
@@ -7,12 +9,14 @@ module Wheelie
 
     def initialize(*args)
       super
-      self.type ||= :email if name.to_s =~ /email/
-      self.type ||= :string
+      @type ||= :email if name.to_s =~ /email/
+      @type ||= :string
     end
 
-    def flag?
-      type == :flag
+    delegate :flag?, to: :type
+
+    def type
+      @type.to_s.inquiry
     end
 
     def has_defaults?
@@ -21,14 +25,14 @@ module Wheelie
 
     def to_s
       db_type = case type
-      when :email, :url
+      when 'email', 'url'
         'string'
-      when :flag
+      when 'flag'
         'boolean'
-      when :money
+      when 'money'
         'decimal{10,2}' # precision and scale options
       else
-        type.to_s
+        type
       end
 
       name + ':' + db_type
