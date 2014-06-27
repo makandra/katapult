@@ -12,11 +12,6 @@ module Wheelie
       source_root File.expand_path('../templates', __FILE__)
 
 
-      def initialize(args = [], options = {}, config = {})
-        extract_smuggled(Wheelie::Model, :model, args)
-        super
-      end
-
       def create_model_spec
         template 'model_spec.rb', spec_path
       end
@@ -51,6 +46,10 @@ module Wheelie
 
       def spec_path
         File.join('spec', 'models', "#{file_name}_spec.rb")
+      end
+
+      def set_wheelie_model(model_object)
+        self.model = model_object
       end
 
     end

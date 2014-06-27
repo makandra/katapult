@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'wheelie/action'
 
 describe Wheelie::Action do
 

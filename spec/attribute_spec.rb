@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'wheelie/attribute'
 
 describe Wheelie::Attribute do
 

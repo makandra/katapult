@@ -4,12 +4,14 @@ require 'wheelie/attribute'
 module Wheelie
   class Model < Element
 
-    attr_accessor :attrs
+    attr_accessor :attrs, :unit_tests
 
     def initialize(*args)
       self.attrs = []
 
       super
+
+      self.unit_tests ||= 'wheelie:model_specs'
     end
 
     def attr(attr_name, options = {})
@@ -43,7 +45,7 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke('wheelie:model', [self, '--unit-tests=model_specs'])
+      Rails::Generators.invoke('wheelie:model', [self.name, '--wheelie-model=model'])
     end
 
   end

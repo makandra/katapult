@@ -1,5 +1,7 @@
 Feature: Web User Interface
 
+  This feature depends on the model feature because a WUI depends on models.
+
   Background:
     Given a pristine Rails application
     And I install wheelie

@@ -7,16 +7,10 @@ module Wheelie
       attr_accessor :model
 
       desc 'Generate a Model'
-      argument :attrs, type: :array, default: []
 
       check_class_collision
       source_root File.expand_path('../templates', __FILE__)
 
-
-      def initialize(args = [], options = {}, config = {})
-        extract_smuggled(Wheelie::Model, :model, args)
-        super
-      end
 
       def create_migration_file
         migration_name = "create_#{table_name}"
@@ -68,14 +62,19 @@ module Wheelie
         end
       end
 
-      hook_for :unit_tests, required: true do |model_generator, template_engine|
-        model_generator.invoke template_engine, [ model_generator.model, model_generator.model.name ]
+
+      def generate_unit_tests
+        invoke model.unit_tests, [model.name], { wheelie_model: 'model' }
       end
 
       private
 
       def model_file_path
         File.join('app', 'models', "#{file_name}.rb")
+      end
+
+      def set_wheelie_model(model_object)
+        self.model = model_object
       end
 
     end

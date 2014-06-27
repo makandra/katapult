@@ -1,8 +1,7 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'wheelie'
-require 'rails' # needed because Wheelie always runs in a Rails context
+require 'pry'
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
