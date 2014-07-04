@@ -29,7 +29,7 @@
 <% when 'markdown' -%>
     = markdown(<%= getter %>)
 <% when 'flag' -%>
-    = yes_no(<%= getter %>)
+    = <%= getter %> ? 'Yes' : 'No'
 <% when 'email' -%>
     = mail_to <%= getter %>, class: 'hyperlink'
 <% when 'url' -%>

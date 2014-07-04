@@ -23,6 +23,10 @@ module Wheelie
         template 'Gemfile', force: true
       end
 
+      def remove_turbolinks_js
+        gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", ''
+      end
+
       def setup_spring
         bundle 'exec spring binstub --all'
         template 'config/spring.rb'
@@ -47,11 +51,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         generate 'cucumber:install'
 
         template 'features/support/paths.rb'
-        inject_into_file 'features/support/env.rb', <<-ENV, after: "require 'cucumber/rails'\n"
-require 'rspec_candy/all'
-require 'spreewald/all_steps'
-
-        ENV
+        template 'features/support/env-custom.rb'
       end
 
       def install_rspec

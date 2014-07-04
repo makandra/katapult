@@ -210,8 +210,8 @@ Feature: Web User Interface
         end
 
         def customer_params
-          customer_params = params[:customer] || {}
-          customer_params.permit([:name, :age, :email, :revenue, :homepage, :locked])
+          customer_params = params[:customer]
+          customer_params ? customer_params.permit([:name, :age, :email, :revenue, :homepage, :locked]) : {}
         end
 
         def customer_scope
@@ -231,7 +231,7 @@ Feature: Web User Interface
         = link_to 'Get Collection', get_collection_customers_path, class: 'button'
 
       %table.items
-        - @collection.each do |customer|
+        - @customers.each do |customer|
           %tr
             %td
               = link_to customer.to_s, customer_path(customer), class: 'hyperlink'
@@ -279,7 +279,7 @@ Feature: Web User Interface
         %dt
           = Customer.human_attribute_name(:locked)
         %dd
-          = yes_no(@customer.locked)
+          = @customer.locked ? 'Yes' : 'No'
 
       """
     And the file "app/views/customers/new.html.haml" should contain exactly:
@@ -354,8 +354,11 @@ Feature: Web User Interface
       """
       Feature: Customers
 
-        Scenario: CRUD
-          And it should work
+        Scenario: CRUD customers
+          When I go to the list of customers
+            And I follow "Add customer"
+            And I press "Save"
+          Then I should be on the page for the customer above
 
       """
     And the features should pass

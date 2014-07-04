@@ -9,7 +9,7 @@
 
 <% object_name = model_name(:variable) -%>
 %table.items
-  - @collection.each do |<%= object_name %>|
+  - <%= model_name(:ivars) %>.each do |<%= object_name %>|
     %tr
       %td
         = link_to <%= object_name %>.to_s, <%= wui.path(:show, object_name) %>, class: 'hyperlink'
