@@ -23,6 +23,10 @@ module Wheelie
         template 'Gemfile', force: true
       end
 
+      def bundle_install
+        bundle 'install'
+      end
+
       def remove_turbolinks_js
         gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", ''
       end
@@ -31,10 +35,6 @@ module Wheelie
         bundle 'exec spring binstub --all'
         template 'config/spring.rb'
         run 'spring stop' # reload
-      end
-
-      def bundle_install
-        bundle 'install'
       end
 
       def add_modularity_load_paths
