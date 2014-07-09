@@ -18,6 +18,14 @@ module WheelieRailsHelper
     puts "#{job} done."
   end
 
+  def ensure_bundled(path)
+    Dir.chdir(path) do
+      Bundler.with_clean_env do
+        system('bundle check &> /dev/null') or system('bundle install')
+      end
+    end
+  end
+
 end
 World(WheelieRailsHelper)
 
@@ -26,6 +34,7 @@ Given /^a pristine Rails application$/ do
   with_aruba_timeout(120) do
     Dir.chdir('tmp') do
       create_cached_app('cached_test_app') unless File.directory?('cached_test_app')
+      ensure_bundled('cached_test_app')
     end
 
     # copy cached app to aruba directory
