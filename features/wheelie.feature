@@ -91,7 +91,7 @@ Feature: Wheelie in general
       end
 
       group :development, :test do
-        gem 'debugger'
+        gem 'byebug'
         gem 'factory_girl_rails'
         gem 'rspec-rails'
       end
