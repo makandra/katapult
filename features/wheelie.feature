@@ -3,6 +3,7 @@ Feature: Wheelie in general
   Background:
     Given a pristine Rails application
 
+
   Scenario: Install Wheelie
     When I install wheelie
     Then the file "lib/wheelie/metamodel.rb" should contain exactly:

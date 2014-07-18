@@ -146,6 +146,8 @@ Feature: Web User Interface
           customer.attr :revenue, type: :money
           customer.attr :homepage, type: :url, default: 'http://www.makandra.de'
           customer.attr :locked, type: :flag, default: false
+
+          customer.label_attr = :name
         end
 
         test.wui 'Customer', model: 'Customer' do |wui|
@@ -290,7 +292,7 @@ Feature: Web User Interface
         %dt
           = Customer.human_attribute_name(:email)
         %dd
-          = mail_to @customer.email, class: 'hyperlink'
+          = mail_to @customer.email, nil, class: 'hyperlink'
         %dt
           = Customer.human_attribute_name(:revenue)
         %dd
@@ -379,10 +381,44 @@ Feature: Web User Interface
       Feature: Customers
 
         Scenario: CRUD customers
-          When I go to the list of customers
-            And I follow "Add customer"
+          Given I am on the list of customers
+
+          # create
+          When I follow "Add customer"
+            And I fill in "Name" with "name-string"
+            And I fill in "Age" with "704"
+            And I fill in "Email" with "email@wheelie.com"
+            And I fill in "Revenue" with "910.23"
+            And I fill in "Homepage" with "homepage.wheelie.com"
+            And I check "Locked"
             And I press "Save"
+
+          # read
           Then I should be on the page for the customer above
+            And I should see "name-string"
+            And I should see "704"
+            And I should see "email@wheelie.com"
+            And I should see "910.23"
+            And I should see "homepage.wheelie.com"
+            And I should see "Locked Yes"
+
+          # update
+          When I follow "Edit"
+          Then I should be on the form for the customer above
+            And the "Name" field should contain "name-string"
+            And the "Age" field should contain "704"
+            And the "Email" field should contain "email@wheelie.com"
+            And the "Revenue" field should contain "910.23"
+            And the "Homepage" field should contain "homepage.wheelie.com"
+            And the "Locked" checkbox should be checked
+
+          # destroy
+          When I go to the list of customers
+          Then I should see "name-string"
+
+          When I follow "Destroy"
+          Then I should be on the list of customers
+            But I should not see "name-string"
 
       """
     And the features should pass

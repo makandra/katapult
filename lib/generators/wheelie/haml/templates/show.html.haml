@@ -31,7 +31,7 @@
 <% when 'flag' -%>
     = <%= getter %> ? 'Yes' : 'No'
 <% when 'email' -%>
-    = mail_to <%= getter %>, class: 'hyperlink'
+    = mail_to <%= getter %>, nil, class: 'hyperlink'
 <% when 'url' -%>
     = link_to <%= getter %>, <%= getter %>, class: 'hyperlink'
 <% when 'money' -%>

@@ -18,6 +18,10 @@ module Wheelie
         def model_name(kind = nil)
           wui.model_name(kind)
         end
+
+        def model_attrs
+          wui.model.attrs
+        end
       end
 
       private
