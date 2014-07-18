@@ -21,6 +21,32 @@ Feature: Web User Interface
       end
 
       """
+    And the file "app/views/layouts/application.html.haml" should contain exactly:
+      """
+      !!!
+      %html
+        %head
+          %title
+            Wheelie Test App
+
+          = stylesheet_link_tag 'application', media: 'all'
+          = javascript_include_tag 'application'
+          = csrf_meta_tags
+
+        %body
+          .layout
+
+            .layout__head
+              %h2 Wheelie Test App
+
+            .layout__main
+              =# render 'layouts/flashes'
+              = yield
+
+            .layout__tail
+              powered by makandra
+
+      """
     And the file "config/routes.rb" should contain:
       """
         resources :cars, only: [] do

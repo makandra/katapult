@@ -11,6 +11,10 @@ module Wheelie
       desc 'Generate HAML views'
       source_root File.expand_path('../templates', __FILE__)
 
+      def install_application_layout
+        remove_file 'app/views/layouts/application.html.erb'
+        template 'app/views/layouts/application.html.haml'
+      end
 
       def create_views_directory
         wui.actions.any? or return 'Have no actions, get no views'

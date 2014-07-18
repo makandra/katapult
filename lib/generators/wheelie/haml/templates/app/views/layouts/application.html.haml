@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %title
+      <%= app_name.titlecase %>
+
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+
+  %body
+    .layout
+
+      .layout__head
+        %h2 <%= app_name.titlecase %>
+
+      .layout__main
+        =# render 'layouts/flashes'
+        = yield
+
+      .layout__tail
+        powered by makandra
