@@ -23,7 +23,7 @@ module Wheelie
       default and not [flag?, assignable_values].any?
     end
 
-    def to_s
+    def for_migration
       db_type = case type
       when 'email', 'url'
         'string'

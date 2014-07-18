@@ -14,7 +14,7 @@ module Wheelie
 
       def create_migration_file
         migration_name = "create_#{table_name}"
-        migration_attributes = @model.attrs.map(&:to_s)
+        migration_attributes = @model.attrs.map(&:for_migration)
 
         args = [migration_name] + migration_attributes
         options = { :timestamps => true }
