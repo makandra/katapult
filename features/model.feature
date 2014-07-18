@@ -17,6 +17,10 @@ Feature: Generate Models
     Then the file "app/models/car.rb" should contain exactly:
       """
       class Car < ActiveRecord::Base
+
+        def to_s
+          "Car##{id}"
+        end
       end
 
       """
@@ -37,6 +41,13 @@ Feature: Generate Models
       require 'rails_helper'
 
       describe Car do
+
+        describe '#to_s' do
+          it 'returns its class name with its id' do
+            subject.id = 17
+            expect(subject.to_s).to eql("Car#17")
+          end
+        end
 
       end
 
@@ -68,6 +79,10 @@ Feature: Generate Models
       class Person < ActiveRecord::Base
         has_defaults({:homepage=>"http://www.makandra.de"})
         include DoesFlag[:locked, default: false]
+
+        def to_s
+          "Person##{id}"
+        end
       end
 
       """
@@ -96,6 +111,13 @@ Feature: Generate Models
 
       describe Person do
 
+        describe '#to_s' do
+          it 'returns its class name with its id' do
+            subject.id = 17
+            expect(subject.to_s).to eql("Person#17")
+          end
+        end
+
         describe '#homepage' do
 
           it 'has a default' do
@@ -107,6 +129,46 @@ Feature: Generate Models
 
           it 'has a default' do
             expect( subject.locked ).to eql(false)
+          end
+        end
+
+      end
+
+      """
+    And the specs should pass
+
+
+  Scenario: Generate ActiveRecord Model with label attribute
+    When I overwrite "lib/wheelie/metamodel.rb" with:
+      """
+      metamodel 'Test' do |test|
+        test.model 'Person' do |person|
+          person.attr :name
+          person.label_attr = :name
+        end
+      end
+      """
+    And I successfully render the metamodel
+    Then the file "app/models/person.rb" should contain exactly:
+      """
+      class Person < ActiveRecord::Base
+
+        def to_s
+          name.to_s
+        end
+      end
+
+      """
+    And the file "spec/models/person_spec.rb" should contain exactly:
+      """
+      require 'rails_helper'
+
+      describe Person do
+
+        describe '#to_s' do
+          it 'returns the #name attribute' do
+            subject.name = "name-string"
+            expect(subject.to_s).to eql("name-string")
           end
         end
 
@@ -149,6 +211,10 @@ Feature: Generate Models
         assignable_values_for :hobby, {:allow_blank=>true, :default=>"soccer"} do
           ["soccer", "baseball"]
         end
+
+        def to_s
+          "Person##{id}"
+        end
       end
 
       """
@@ -157,6 +223,13 @@ Feature: Generate Models
       require 'rails_helper'
 
       describe Person do
+
+        describe '#to_s' do
+          it 'returns its class name with its id' do
+            subject.id = 17
+            expect(subject.to_s).to eql("Person#17")
+          end
+        end
 
         describe '#hobby' do
           it { is_expected.to allow_value("baseball").for(:hobby) }
@@ -176,4 +249,3 @@ Feature: Generate Models
 
       """
     And the specs should pass
-

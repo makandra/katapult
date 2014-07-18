@@ -4,7 +4,9 @@ require 'wheelie/attribute'
 module Wheelie
   class Model < Element
 
-    attr_accessor :attrs, :unit_tests
+    UnknownAttribute = Class.new(StandardError)
+
+    attr_accessor :attrs, :label_attr, :unit_tests
 
     def initialize(*args)
       self.attrs = []
@@ -41,6 +43,14 @@ module Wheelie
       when 'class'        then machine_name.classify
       else
         @name
+      end
+    end
+
+    def label_attr=(label_attr)
+      if (attr = attrs.detect { |a| a.name == label_attr.to_s })
+        @label_attr = attr
+      else
+        raise UnknownAttribute, "Cannot set unknown attribute '#{label_attr}' as label attribute"
       end
     end
 

@@ -38,5 +38,15 @@ module Wheelie
       name + ':' + db_type
     end
 
+    def test_value
+      case type
+      when 'string'     then "#{name}-string"
+      when 'email'      then "#{name}@wheelie.com"
+      when 'url'        then "#{name}.wheelie.com"
+      when 'integer'    then hash.abs.to_s[1..3]
+      when 'money'      then hash.abs.to_s[1..5].to_f / 100.0
+      end
+    end
+
   end
 end
