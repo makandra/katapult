@@ -8,10 +8,6 @@ module Wheelie
 
     attr_accessor :metamodel
 
-    def set_metamodel(metamodel)
-      self.metamodel = metamodel
-    end
-
     def model(name)
       metamodel.models.find do |model|
         model.name == name

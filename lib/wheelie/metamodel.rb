@@ -11,7 +11,7 @@ module Wheelie
     def initialize(path_to_metamodel)
       self.models = []
       self.wuis = []
-      Reference.instance.set_metamodel(self)
+      Reference.instance.metamodel = self
 
       instance_eval File.read(path_to_metamodel), path_to_metamodel
     end
