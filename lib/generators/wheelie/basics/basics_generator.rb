@@ -66,6 +66,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       end
 
       def install_styles
+        remove_file 'app/assets/stylesheets/application.css'
         directory 'app/assets/stylesheets', force: true
       end
 

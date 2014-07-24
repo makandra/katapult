@@ -170,6 +170,29 @@ Feature: Wheelie in general
       """
 
 
+
+    # styles
+    And the file "app/assets/stylesheets/application.css.sass" should contain:
+      """
+      @import compass
+      @import bootstrap
+
+      @import application/blocks/all
+
+      """
+    And the file "app/assets/stylesheets/application/blocks/_all.css.sass" should contain exactly:
+      """
+      @import items
+      @import layout
+      @import navigation
+      @import tools
+
+      """
+    And a file named "app/assets/stylesheets/application/blocks/_items.css.sass" should exist
+    And a file named "app/assets/stylesheets/application/blocks/_layout.css.sass" should exist
+    And a file named "app/assets/stylesheets/application/blocks/_navigation.css.sass" should exist
+    And a file named "app/assets/stylesheets/application/blocks/_tools.css.sass" should exist
+
     # And the file "config/deploy.rb" should contain exactly:
     #   """
     #   stages

@@ -262,11 +262,12 @@ Feature: Web User Interface
             %tr
               %td
                 = link_to customer.to_s, customer_path(customer), class: 'hyperlink'
-              %td.items__actions
-                = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
-                = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
-                = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
-                = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
+              %td
+                .items__actions
+                  = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
+                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
+                  = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
+                  = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
 
       - else
         %p.help-block
