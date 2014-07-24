@@ -65,6 +65,10 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         end
       end
 
+      def install_styles
+        directory 'app/assets/stylesheets', force: true
+      end
+
       # def install_capistrano
       #   capify!
       #   template 'config/deploy.rb'

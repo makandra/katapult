@@ -1,0 +1,26 @@
+@import compass/css3/box-shadow
+@import bootstrap/variables
+
+.layout
+  margin: 100px auto
+  width: 800px
+
+  background-color: white
+  +single-box-shadow
+
+.layout__head
+  padding: 10px 35px
+
+  color: #fff
+  background-color: $brand-primary
+
+.layout__main
+  padding: 20px 35px
+
+.layout__tail
+  padding: 10px 35px
+
+  color: $gray-light
+  background-color: $gray-lighter
+  border-top: 1px solid darken($gray-lighter, 10%)
+  font-size: $font-size-small

@@ -1,10 +1,5 @@
 = form_for <%= model_name(:ivar) %> do |form|
 
-  .tools
-    = button_tag 'Save', class: 'button is_primary'
-    - cancel_path = <%= model_name(:ivar) %>.new_record? ? <%= wui.path(:index) %> : <%= wui.path(:show, model_name(:ivar)) %>
-    = link_to 'Cancel', cancel_path, class: 'button'
-
   %dl.controls
 <% wui.model.attrs.each do |attribute| -%>
     %dt
@@ -30,3 +25,8 @@
       = form.text_field :<%= attribute.name %>
 <% end -%>
 <% end -%>
+
+  .tools
+    = form.submit 'Save', class: 'tools__button is_primary'
+    - cancel_path = <%= model_name(:ivar) %>.new_record? ? <%= wui.path(:index) %> : <%= wui.path(:show, model_name(:ivar)) %>
+    = link_to 'Cancel', cancel_path, class: 'tools__button'

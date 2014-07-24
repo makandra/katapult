@@ -249,36 +249,41 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/index.html.haml" should contain exactly:
       """
-      .title
+      %h1
         Customers
 
       .tools
-        = link_to 'Add customer', new_customer_path, class: 'button'
-        = link_to 'Get Collection', get_collection_customers_path, class: 'button'
+        = link_to 'Add customer', new_customer_path, class: 'tools__button is_primary'
+        = link_to 'Get Collection', get_collection_customers_path, class: 'tools__button'
 
-      %table.items
-        - @customers.each do |customer|
-          %tr
-            %td
-              = link_to customer.to_s, customer_path(customer), class: 'hyperlink'
-            %td.items__actions
-              = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
-              = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
-              = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
-              = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
+      - if @customers.any?
+        %table.items
+          - @customers.each do |customer|
+            %tr
+              %td
+                = link_to customer.to_s, customer_path(customer), class: 'hyperlink'
+              %td.items__actions
+                = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
+                = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
+                = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
+                = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
+
+      - else
+        %p.help-block
+          There are no customers yet.
 
       """
     And the file "app/views/customers/show.html.haml" should contain exactly:
       """
-      .title
+      %h1
         = @customer.to_s
 
       .tools
-        = link_to 'All customers', customers_path, class: 'button'
-        = link_to 'Edit', edit_customer_path(@customer), class: 'button is_primary'
-        = link_to 'Destroy', customer_path(@customer), method: :delete, class: 'button', confirm: 'Really destroy?'
-        = link_to 'Get Member', get_member_customer_path(@customer), class: 'button'
-        = link_to 'Post Member', post_member_customer_path(@customer), class: 'button', method: :post
+        = link_to 'All customers', customers_path, class: 'tools__button'
+        = link_to 'Edit', edit_customer_path(@customer), class: 'tools__button is_primary'
+        = link_to 'Destroy', customer_path(@customer), method: :delete, class: 'tools__button', confirm: 'Really destroy?'
+        = link_to 'Get Member', get_member_customer_path(@customer), class: 'tools__button'
+        = link_to 'Post Member', post_member_customer_path(@customer), class: 'tools__button', method: :post
 
       %dl.values
         %dt
@@ -310,7 +315,7 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/new.html.haml" should contain exactly:
       """
-      .title
+      %h1
         Add customer
 
       = render 'form'
@@ -318,7 +323,7 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/edit.html.haml" should contain exactly:
       """
-      .title
+      %h1
         = @customer.to_s
 
       = render 'form'
@@ -327,11 +332,6 @@ Feature: Web User Interface
     And the file "app/views/customers/_form.html.haml" should contain exactly:
       """
       = form_for @customer do |form|
-
-        .tools
-          = button_tag 'Save', class: 'button is_primary'
-          - cancel_path = @customer.new_record? ? customers_path : customer_path(@customer)
-          = link_to 'Cancel', cancel_path, class: 'button'
 
         %dl.controls
           %dt
@@ -360,19 +360,24 @@ Feature: Web User Interface
           %dd
             = form.check_box :locked
 
+        .tools
+          = form.submit 'Save', class: 'tools__button is_primary'
+          - cancel_path = @customer.new_record? ? customers_path : customer_path(@customer)
+          = link_to 'Cancel', cancel_path, class: 'tools__button'
+
       """
     And the file "app/views/customers/get_member.html.haml" should contain exactly:
       """
-      .title
+      %h1
         Get Member
 
       .tools
-        = link_to 'All customers', customers_path, class: 'button'
+        = link_to 'All customers', customers_path, class: 'tools__button'
 
       """
     And the file "app/views/customers/get_collection.html.haml" should contain exactly:
       """
-      .title
+      %h1
         Get Collection
 
       """

@@ -1,0 +1,5 @@
+/*
+ *= require_self
+ *= require ./application/base
+ * //= require_tree ./application/blocks
+ */

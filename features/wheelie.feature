@@ -71,19 +71,20 @@ Feature: Wheelie in general
       # gem 'nested_form'
       gem 'will_paginate'
 
-      group :assets do
-        gem 'sass-rails'
-        gem 'coffee-rails'
-        gem 'uglifier'
-        gem 'compass-rails'
-        gem 'compass-rgbapng'
-      end
+      # assets
+      gem 'bootstrap-sass'
+      gem 'sass-rails'
+      gem 'autoprefixer-rails'
+      gem 'coffee-rails'
+      gem 'uglifier'
+      gem 'compass-rails'
+      gem 'compass-rgbapng'
 
       group :development do
         gem 'query_diet'
         gem 'better_errors'
         gem 'binding_of_caller'
-        gem 'thin' # webrick has warnings when used with 1.9
+        gem 'thin'
 
         gem 'guard-livereload', require: false
         gem 'rack-livereload'
@@ -156,18 +157,19 @@ Feature: Wheelie in general
 
       """
 
-    And the file "features/support/env.rb" should contain:
+    And the file "features/support/env-custom.rb" should contain:
       """
       require 'rspec_candy/all'
       require 'spreewald/all_steps'
       """
     And a file named "features/support/paths.rb" should exist
-
     And the file "spec/rails_helper.rb" should contain:
       """
       require 'rspec/rails'
       require 'shoulda/matchers'
       """
+
+
     # And the file "config/deploy.rb" should contain exactly:
     #   """
     #   stages

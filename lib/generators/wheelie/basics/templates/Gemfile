@@ -30,19 +30,20 @@ gem 'assignable_values'
 # gem 'nested_form'
 gem 'will_paginate'
 
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier'
-  gem 'compass-rails'
-  gem 'compass-rgbapng'
-end
+# assets
+gem 'bootstrap-sass'
+gem 'sass-rails'
+gem 'autoprefixer-rails'
+gem 'coffee-rails'
+gem 'uglifier'
+gem 'compass-rails'
+gem 'compass-rgbapng'
 
 group :development do
   gem 'query_diet'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'thin' # webrick has warnings when used with 1.9
+  gem 'thin'
 
   gem 'guard-livereload', require: false
   gem 'rack-livereload'

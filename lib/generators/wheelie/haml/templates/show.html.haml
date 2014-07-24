@@ -1,16 +1,16 @@
-.title
+%h1
   = <%= model_name(:ivar) %>.to_s
 
 .tools
-  = link_to 'All <%= model_name(:human_plural) %>', <%= wui.path(:index) %>, class: 'button'
-  = link_to 'Edit', <%= wui.path(:edit, model_name(:ivar)) %>, class: 'button is_primary'
-  = link_to 'Destroy', <%= wui.path(:destroy, model_name(:ivar)) %>, method: :delete, class: 'button', confirm: 'Really destroy?'
+  = link_to 'All <%= model_name(:human_plural) %>', <%= wui.path(:index) %>, class: 'tools__button'
+  = link_to 'Edit', <%= wui.path(:edit, model_name(:ivar)) %>, class: 'tools__button is_primary'
+  = link_to 'Destroy', <%= wui.path(:destroy, model_name(:ivar)) %>, method: :delete, class: 'tools__button', confirm: 'Really destroy?'
 <% wui.member_actions.each do |action| -%>
   = link_to '<%=
       action.name.humanize.titleize
     %>', <%=
       wui.path(action, model_name(:ivar))
-    %>, class: 'button'<%=
+    %>, class: 'tools__button'<%=
       ", method: :#{action.method}" unless action.get?
     %>
 <% end -%>
