@@ -9,10 +9,8 @@ module Wheelie
     end
 
     def migrate
-      <<-`MIGRATE`
-        bin/rake db:drop db:create db:migrate RAILS_ENV=development
-        bin/rake db:drop db:create db:migrate RAILS_ENV=test
-      MIGRATE
+      run 'bin/rake db:drop db:create db:migrate RAILS_ENV=development'
+      run 'bin/rake db:drop db:create db:migrate RAILS_ENV=test'
     end
 
   end
