@@ -34,6 +34,7 @@ module Wheelie
 
       case kind.to_s
       when 'symbol'       then ":#{machine_name}"
+      when 'symbols'      then ":#{machine_name.pluralize}"
       when 'variable'     then machine_name
       when 'variables'    then machine_name.pluralize
       when 'ivar'         then "@#{machine_name}"

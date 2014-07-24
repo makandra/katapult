@@ -24,5 +24,9 @@ module Wheelie
       end
     end
 
+    def navigation(_ = nil)
+      metamodel.nav
+    end
+
   end
 end

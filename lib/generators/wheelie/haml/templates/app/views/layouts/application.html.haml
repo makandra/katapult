@@ -13,6 +13,9 @@
 
       .layout__head
         %h2 <%= app_name.titlecase %>
+        <%- if navigation -%>
+        = render_navigation Navigation.<%= navigation.machine_name %>
+        <%- end -%>
 
       .layout__main
         =# render 'layouts/flashes'

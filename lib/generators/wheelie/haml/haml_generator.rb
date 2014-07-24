@@ -61,6 +61,10 @@ module Wheelie
         def views_path
           File.join('app', 'views', controller_file_name)
         end
+
+        def navigation
+          Wheelie::Reference.instance.navigation
+        end
       end
 
       private

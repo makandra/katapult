@@ -70,6 +70,7 @@ Feature: Wheelie in general
       # gem 'simple_form'
       # gem 'nested_form'
       gem 'will_paginate'
+      gem 'makandra-navy', require: 'navy'
 
       # assets
       gem 'bootstrap-sass'
