@@ -4,8 +4,6 @@ module Wheelie
   module Generators
     class ModelSpecsGenerator < Wheelie::Generator
 
-      attr_accessor :model
-
       desc 'Generate model specs'
 
       check_class_collision
@@ -48,8 +46,8 @@ module Wheelie
         File.join('spec', 'models', "#{file_name}_spec.rb")
       end
 
-      def set_wheelie_model(model_object)
-        self.model = model_object
+      def model
+        @element
       end
 
     end

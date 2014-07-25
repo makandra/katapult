@@ -1,3 +1,5 @@
+require 'wheelie/parser'
+
 module Wheelie
   class RenderGenerator < Rails::Generators::Base
     desc 'Render the Wheelie metamodel'
@@ -5,7 +7,8 @@ module Wheelie
     argument :path, required: true, type: :string, description: 'The path to the metamodel file'
 
     def render_metamodel
-      Wheelie::Metamodel.new(path).render
+      metamodel = Wheelie::Parser.new.parse(path)
+      metamodel.render
     end
 
     def migrate

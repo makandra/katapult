@@ -1,19 +1,18 @@
 require 'wheelie/element'
 require 'wheelie/attribute'
+require 'generators/wheelie/model/model_generator'
 
 module Wheelie
   class Model < Element
 
     UnknownAttribute = Class.new(StandardError)
 
-    attr_accessor :attrs, :label_attr, :unit_tests
+    attr_accessor :attrs, :label_attr
 
     def initialize(*args)
       self.attrs = []
 
       super
-
-      self.unit_tests ||= 'wheelie:model_specs'
     end
 
     def attr(attr_name, options = {})
@@ -51,12 +50,12 @@ module Wheelie
       if (attr = attrs.detect { |a| a.name == label_attr.to_s })
         @label_attr = attr
       else
-        raise UnknownAttribute, "Cannot set unknown attribute '#{label_attr}' as label attribute"
+        raise UnknownAttributeError, "Cannot set unknown attribute '#{label_attr}' as label attribute"
       end
     end
 
     def render
-      Rails::Generators.invoke('wheelie:model', [self.name, '--wheelie-model=model'])
+      Generators::ModelGenerator.new(self).invoke_all
     end
 
   end

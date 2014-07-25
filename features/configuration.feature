@@ -9,9 +9,7 @@ Feature: Configure Wheelie
   Scenario: Custom model template
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
-      metamodel 'Test' do |test|
-        test.model 'Car'
-      end
+      model 'Car'
       """
     And a file named "lib/templates/wheelie/model/model.rb" with:
       """

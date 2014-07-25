@@ -1,16 +1,11 @@
 require 'wheelie/element'
+require 'generators/wheelie/navigation/navigation_generator'
 
 module Wheelie
   class Navigation < Element
 
-    attr_accessor :name
-
-    def initialize(*args)
-      super
-    end
-
     def wuis
-      Wheelie::Reference.instance.metamodel.wuis
+      metamodel.wuis
     end
 
     def machine_name
@@ -18,7 +13,7 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke('wheelie:navigation', [name, '--wheelie-model=navigation'])
+      Generators::NavigationGenerator.new(self).invoke_all
     end
 
   end

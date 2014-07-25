@@ -1,10 +1,9 @@
 require 'wheelie/generator'
+require 'generators/wheelie/model_specs/model_specs_generator'
 
 module Wheelie
   module Generators
     class ModelGenerator < Wheelie::Generator
-
-      attr_accessor :model
 
       desc 'Generate a Model'
 
@@ -14,7 +13,7 @@ module Wheelie
 
       def create_migration_file
         migration_name = "create_#{table_name}"
-        migration_attributes = @model.attrs.map(&:for_migration)
+        migration_attributes = model.attrs.map(&:for_migration)
 
         args = [migration_name] + migration_attributes
         options = { :timestamps => true }
@@ -29,7 +28,7 @@ module Wheelie
       # model file modifications
 
       def write_assignable_values
-        restricted_attrs = @model.attrs.select(&:assignable_values)
+        restricted_attrs = model.attrs.select(&:assignable_values)
 
         if restricted_attrs.any?
           restricted_attrs.each do |attr|
@@ -39,7 +38,7 @@ module Wheelie
       end
 
       def write_traits
-        flags = @model.attrs.select(&:flag?)
+        flags = model.attrs.select(&:flag?)
 
         if flags.any?
           template 'does_flag.rb', File.join(%w[app models shared does_flag.rb])
@@ -54,7 +53,7 @@ module Wheelie
       end
 
       def write_attribute_defaults
-        defaults = @model.has_defaults
+        defaults = model.has_defaults
 
         if defaults.any?
           defaults_string = "  has_defaults(#{defaults})\n"
@@ -62,9 +61,8 @@ module Wheelie
         end
       end
 
-
       def generate_unit_tests
-        invoke model.unit_tests, [model.name], { wheelie_model: 'model' }
+        Generators::ModelSpecsGenerator.new(model).invoke_all
       end
 
       private
@@ -73,8 +71,8 @@ module Wheelie
         File.join('app', 'models', "#{file_name}.rb")
       end
 
-      def set_wheelie_model(model_object)
-        self.model = model_object
+      def model
+        @element
       end
 
     end

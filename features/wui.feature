@@ -9,9 +9,7 @@ Feature: Web User Interface
   Scenario: Generate a basic Web User Interface
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
-      metamodel 'Test' do |test|
-        test.wui 'Car'
-      end
+      wui 'Car'
       """
     And I successfully render the metamodel
     Then the file "app/controllers/cars_controller.rb" should contain exactly:
@@ -61,17 +59,15 @@ Feature: Web User Interface
   Scenario: Generate a Web User Interface with actions
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
-      metamodel 'Test' do |test|
-        test.wui 'Car' do |wui|
-          wui.action :index
-          wui.action :show
-          wui.action :create
-          wui.action :update
-          wui.action :destroy
-          wui.action :get_member, method: :get, scope: :member
-          wui.action :post_member, method: :post, scope: :member
-          wui.action :get_collection, method: :get, scope: :collection
-        end
+      wui 'Car' do |wui|
+        wui.action :index
+        wui.action :show
+        wui.action :create
+        wui.action :update
+        wui.action :destroy
+        wui.action :get_member, method: :get, scope: :member
+        wui.action :post_member, method: :post, scope: :member
+        wui.action :get_collection, method: :get, scope: :collection
       end
       """
     And I successfully render the metamodel
@@ -137,29 +133,27 @@ Feature: Web User Interface
   Scenario: Generate a Web User Interface connected to a model
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
-      metamodel 'Test' do |test|
-        model 'Customer' do |customer|
-          customer.attr :name
-          customer.attr :age, type: :integer
+      model 'Customer' do |customer|
+        customer.attr :name
+        customer.attr :age, type: :integer
 
-          customer.attr :email
-          customer.attr :revenue, type: :money
-          customer.attr :homepage, type: :url, default: 'http://www.makandra.de'
-          customer.attr :locked, type: :flag, default: false
+        customer.attr :email
+        customer.attr :revenue, type: :money
+        customer.attr :homepage, type: :url, default: 'http://www.makandra.de'
+        customer.attr :locked, type: :flag, default: false
 
-          customer.label_attr = :name
-        end
+        customer.label_attr = :name
+      end
 
-        test.wui 'Customer', model: 'Customer' do |wui|
-          wui.action :index
-          wui.action :show
-          wui.action :create
-          wui.action :update
-          wui.action :destroy
-          wui.action :get_member, method: :get, scope: :member
-          wui.action :post_member, method: :post, scope: :member
-          wui.action :get_collection, method: :get, scope: :collection
-        end
+      wui 'Customer', model: 'Customer' do |wui|
+        wui.action :index
+        wui.action :show
+        wui.action :create
+        wui.action :update
+        wui.action :destroy
+        wui.action :get_member, method: :get, scope: :member
+        wui.action :post_member, method: :post, scope: :member
+        wui.action :get_collection, method: :get, scope: :collection
       end
       """
     And I successfully render the metamodel

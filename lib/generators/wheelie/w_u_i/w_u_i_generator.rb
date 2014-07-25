@@ -1,12 +1,11 @@
 require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
+require 'generators/wheelie/haml/haml_generator'
 
 module Wheelie
   module Generators
     class WUIGenerator < Wheelie::Generator
       include Rails::Generators::ResourceHelpers
-
-      attr_accessor :wui
 
       desc 'Generate a Web User Interface'
 
@@ -28,7 +27,7 @@ module Wheelie
       end
 
       def generate_views
-        invoke wui.views, [ wui.name ], { wheelie_model: 'wui' }
+        Generators::HamlGenerator.new(wui).invoke_all
       end
 
       no_tasks do
@@ -50,8 +49,8 @@ module Wheelie
 
       private
 
-      def set_wheelie_model(wui)
-        self.wui = wui
+      def wui
+        @element
       end
 
     end

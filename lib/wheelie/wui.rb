@@ -1,10 +1,11 @@
 require 'wheelie/element'
 require 'wheelie/action'
+require 'generators/wheelie/w_u_i/w_u_i_generator'
 
 module Wheelie
   class WUI < Element
 
-    attr_accessor :model, :actions, :views, :integration_tests
+    attr_accessor :model, :actions
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     RAILS_VIEW_ACTIONS = %w[ index show new edit ]
@@ -13,10 +14,6 @@ module Wheelie
       self.actions = []
 
       super
-
-      self.views ||= 'wheelie:haml'
-      self.integration_tests ||= 'wheelie:cucumber_features'
-      self.model = Reference.instance.model(model) if model.is_a?(String)
     end
 
     def action(name, options = {})
@@ -25,6 +22,10 @@ module Wheelie
       actions << Action.new('new', options) if name == 'create'
       actions << Action.new('edit', options) if name == 'update'
       actions << Action.new(name, options)
+    end
+
+    def model
+      metamodel.get_model(@model)
     end
 
     def rails_view_actions
@@ -70,7 +71,7 @@ module Wheelie
     end
 
     def render
-      Rails::Generators.invoke 'wheelie:w_u_i', [ self.name, '--wheelie-model=wui' ]
+      Generators::WUIGenerator.new(self).invoke_all
     end
 
   end

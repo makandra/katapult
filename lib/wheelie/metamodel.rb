@@ -1,43 +1,48 @@
-require 'wheelie/model'
-require 'wheelie/wui'
-require 'wheelie/reference'
-require 'wheelie/navigation'
+# Internal representation of a metamodel file.
 
 module Wheelie
   class Metamodel
 
-    attr_accessor :name, :models, :wuis, :nav
+    attr_reader :models, :wuis, :navigation, :home_wui
 
-    def initialize(path_to_metamodel)
-      self.models = []
-      self.wuis = []
-      Reference.instance.metamodel = self
-
-      instance_eval File.read(path_to_metamodel), path_to_metamodel
+    def initialize
+      @models = []
+      @wuis = []
     end
+
+    def add_model(model)
+      model.set_metamodel(self)
+      @models << model
+    end
+
+    def get_model(name)
+      models.find { |m| m.name == name }
+    end
+
+    def add_wui(wui)
+      wui.set_metamodel(self)
+      @wuis << wui
+    end
+
+    def get_wui(name)
+      wuis.find { |w| w.name == name }
+    end
+
+    def set_navigation(navigation)
+      navigation.set_metamodel(self)
+      @navigation = navigation
+    end
+
+    def set_home_wui(wui)
+      @home_wui = wui
+    end
+
+    # ---
 
     def render
       models.each &:render
       wuis.each &:render
-      nav.render if nav
-    end
-
-    def metamodel(name)
-      self.name = name
-
-      yield self
-    end
-
-    def model(name, &block)
-      models << Model.new(name, &block)
-    end
-
-    def wui(name, options = {}, &block)
-      wuis << WUI.new(name, options, &block)
-    end
-
-    def navigation(name)
-      self.nav = Navigation.new(name)
+      navigation.render if navigation
     end
 
   end

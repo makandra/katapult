@@ -4,8 +4,6 @@ module Wheelie
   module Generators
     class NavigationGenerator < Wheelie::Generator
 
-      attr_accessor :navigation
-
       desc 'Generate the navigation'
       source_root File.expand_path('../templates', __FILE__)
 
@@ -16,8 +14,8 @@ module Wheelie
 
       private
 
-      def set_wheelie_model(model_object)
-        self.navigation = model_object
+      def navigation
+        @element
       end
 
     end

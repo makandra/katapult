@@ -13,22 +13,20 @@ Feature: Navigation
 
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
-      metamodel 'Test' do |test|
-        model 'Customer' do |customer|
-          customer.attr :name
-          customer.label_attr = :name
-        end
-
-        test.wui 'Customer', model: 'Customer' do |wui|
-          wui.action :index
-          wui.action :show
-          wui.action :create
-          wui.action :update
-          wui.action :destroy
-        end
-
-        navigation 'main'
+      model 'Customer' do |customer|
+        customer.attr :name
+        customer.label_attr = :name
       end
+
+      wui 'Customer', model: 'Customer' do |wui|
+        wui.action :index
+        wui.action :show
+        wui.action :create
+        wui.action :update
+        wui.action :destroy
+      end
+
+      navigation 'main'
       """
     And I successfully render the metamodel
     Then the file "app/models/navigation.rb" should contain exactly:

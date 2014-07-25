@@ -1,12 +1,11 @@
 require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
+require 'generators/wheelie/cucumber_features/cucumber_features_generator'
 
 module Wheelie
   module Generators
     class HamlGenerator < Wheelie::Generator
       include Rails::Generators::ResourceHelpers
-
-      attr_accessor :wui
 
       desc 'Generate HAML views'
       source_root File.expand_path('../templates', __FILE__)
@@ -49,7 +48,7 @@ module Wheelie
 
       def generate_integration_tests
         if wui.model.present?
-          invoke wui.integration_tests, [ wui.name ], { wheelie_model: 'wui' }
+          Generators::CucumberFeaturesGenerator.new(wui).invoke_all
         end
       end
 
@@ -63,7 +62,7 @@ module Wheelie
         end
 
         def navigation
-          Wheelie::Reference.instance.navigation
+          wui.metamodel.navigation
         end
       end
 
@@ -79,8 +78,8 @@ module Wheelie
         end
       end
 
-      def set_wheelie_model(wui)
-        self.wui = wui
+      def wui
+        @element
       end
 
     end
