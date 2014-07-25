@@ -17,7 +17,7 @@ describe Wheelie::Model do
     it 'raises an error if the specified attribute does not exist' do
       expect do
         subject.label_attr = :unknown_attr
-      end.to raise_error(Wheelie::Model::UnknownAttribute)
+      end.to raise_error(Wheelie::Model::UnknownAttributeError)
     end
   end
 

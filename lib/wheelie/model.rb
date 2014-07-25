@@ -5,7 +5,7 @@ require 'generators/wheelie/model/model_generator'
 module Wheelie
   class Model < Element
 
-    UnknownAttribute = Class.new(StandardError)
+    UnknownAttributeError = Class.new(StandardError)
 
     attr_accessor :attrs, :label_attr
 
