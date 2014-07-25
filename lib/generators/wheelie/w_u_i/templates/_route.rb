@@ -1,4 +1,4 @@
-  resources :<%= plural_name %>, only: <%= wui.rails_actions.map(&:name).map(&:to_sym) %> do
+resources :<%= plural_name %>, only: <%= wui.rails_actions.map(&:name).map(&:to_sym) %> do
     member do
 % wui.member_actions.each do |action|
       <%= action.method %> '<%= action.name %>'
