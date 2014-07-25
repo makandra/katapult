@@ -9,6 +9,10 @@ module Wheelie
     def render_metamodel
       metamodel = Wheelie::Parser.new.parse(path)
       metamodel.render
+
+      if wui = metamodel.home_wui
+        route "root '#{ wui.model_name(:variables) }#index'"
+      end
     end
 
     def migrate

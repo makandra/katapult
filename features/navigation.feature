@@ -45,3 +45,28 @@ Feature: Navigation
       """
       = render_navigation Navigation.main
       """
+
+
+  Scenario: Set homepage (aka root route)
+    When I overwrite "lib/wheelie/metamodel.rb" with:
+      """
+      model 'Customer' do |customer|
+        customer.attr :name
+        customer.label_attr = :name
+      end
+
+      wui 'Customer', model: 'Customer' do |wui|
+        wui.action :index
+        wui.action :show
+        wui.action :create
+        wui.action :update
+        wui.action :destroy
+      end
+
+      homepage 'Customer'
+      """
+    And I successfully render the metamodel
+    Then the file "config/routes.rb" should contain:
+      """
+      root 'customers#index'
+      """
