@@ -52,7 +52,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def <%= action.name %>
 <% if action.member? -%>
     <%= method_name(:load_object) %>
-  <%- if action.post? -%>
+  <%- if action.post? or action.put? -%>
     redirect_to <%= model_name(:ivar) %>
   <%- end -%>
 <% elsif action.collection? -%>
