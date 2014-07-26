@@ -9,23 +9,25 @@
       = form.select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables) %>
   <%- else -%>
     <%- case attribute.type -%>
-    <%- when 'date', 'datetime' -%>
-      = form.date_picker <%= attribute.name(:symbol) %>
-    <%- when 'text' -%>
-      = form.text_area <%= attribute.name(:symbol) %>, rows: 5
-    <%- when 'integer' -%>
+    <%- when :string -%>
+      = form.text_field <%= attribute.name(:symbol) %>
+    <%- when :email -%>
+      = form.email_field <%= attribute.name(:symbol) %>
+    <%- when :url -%>
+      = form.url_field <%= attribute.name(:symbol) %>
+    <%- when :integer -%>
       = form.number_field <%= attribute.name(:symbol) %>
-    <%- when 'markdown' -%>
-      = form.text_area <%= attribute.name(:symbol) %>, rows: 15
-    <%- when 'xxx_email' -%>
-      = form.text <%= attribute.name(:symbol) %>
-    <%- when 'money' -%>
+    <%- when :money -%>
       = form.number_field <%= attribute.name(:symbol) %>
       €
-    <%- when 'flag' -%>
+    <%- when :text -%>
+      = form.text_area <%= attribute.name(:symbol) %>, rows: 5
+    <%- when :markdown -%>
+      = form.text_area <%= attribute.name(:symbol) %>, rows: 15
+    <%- when :flag -%>
       = form.check_box <%= attribute.name(:symbol) %>
-    <%- else -%>
-      = form.text_field <%= attribute.name(:symbol) %>
+    <%- when :datetime -%>
+      = form.datetime_field <%= attribute.name(:symbol) %>
     <%- end -%>
   <%- end -%>
 <% end -%>

@@ -8,17 +8,19 @@ module Wheelie
 
     attr_accessor :type, :default, :assignable_values, :allow_blank
 
+    UnknownTypeError = Class.new(StandardError)
+    TYPES = %i(string email url integer money text markdown flag datetime)
+
     def initialize(*args)
       super
-      @type ||= :email if name.to_s =~ /email/
-      @type ||= :string
+
+      self.type ||= :email if name.to_s =~ /email/
+      self.type ||= :string
+      TYPES.include?(type) or raise UnknownTypeError,
+        "Attribute type :#{type} is not supported. Use one of #{TYPES.inspect}."
     end
 
-    delegate :flag?, to: :type
-
-    def type
-      @type.to_s.inquiry
-    end
+    delegate :flag?, to: :type_inquiry
 
     def has_defaults?
       default and not [flag?, assignable_values].any?
@@ -26,29 +28,42 @@ module Wheelie
 
     def for_migration
       db_type = case type
-      when 'email', 'url'
+      when :email, :url
         'string'
-      when 'flag'
+      when :flag
         'boolean'
-      when 'money'
-        'decimal{10,2}' # precision and scale options
+      when :money
+        'decimal{10,2}' # {precision,scale} = total digits, decimal places
       else
         type
       end
 
-      name + ':' + db_type
+      "#{name}:#{db_type}"
     end
 
     def test_value
-      case type
-      when 'string'     then "#{name}-string"
-      when 'email'      then "#{name}@wheelie.com"
-      when 'url'        then "#{name}.wheelie.com"
+      if assignable_values
+        assignable_values.first
 
-      # Deterministically generate a number from the attribute's name
-      when 'integer'    then Zlib.crc32(name).to_s[1..3]
-      when 'money'      then Zlib.crc32(name).to_s[1..5].to_f / 100.0
+      else
+        case type
+        when :string     then "#{name}-string"
+        when :email      then "#{name}@wheelie.com"
+        when :url        then "#{name}.wheelie.com"
+        when :text       then "#{name}-text"
+
+        # Deterministically generate a value from the attribute's name
+        when :integer    then Zlib.crc32(name).to_s[1..3]
+        when :money      then Zlib.crc32(name).to_s[1..5].to_f / 100.0
+        when :datetime   then Time.at(Zlib.crc32(name))
+        end
       end
+    end
+
+    private
+
+    def type_inquiry
+      @type.to_s.inquiry
     end
 
   end

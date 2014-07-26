@@ -29,14 +29,14 @@ describe Wheelie::Action do
     end
 
     it 'returns false when it is an index action' do
-      subject = described_class.new 'index'
+      subject = described_class.new :index
       expect(subject.member?).to be false
     end
   end
 
   describe '#collection?' do
     it 'returns true when it is an index action' do
-      subject = described_class.new 'index'
+      subject = described_class.new :index
       expect(subject.collection?).to be true
     end
   end

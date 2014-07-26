@@ -3,7 +3,7 @@
 # Add a model:
 # model 'customer' do |customer|
 #   customer.attr :name
-#   customer.attr :birth, type: date
+#   customer.attr :birth, type: :date
 #   customer.attr :email
 # end
 #

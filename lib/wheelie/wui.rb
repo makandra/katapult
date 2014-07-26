@@ -8,7 +8,7 @@ module Wheelie
     attr_accessor :model, :actions
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
-    RAILS_VIEW_ACTIONS = %w[ index show new edit ]
+    UnknownActionError = Class.new(StandardError)
 
     def initialize(*args)
       self.actions = []
@@ -16,36 +16,27 @@ module Wheelie
       super
     end
 
+    # Metamodel API
     def action(name, options = {})
-      name = name.to_s
+      name = name.to_sym
 
-      actions << Action.new('new', options) if name == 'create'
-      actions << Action.new('edit', options) if name == 'update'
+      actions << Action.new(:new, options) if name == :create
+      actions << Action.new(:edit, options) if name == :update
       actions << Action.new(name, options)
+    end
+
+    # Metamodel API
+    def rails_actions(*actions)
+      options = actions.extract_options!
+      actions.each { |a| action(a, options) }
     end
 
     def model
       metamodel.get_model(@model)
     end
 
-    def rails_view_actions
-      actions.select { |action| RAILS_VIEW_ACTIONS.include? action.name }
-    end
-
-    def rails_actions
-      actions.select { |action| RAILS_ACTIONS.include? action.name }
-    end
-
     def custom_actions
-      actions - rails_actions
-    end
-
-    def member_actions
-      custom_actions.select(&:member?)
-    end
-
-    def collection_actions
-      custom_actions.select(&:collection?)
+      actions.reject { |a| RAILS_ACTIONS.include? a.name }
     end
 
     def find_action(action_name)
@@ -53,7 +44,10 @@ module Wheelie
     end
 
     def path(action, object_name = nil)
-      action = find_action(action) unless action.is_a? Action
+      unless action.is_a?(Action)
+        not_found_message = "Unknown action '#{action}'"
+        action = find_action(action) or raise UnknownActionError, not_found_message
+      end
 
       member_path = "#{model.name(:variable)}_path"
       collection_path = "#{model.name(:variables)}_path"
@@ -67,7 +61,7 @@ module Wheelie
     end
 
     def model_name(kind = nil)
-      model.andand.name(kind)
+      model.name(kind)
     end
 
     def render

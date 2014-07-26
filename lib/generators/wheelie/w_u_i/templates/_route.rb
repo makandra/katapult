@@ -1,11 +1,12 @@
-resources :<%= plural_name %>, only: <%= wui.rails_actions.map(&:name).map(&:to_sym) %> do
+% rails_actions = wui.actions.select{ |a| WUI::RAILS_ACTIONS.include? a.name }
+resources :<%= plural_name %>, only: <%= rails_actions.map(&:name).map(&:to_sym) %> do
     member do
-% wui.member_actions.each do |action|
+% wui.custom_actions.select(&:member?).each do |action|
       <%= action.method %> '<%= action.name %>'
 % end
     end
     collection do
-% wui.collection_actions.each do |action|
+% wui.custom_actions.select(&:collection?).each do |action|
       <%= action.method %> '<%= action.name %>'
 % end
     end

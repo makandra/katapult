@@ -16,13 +16,13 @@ module Wheelie
       end
 
       def create_views_directory
-        wui.actions.any? or return 'Have no actions, get no views'
+        actions.any? or return 'Have no actions, get no views'
 
         FileUtils.mkdir_p views_path
       end
 
       def create_rails_standard_action_views
-        wui.rails_view_actions.each do |action|
+        actions.select{ |a| a.get? && WUI::RAILS_ACTIONS.include?(a.name) }.each do |action|
           file_name = "#{action.name}.html.haml"
 
           create_view file_name, File.join(views_path, file_name)
@@ -30,7 +30,7 @@ module Wheelie
       end
 
       def create_form_partial_if_needed
-        _form_actions = (wui.actions.map(&:name) & %w[new edit])
+        _form_actions = (actions.map(&:name) & %w[new edit])
 
         if _form_actions.any?
           file_name = '_form.html.haml'
@@ -80,6 +80,10 @@ module Wheelie
 
       def wui
         @element
+      end
+
+      def actions
+        wui.actions
       end
 
     end

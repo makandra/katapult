@@ -7,7 +7,7 @@ module Wheelie
 
     UnknownAttributeError = Class.new(StandardError)
 
-    attr_accessor :attrs, :label_attr
+    attr_accessor :attrs
 
     def initialize(*args)
       self.attrs = []
@@ -27,12 +27,15 @@ module Wheelie
       end
     end
 
+    def label_attr
+      @label_attr ||= attrs.first
+    end
+
     def label_attr=(label_attr)
-      if (attr = attrs.detect { |a| a.name == label_attr.to_s })
-        @label_attr = attr
-      else
-        raise UnknownAttributeError, "Cannot set unknown attribute '#{label_attr}' as label attribute"
-      end
+      attr = attrs.detect { |a| a.name == label_attr.to_s }
+
+      @label_attr = attr or raise UnknownAttributeError,
+        "Cannot set unknown attribute '#{label_attr}' as label attribute"
     end
 
     def render

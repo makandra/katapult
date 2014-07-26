@@ -6,11 +6,15 @@ Feature: <%= model.name(:human_plural).titleize %>
     # create
     When I follow "Add <%= model.name(:variable) %>"
 <% model.attrs.each do |attr| -%>
-  <%- case attr.type -%>
-  <%- when :string, :email, :url, :integer, :money -%>
+  <%- if attr.assignable_values -%>
+      And I select "<%= attr.test_value %>" from "<%= attr.name.titleize %>"
+  <%- else -%>
+    <%- case attr.type -%>
+    <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
       And I fill in "<%= attr.name.titleize %>" with "<%= attr.test_value %>"
-  <%- when :flag -%>
+    <%- when :flag -%>
       And I check "<%= attr.name.titleize %>"
+    <%- end -%>
   <%- end -%>
 <% end -%>
       And I press "Save"
@@ -19,7 +23,7 @@ Feature: <%= model.name(:human_plural).titleize %>
     Then I should be on the page for the <%= model.name(:variable) %> above
 <% model.attrs.each do |attr| -%>
   <%- case attr.type -%>
-  <%- when :string, :email, :url, :integer, :money -%>
+    <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
       And I should see "<%= attr.test_value %>"
   <%- when :flag -%>
       And I should see "<%= attr.name.titleize %> Yes"
@@ -30,18 +34,22 @@ Feature: <%= model.name(:human_plural).titleize %>
     When I follow "Edit"
     Then I should be on the form for the <%= model.name(:variable) %> above
 <% model.attrs.each do |attr| -%>
-  <%- case attr.type -%>
-  <%- when :string, :email, :url, :integer, :money -%>
+  <%- if attr.assignable_values -%>
+      And "<%= attr.test_value %>" should be selected for "<%= attr.name.titleize %>"
+  <%- else -%>
+    <%- case attr.type -%>
+    <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
       And the "<%= attr.name.titleize %>" field should contain "<%= attr.test_value %>"
-  <%- when :flag -%>
+    <%- when :flag -%>
       And the "<%= attr.name.titleize %>" checkbox should be checked
+    <%- end -%>
   <%- end -%>
 <% end -%>
 
     # destroy
     When I go to the list of <%= model.name(:variables) %>
-    Then I should see "<%= wui.model.label_attr.test_value %>"
+    Then I should see "<%= model.label_attr.test_value %>"
 
     When I follow "Destroy"
     Then I should be on the list of <%= model.name(:variables) %>
-      But I should not see "<%= wui.model.label_attr.test_value %>"
+      But I should not see "<%= model.label_attr.test_value %>"

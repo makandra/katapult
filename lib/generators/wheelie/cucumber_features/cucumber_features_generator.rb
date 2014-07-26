@@ -9,7 +9,7 @@ module Wheelie
 
 
       def create_crud_feature
-        template 'feature.feature', "features/#{model_name(:variables)}.feature"
+        template 'feature.feature', "features/#{model.name(:variables)}.feature"
       end
 
       private

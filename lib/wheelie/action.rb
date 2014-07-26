@@ -5,23 +5,37 @@ require 'active_support/core_ext/string/inquiry'
 module Wheelie
   class Action < Element
 
-    attr_accessor :name, :options, :method, :scope
+    attr_accessor :method, :scope
 
     def initialize(*args)
       super
 
-      @scope ||= (name == 'index') ? 'collection' : 'member'
+      self.scope ||= (name == 'index') ? :collection : :member
+      set_method
     end
 
-    delegate :post?, :get?, :put?, to: :method
-    delegate :member?, :collection?, to: :scope
+    delegate :post?, :get?, :put?, to: :method_inquiry
+    delegate :member?, :collection?, to: :scope_inquiry
 
-    def method
+    private
+
+    def method_inquiry
       @method.to_s.inquiry
     end
 
-    def scope
+    def scope_inquiry
       @scope.to_s.inquiry
+    end
+
+    def set_method
+      self.method ||= case name
+      when 'create', 'update'
+        :post
+      when 'destroy'
+        :delete
+      else # index, show, new, edit + custom actions
+        :get
+      end
     end
 
   end

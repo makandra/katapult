@@ -255,7 +255,7 @@ Feature: Web User Interface
           - @customers.each do |customer|
             %tr
               %td
-                = link_to customer.to_s, customer_path(customer), class: 'hyperlink'
+                = link_to customer.to_s, customer, class: 'hyperlink'
               %td
                 .items__actions
                   = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
@@ -340,7 +340,7 @@ Feature: Web User Interface
           %dt
             = form.label :email
           %dd
-            = form.text_field :email
+            = form.email_field :email
           %dt
             = form.label :revenue
           %dd
@@ -349,7 +349,7 @@ Feature: Web User Interface
           %dt
             = form.label :homepage
           %dd
-            = form.text_field :homepage
+            = form.url_field :homepage
           %dt
             = form.label :locked
           %dd

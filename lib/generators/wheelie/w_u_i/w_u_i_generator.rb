@@ -1,4 +1,3 @@
-require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
 require 'generators/wheelie/haml/haml_generator'
 
@@ -13,7 +12,7 @@ module Wheelie
       source_root File.expand_path('../templates', __FILE__)
 
       def create_controller_file
-        controller_path = File.join('app', 'controllers', "#{controller_file_name}_controller.rb")
+        controller_path = File.join('app', 'controllers', "#{wui.name(:variables)}_controller.rb")
 
         if wui.model
           template 'controller.rb', controller_path
