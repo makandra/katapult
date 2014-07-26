@@ -27,25 +27,6 @@ module Wheelie
       end
     end
 
-    def name(kind = nil)
-      human_name = @name.downcase
-      machine_name = @name.underscore
-
-      case kind.to_s
-      when 'symbol'       then ":#{machine_name}"
-      when 'symbols'      then ":#{machine_name.pluralize}"
-      when 'variable'     then machine_name
-      when 'variables'    then machine_name.pluralize
-      when 'ivar'         then "@#{machine_name}"
-      when 'ivars'        then "@#{machine_name.pluralize}"
-      when 'human_plural' then human_name.pluralize
-      when 'human'        then human_name
-      when 'class'        then machine_name.classify
-      else
-        @name
-      end
-    end
-
     def label_attr=(label_attr)
       if (attr = attrs.detect { |a| a.name == label_attr.to_s })
         @label_attr = attr
