@@ -16,7 +16,7 @@ module Wheelie
         migration_attributes = model.attrs.map(&:for_migration)
 
         args = [migration_name] + migration_attributes
-        options = { :timestamps => true }
+        options = { timestamps: true, force: true }
         invoke 'active_record:migration', args, options
       end
 
