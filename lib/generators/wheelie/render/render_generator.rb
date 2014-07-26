@@ -16,8 +16,9 @@ module Wheelie
     end
 
     def migrate
-      run 'bin/rake db:drop db:create db:migrate RAILS_ENV=development'
-      run 'bin/rake db:drop db:create db:migrate RAILS_ENV=test'
+      run 'bin/rake db:drop:all &> /dev/null'
+      run 'bin/rake db:create db:migrate RAILS_ENV=development'
+      run 'bin/rake db:create db:migrate RAILS_ENV=test'
     end
 
   end
