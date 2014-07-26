@@ -12,19 +12,9 @@ module Wheelie
         template 'feature.feature', "features/#{model_name(:variables)}.feature"
       end
 
-      no_tasks do
-        def model_name(kind = nil)
-          wui.model_name(kind)
-        end
-
-        def model_attrs
-          wui.model.attrs
-        end
-      end
-
       private
 
-      def wui
+      def model
         @element
       end
 

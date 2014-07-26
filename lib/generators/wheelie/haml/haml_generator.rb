@@ -48,7 +48,7 @@ module Wheelie
 
       def generate_integration_tests
         if wui.model.present?
-          Generators::CucumberFeaturesGenerator.new(wui).invoke_all
+          Generators::CucumberFeaturesGenerator.new(wui.model).invoke_all
         end
       end
 
