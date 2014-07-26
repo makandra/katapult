@@ -1,7 +1,5 @@
 %h1
   <%= @action.name.humanize.titleize %>
-<% if @action.member? -%>
 
 .tools
   = link_to 'All <%= model_name(:human_plural) %>', <%= wui.path(:index) %>, class: 'tools__button'
-<% end -%>
