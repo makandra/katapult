@@ -18,10 +18,9 @@ module Wheelie
 
     # Metamodel API
     def action(name, options = {})
-      name = name.to_sym
+      actions << Action.new(:new, options) if name.to_s == 'create'
+      actions << Action.new(:edit, options) if name.to_s == 'update'
 
-      actions << Action.new(:new, options) if name == :create
-      actions << Action.new(:edit, options) if name == :update
       actions << Action.new(name, options)
     end
 
