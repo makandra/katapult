@@ -31,7 +31,7 @@ module Wheelie
     end
 
     def model
-      metamodel.get_model(@model)
+      metamodel.get_model(@model) || metamodel.get_model(self.name)
     end
 
     def custom_actions
