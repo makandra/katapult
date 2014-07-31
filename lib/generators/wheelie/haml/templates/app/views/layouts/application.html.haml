@@ -14,7 +14,7 @@
       .layout__head
         %h2 <%= app_name.titlecase %>
         <%- if navigation -%>
-        = render_navigation Navigation.<%= navigation.machine_name %>
+        = render_navigation Navigation.<%= navigation.name(:variable) %>
         <%- end -%>
 
       .layout__main

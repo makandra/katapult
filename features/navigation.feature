@@ -45,6 +45,16 @@ Feature: Navigation
       """
       = render_navigation Navigation.main
       """
+    And the file "app/controllers/customers_controller.rb" should contain:
+      """
+      before_filter :set_section
+      """
+    And the file "app/controllers/customers_controller.rb" should contain:
+      """
+        def set_section
+          in_sections :customers
+        end
+      """
 
 
   Scenario: Set homepage (aka root route)

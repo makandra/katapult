@@ -8,8 +8,8 @@ module Wheelie
       metamodel.wuis
     end
 
-    def machine_name
-      name.underscore
+    def section_name(wui)
+      wui.model_name(:symbols)
     end
 
     def render

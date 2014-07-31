@@ -1,4 +1,8 @@
-class <%= controller_class_name %>Controller < ApplicationController
+class <%= model_name(:classes) %>Controller < ApplicationController
+<%- if navigation -%>
+
+  before_filter :set_section
+<%- end -%>
 <% if wui.find_action :index -%>
 
   def index
@@ -91,4 +95,9 @@ class <%= controller_class_name %>Controller < ApplicationController
     <%= model_name(:class_name) %>.scoped
   end
 
+<%- if navigation -%>
+  def set_section
+    in_sections <%= navigation.section_name(wui) %>
+  end
+<%- end -%>
 end
