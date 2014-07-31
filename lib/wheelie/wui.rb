@@ -32,7 +32,8 @@ module Wheelie
     end
 
     def model
-      metamodel.get_model(@model) || metamodel.get_model(self.name)
+      model_name = @model || self.name
+      metamodel.get_model(model_name) or raise UnknownModelError, "Could not find a model named #{model_name}"
     end
 
     def custom_actions

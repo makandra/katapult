@@ -1,14 +1,13 @@
-require 'rails/generators/resource_helpers'
 require 'wheelie/generator'
 require 'generators/wheelie/cucumber_features/cucumber_features_generator'
 
 module Wheelie
   module Generators
     class HamlGenerator < Wheelie::Generator
-      include Rails::Generators::ResourceHelpers
 
       desc 'Generate HAML views'
       source_root File.expand_path('../templates', __FILE__)
+
 
       def install_application_layout
         remove_file 'app/views/layouts/application.html.erb'
@@ -16,8 +15,6 @@ module Wheelie
       end
 
       def create_views_directory
-        actions.any? or return 'Have no actions, get no views'
-
         FileUtils.mkdir_p views_path
       end
 
@@ -58,7 +55,7 @@ module Wheelie
         end
 
         def views_path
-          File.join('app', 'views', controller_file_name)
+          File.join('app', 'views', model_name(:variables))
         end
 
         def navigation

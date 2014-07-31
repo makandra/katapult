@@ -6,131 +6,7 @@ Feature: Web User Interface
     And I generate wheelie basics
 
 
-  Scenario: Generate a basic Web User Interface
-    When I overwrite "lib/wheelie/metamodel.rb" with:
-      """
-      wui 'Car'
-      """
-    And I successfully render the metamodel
-    Then the file "app/controllers/cars_controller.rb" should contain exactly:
-      """
-      class CarsController < ApplicationController
-
-      end
-
-      """
-    And the file "app/views/layouts/application.html.haml" should contain exactly:
-      """
-      !!!
-      %html
-        %head
-          %title
-            Wheelie Test App
-
-          = stylesheet_link_tag 'application', media: 'all'
-          = javascript_include_tag 'application'
-          = csrf_meta_tags
-
-        %body
-          .layout
-
-            .layout__head
-              %h2 Wheelie Test App
-
-            .layout__main
-              =# render 'layouts/flashes'
-              = yield
-
-            .layout__tail
-              powered by makandra
-
-      """
-    And the file "config/routes.rb" should contain:
-      """
-        resources :cars, only: [] do
-          member do
-          end
-          collection do
-          end
-        end
-      """
-
-
-  Scenario: Generate a Web User Interface with actions
-    When I overwrite "lib/wheelie/metamodel.rb" with:
-      """
-      wui 'Car' do |wui|
-        wui.action :index
-        wui.action :show
-        wui.action :create
-        wui.action :update
-        wui.action :destroy
-        wui.action :get_member, method: :get, scope: :member
-        wui.action :post_member, method: :post, scope: :member
-        wui.action :get_collection, method: :get, scope: :collection
-      end
-      """
-    And I successfully render the metamodel
-    Then the file "app/controllers/cars_controller.rb" should contain exactly:
-      """
-      class CarsController < ApplicationController
-
-        def index
-        end
-
-        def show
-        end
-
-        def new
-        end
-
-        def create
-        end
-
-        def edit
-        end
-
-        def update
-        end
-
-        def destroy
-        end
-
-        def get_member
-        end
-
-        def post_member
-        end
-
-        def get_collection
-        end
-
-      end
-
-      """
-    And the file "config/routes.rb" should contain:
-      """
-        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-          member do
-            get 'get_member'
-            post 'post_member'
-          end
-          collection do
-            get 'get_collection'
-          end
-        end
-      """
-    And a file named "app/views/cars/index.html.haml" should exist
-    And a file named "app/views/cars/show.html.haml" should exist
-    And a file named "app/views/cars/new.html.haml" should exist
-    And a file named "app/views/cars/edit.html.haml" should exist
-    And a file named "app/views/cars/_form.html.haml" should exist
-    And a file named "app/views/cars/get_member.html.haml" should exist
-    And a file named "app/views/cars/get_collection.html.haml" should exist
-    But a file named "app/views/cars/post_member.html.haml" should not exist
-
-
-  Scenario: Generate a Web User Interface connected to a model
+  Scenario: Generate a Web User Interface
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
       model 'Customer' do |customer|
@@ -240,6 +116,18 @@ Feature: Web User Interface
 
       end
 
+      """
+    And the file "config/routes.rb" should contain:
+      """
+        resources :customers, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+          member do
+            get 'get_member'
+            post 'post_member'
+          end
+          collection do
+            get 'get_collection'
+          end
+        end
       """
     And the file "app/views/customers/index.html.haml" should contain exactly:
       """
@@ -370,10 +258,14 @@ Feature: Web User Interface
         = link_to 'All customers', customers_path, class: 'tools__button'
 
       """
+    But a file named "app/views/customers/post_member.html.haml" should not exist
     And the file "app/views/customers/get_collection.html.haml" should contain exactly:
       """
       %h1
         Get Collection
+
+      .tools
+        = link_to 'All customers', customers_path, class: 'tools__button'
 
       """
     And the file "features/customers.feature" should contain exactly:

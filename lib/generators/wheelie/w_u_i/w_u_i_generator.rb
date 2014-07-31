@@ -4,21 +4,15 @@ require 'generators/wheelie/haml/haml_generator'
 module Wheelie
   module Generators
     class WUIGenerator < Wheelie::Generator
-      include Rails::Generators::ResourceHelpers
 
       desc 'Generate a Web User Interface'
 
       check_class_collision suffix: 'Controller'
       source_root File.expand_path('../templates', __FILE__)
 
-      def create_controller_file
-        controller_path = File.join('app', 'controllers', "#{wui.name(:variables)}_controller.rb")
 
-        if wui.model
-          template 'controller.rb', controller_path
-        else
-          template 'controller_without_model.rb', controller_path
-        end
+      def create_controller_file
+        template 'controller.rb', File.join('app', 'controllers', "#{ model_name(:variables) }_controller.rb")
       end
 
       def add_route
