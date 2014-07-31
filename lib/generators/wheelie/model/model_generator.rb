@@ -5,7 +5,7 @@ module Wheelie
   module Generators
     class ModelGenerator < Wheelie::Generator
 
-      desc 'Generate a Model'
+      desc 'Generate a Rails Model'
 
       check_class_collision
       source_root File.expand_path('../templates', __FILE__)
@@ -21,55 +21,32 @@ module Wheelie
       end
 
       def create_model_file
-        template 'model.rb', model_file_path
-      end
-
-
-      # model file modifications
-
-      def write_assignable_values
-        restricted_attrs = model.attrs.select(&:assignable_values)
-
-        if restricted_attrs.any?
-          restricted_attrs.each do |attr|
-            inject_into_class model_file_path, class_name, render_partial('_assignable_values.rb', binding)
-          end
-        end
+        template 'model.rb', File.join('app', 'models', "#{file_name}.rb")
       end
 
       def write_traits
-        flags = model.attrs.select(&:flag?)
-
-        if flags.any?
-          template 'does_flag.rb', File.join(%w[app models shared does_flag.rb])
-
-          flags.each do |attr|
-            flag = ":#{attr.name}, default: #{attr.default}"
-            flags_string = "  include DoesFlag[#{flag}]\n"
-
-            inject_into_class model_file_path, class_name, flags_string
-          end
-        end
-      end
-
-      def write_attribute_defaults
-        defaults = model.has_defaults
-
-        if defaults.any?
-          defaults_string = "  has_defaults(#{defaults})\n"
-          inject_into_class model_file_path, class_name, defaults_string
-        end
+        template 'app/models/shared/does_flag.rb' if flag_attrs.any?
       end
 
       def generate_unit_tests
         Generators::ModelSpecsGenerator.new(model).invoke_all
       end
 
-      private
+      no_commands do
+        def flag_attrs
+          model.attrs.select(&:flag?)
+        end
 
-      def model_file_path
-        File.join('app', 'models', "#{file_name}.rb")
+        def defaults
+          {}.tap do |defaults|
+            model.attrs.select(&:has_defaults?).each do |attr|
+              defaults[attr.name.to_sym] = attr.default
+            end
+          end
+        end
       end
+
+      private
 
       def model
         @element

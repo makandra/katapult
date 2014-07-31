@@ -73,8 +73,8 @@ Feature: Generate Models
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base
-        has_defaults({:homepage=>"http://www.makandra.de"})
         include DoesFlag[:locked, default: false]
+        has_defaults({:homepage=>"http://www.makandra.de"})
 
         def to_s
           age.to_s
@@ -145,12 +145,12 @@ Feature: Generate Models
     Then the output should contain "Wheelie::Attribute does not support option :invalid_option. (Wheelie::Element::UnknownOptionError)"
 
 
-  Scenario: Specify assignable_values
+  Scenario: Specify assignable values
     When I overwrite "lib/wheelie/metamodel.rb" with:
       """
       model 'Person' do |person|
+        person.attr :age, type: :integer, assignable_values: 9..99
         person.attr :hobby, assignable_values: %w[soccer baseball], default: 'soccer', allow_blank: true
-        person.attr :age, assignable_values: 9..99
       end
       """
     And I successfully render the metamodel
@@ -183,6 +183,11 @@ Feature: Generate Models
           end
         end
 
+        describe '#age' do
+          it { is_expected.to allow_value(99).for(:age) }
+          it { is_expected.to_not allow_value(100).for(:age) }
+        end
+
         describe '#hobby' do
           it { is_expected.to allow_value("baseball").for(:hobby) }
           it { is_expected.to_not allow_value("baseball-unassignable").for(:hobby) }
@@ -190,11 +195,6 @@ Feature: Generate Models
           it 'has a default' do
             expect( subject.hobby ).to eql("soccer")
           end
-        end
-
-        describe '#age' do
-          it { is_expected.to allow_value(99).for(:age) }
-          it { is_expected.to_not allow_value(100).for(:age) }
         end
 
       end

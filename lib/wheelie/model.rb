@@ -20,14 +20,6 @@ module Wheelie
       attrs << Attribute.new(attr_name, options)
     end
 
-    def has_defaults
-      {}.tap do |defaults|
-        attrs.select(&:has_defaults?).each do |attr|
-          defaults[attr.name.to_sym] = attr.default
-        end
-      end
-    end
-
     def label_attr
       if @label_attr
         attrs.detect { |a| a.name == @label_attr.to_s } or raise UnknownAttributeError,

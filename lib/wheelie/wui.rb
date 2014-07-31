@@ -9,6 +9,7 @@ module Wheelie
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     UnknownActionError = Class.new(StandardError)
+    UnknownModelError = Class.new(StandardError)
 
     def initialize(*args)
       self.actions = []

@@ -11,7 +11,7 @@ module Wheelie
 
 
       def create_model_spec
-        template 'model_spec.rb', spec_path
+        template 'model_spec.rb', File.join('spec', 'models', "#{file_name}_spec.rb")
       end
 
       no_tasks do
@@ -25,26 +25,20 @@ module Wheelie
           attr.assignable_values.last
         end
 
-        # Try to guess a value that is not assignable
+        # Guess a value that is not assignable
         def unassignable_value_for(attr)
-          assignable = assignable_value_for(attr)
-
-          case assignable
-          when Integer
-            assignable += 1
-          when String
-            assignable += '-unassignable'
+          case attr.type
+          when :integer
+            attr.assignable_values.max + 1
+          when :string
+            assignable_value_for(attr) + '-unassignable'
           else
-            raise "Assignable values of type #{assignable.class.name} not supported"
+            raise "Assignable values for :#{attr.type} attributes not supported"
           end
         end
       end
 
       private
-
-      def spec_path
-        File.join('spec', 'models', "#{file_name}_spec.rb")
-      end
 
       def model
         @element
