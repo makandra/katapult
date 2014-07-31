@@ -7,6 +7,7 @@ module Wheelie
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)
 
+
       def write_database_ymls
         template 'config/database.yml', force: true
         template 'config/database.sample.yml'
