@@ -39,6 +39,7 @@ module Wheelie
       when 'human_plural' then human_name.pluralize
       when 'human'        then human_name
       when 'class'        then machine_name.classify
+      when 'classes'      then machine_name.classify.pluralize
       else
         @name
       end

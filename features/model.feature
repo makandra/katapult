@@ -77,7 +77,7 @@ Feature: Generate Models
         include DoesFlag[:locked, default: false]
 
         def to_s
-          "Person##{id}"
+          age.to_s
         end
       end
 
@@ -108,9 +108,9 @@ Feature: Generate Models
       describe Person do
 
         describe '#to_s' do
-          it 'returns its class name with its id' do
-            subject.id = 17
-            expect(subject.to_s).to eql("Person#17")
+          it 'returns the #age attribute' do
+            subject.age = 778
+            expect(subject.to_s).to eql("778")
           end
         end
 
@@ -125,44 +125,6 @@ Feature: Generate Models
 
           it 'has a default' do
             expect( subject.locked ).to eql(false)
-          end
-        end
-
-      end
-
-      """
-    And the specs should pass
-
-
-  Scenario: Generate ActiveRecord Model with label attribute
-    When I overwrite "lib/wheelie/metamodel.rb" with:
-      """
-      model 'Person' do |person|
-        person.attr :name
-        person.label_attr = :name
-      end
-      """
-    And I successfully render the metamodel
-    Then the file "app/models/person.rb" should contain exactly:
-      """
-      class Person < ActiveRecord::Base
-
-        def to_s
-          name.to_s
-        end
-      end
-
-      """
-    And the file "spec/models/person_spec.rb" should contain exactly:
-      """
-      require 'rails_helper'
-
-      describe Person do
-
-        describe '#to_s' do
-          it 'returns the #name attribute' do
-            subject.name = "name-string"
-            expect(subject.to_s).to eql("name-string")
           end
         end
 
@@ -203,7 +165,7 @@ Feature: Generate Models
         end
 
         def to_s
-          "Person##{id}"
+          age.to_s
         end
       end
 
@@ -215,9 +177,9 @@ Feature: Generate Models
       describe Person do
 
         describe '#to_s' do
-          it 'returns its class name with its id' do
-            subject.id = 17
-            expect(subject.to_s).to eql("Person#17")
+          it 'returns the #age attribute' do
+            subject.age = 9
+            expect(subject.to_s).to eql("9")
           end
         end
 

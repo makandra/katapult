@@ -53,8 +53,8 @@ module Wheelie
         when :text       then "#{name}-text"
 
         # Deterministically generate a value from the attribute's name
-        when :integer    then Zlib.crc32(name).to_s[1..3]
-        when :money      then Zlib.crc32(name).to_s[1..5].to_f / 100.0
+        when :integer    then Zlib.crc32(name).modulo(1000)
+        when :money      then Zlib.crc32(name).modulo(1000) / 100.0
         when :datetime   then Time.at(Zlib.crc32(name))
         end
       end

@@ -16,8 +16,8 @@ module Wheelie
       metamodel
     end
 
-    def model(name, &block)
-      metamodel.add_model Model.new(name, &block)
+    def model(name, options = {}, &block)
+      metamodel.add_model Model.new(name, options, &block)
     end
 
     def wui(name, options = {}, &block)
