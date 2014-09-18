@@ -4,7 +4,7 @@ Feature: Wheelie binary `wheelie`
     When I successfully run `wheelie new binary_test`
     And I cd to "binary_test"
 
-    Then a file named "lib/wheelie/metamodel.rb" should exist
+    Then a file named "lib/wheelie/application_model.rb" should exist
     And a file named "config/database.yml" should exist
     And the file "Gemfile" should contain "gem 'wheelie'"
 

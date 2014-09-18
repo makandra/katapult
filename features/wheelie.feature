@@ -6,7 +6,7 @@ Feature: Wheelie in general
 
   Scenario: Install Wheelie
     When I install wheelie
-    Then the file "lib/wheelie/metamodel.rb" should contain exactly:
+    Then the file "lib/wheelie/application_model.rb" should contain exactly:
       """
       # Here you define the fundamentals of your application.
       #

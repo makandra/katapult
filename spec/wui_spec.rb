@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'wheelie/wui'
 require 'wheelie/model'
-require 'wheelie/metamodel'
+require 'wheelie/application_model'
 
 describe Wheelie::WUI do
 
   subject { described_class.new 'wui' }
 
-  let(:metamodel) { Wheelie::Metamodel.new }
+  let(:application_model) { Wheelie::ApplicationModel.new }
 
   describe '#path' do
     it 'raises an error if the given action does not exist' do
@@ -22,8 +22,8 @@ describe Wheelie::WUI do
       subject = described_class.new('Customer', model: 'User')
       model = Wheelie::Model.new('User')
 
-      metamodel.add_wui(subject)
-      metamodel.add_model(model)
+      application_model.add_wui(subject)
+      application_model.add_model(model)
 
       expect(subject.model).to eql(model)
     end
@@ -32,15 +32,15 @@ describe Wheelie::WUI do
       subject = described_class.new('Customer')
       model = Wheelie::Model.new('Customer')
 
-      metamodel.add_wui(subject)
-      metamodel.add_model(model)
+      application_model.add_wui(subject)
+      application_model.add_model(model)
 
       expect(subject.model).to eql(model)
     end
 
     it 'raises an error if it cannot find the model' do
       subject = described_class.new('MissingModel')
-      metamodel.add_wui(subject)
+      application_model.add_wui(subject)
 
       expect{ subject.model }.to raise_error(Wheelie::WUI::UnknownModelError)
     end
@@ -51,8 +51,8 @@ describe Wheelie::WUI do
       subject = described_class.new('Customer', model: 'User')
       model = Wheelie::Model.new('User')
 
-      metamodel.add_wui(subject)
-      metamodel.add_model(model)
+      application_model.add_wui(subject)
+      application_model.add_model(model)
 
       expect(subject.model).to eql(model)
     end
@@ -61,8 +61,8 @@ describe Wheelie::WUI do
       subject = described_class.new('Customer')
       model = Wheelie::Model.new('Customer')
 
-      metamodel.add_wui(subject)
-      metamodel.add_model(model)
+      application_model.add_wui(subject)
+      application_model.add_model(model)
 
       expect(subject.model).to eql(model)
     end

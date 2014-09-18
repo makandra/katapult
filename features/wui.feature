@@ -7,7 +7,7 @@ Feature: Web User Interface
 
 
   Scenario: Generate a Web User Interface
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Customer' do |customer|
         customer.attr :name
@@ -32,7 +32,7 @@ Feature: Web User Interface
         wui.action :get_collection, method: :get, scope: :collection
       end
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "app/controllers/customers_controller.rb" should contain exactly:
       """
       class CustomersController < ApplicationController

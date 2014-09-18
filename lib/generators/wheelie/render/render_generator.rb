@@ -2,15 +2,16 @@ require 'wheelie/parser'
 
 module Wheelie
   class RenderGenerator < Rails::Generators::Base
-    desc 'Render the Wheelie metamodel'
+    desc 'Render the Wheelie application model'
     
-    argument :path, required: true, type: :string, description: 'The path to the metamodel file'
+    argument :path, required: true, type: :string,
+      description: 'The path to the application model file'
 
-    def render_metamodel
-      metamodel = Wheelie::Parser.new.parse(path)
-      metamodel.render
+    def render_application_model
+      app_model = Wheelie::Parser.new.parse(path)
+      app_model.render
 
-      if wui = metamodel.home_wui
+      if wui = app_model.home_wui
         route "root '#{ wui.model_name(:variables) }#index'"
       end
     end

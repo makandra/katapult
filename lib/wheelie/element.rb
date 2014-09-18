@@ -10,7 +10,7 @@ module Wheelie
     UnknownOptionError = Class.new(StandardError)
 
     attr_accessor :name, :options
-    attr_reader :metamodel
+    attr_reader :application_model
 
     def initialize(name, options = {})
       self.name = name.to_s
@@ -21,8 +21,8 @@ module Wheelie
       yield(self) if block_given?
     end
 
-    def set_metamodel(metamodel)
-      @metamodel = metamodel
+    def set_application_model(app_model)
+      @application_model = app_model
     end
 
     def name(kind = nil)

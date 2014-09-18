@@ -5,7 +5,7 @@ module Wheelie
   class Navigation < Element
 
     def wuis
-      metamodel.wuis
+      application_model.wuis
     end
 
     def section_name(wui)

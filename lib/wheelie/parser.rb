@@ -1,4 +1,4 @@
-require_relative 'metamodel'
+require_relative 'application_model'
 require 'wheelie/model'
 require 'wheelie/wui'
 require 'wheelie/navigation'
@@ -7,35 +7,35 @@ module Wheelie
   class Parser
 
     def initialize
-      self.metamodel = Wheelie::Metamodel.new
+      self.application_model = Wheelie::ApplicationModel.new
     end
 
-    def parse(path_to_metamodel_file)
-      instance_eval File.read(path_to_metamodel_file), path_to_metamodel_file
+    def parse(path_to_app_model_file)
+      instance_eval File.read(path_to_app_model_file), path_to_app_model_file
 
-      metamodel
+      application_model
     end
 
     def model(name, options = {}, &block)
-      metamodel.add_model Model.new(name, options, &block)
+      application_model.add_model Model.new(name, options, &block)
     end
 
     def wui(name, options = {}, &block)
-      metamodel.add_wui WUI.new(name, options, &block)
+      application_model.add_wui WUI.new(name, options, &block)
     end
 
     def navigation(name)
-      metamodel.set_navigation Navigation.new(name)
+      application_model.set_navigation Navigation.new(name)
     end
 
     def homepage(wui_name)
-      wui = metamodel.get_wui(wui_name) or raise 'WUI not found'
-      metamodel.set_home_wui(wui)
+      wui = application_model.get_wui(wui_name) or raise 'WUI not found'
+      application_model.set_home_wui(wui)
     end
 
     private
 
-    attr_accessor :metamodel
+    attr_accessor :application_model
 
   end
 end

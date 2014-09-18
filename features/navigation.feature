@@ -8,10 +8,10 @@ Feature: Navigation
 
   Scenario: Generate navigation
 
-    The navigation is rendered from all WUIs in the metamodel. It consists of
-    links to their index pages.
+    The navigation is rendered from all WUIs in the application model. It
+    consists of links to their index pages.
 
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Customer' do |customer|
         customer.attr :name
@@ -28,7 +28,7 @@ Feature: Navigation
 
       navigation 'main'
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "app/models/navigation.rb" should contain exactly:
       """
       class Navigation
@@ -58,7 +58,7 @@ Feature: Navigation
 
 
   Scenario: Set homepage (aka root route)
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Customer' do |customer|
         customer.attr :name
@@ -75,7 +75,7 @@ Feature: Navigation
 
       homepage 'Customer'
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "config/routes.rb" should contain:
       """
       root 'customers#index'

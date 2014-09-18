@@ -1,7 +1,7 @@
-# Internal representation of a metamodel file.
+# Internal representation of an application model file.
 
 module Wheelie
-  class Metamodel
+  class ApplicationModel
 
     attr_reader :models, :wuis, :navigation, :home_wui
 
@@ -11,7 +11,7 @@ module Wheelie
     end
 
     def add_model(model)
-      model.set_metamodel(self)
+      model.set_application_model(self)
       @models << model
     end
 
@@ -20,7 +20,7 @@ module Wheelie
     end
 
     def add_wui(wui)
-      wui.set_metamodel(self)
+      wui.set_application_model(self)
       @wuis << wui
     end
 
@@ -29,7 +29,7 @@ module Wheelie
     end
 
     def set_navigation(navigation)
-      navigation.set_metamodel(self)
+      navigation.set_application_model(self)
       @navigation = navigation
     end
 

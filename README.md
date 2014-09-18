@@ -17,25 +17,29 @@ Add `gem 'wheelie'` to the Gemfile, `bundle` and then run
 
     rails generate wheelie:install
 
-This will create `lib/wheelie/metamodel.rb` where you will draft your
+This will create `lib/wheelie/application_model.rb` where you will draft your
 application.
 
 
 ## Usage
 
-After installation, you'll find a file `lib/wheelie/metamodel.rb` where you will define the fundamentals of your application. Inside this file, you'll use Wheelie's simple DSL (domain specific language) to express yourself.
+After installation, you'll find a file `lib/wheelie/application_model.rb` where
+you will define the fundamentals of your application. Inside this file, you'll
+use Wheelie's simple DSL (domain specific language) to express yourself.
 
-Wheelie brings several basic elements: Model, Attribute, WUI (which stands for *Web User Interface*) and Action. Each Wheelie element has the same syntax, taking a name, options and a block:
+Wheelie brings several basic elements: Model, Attribute, WUI (which stands for
+*Web User Interface*) and Action. Each Wheelie element has the same syntax,
+taking a name, options and a block:
 
-    parent.element 'name', options: 'go here' do |element|
+    element 'name', options: 'go here' do |element|
       element.method
     end
 
 
 ### Model
-Defined on Metamodel. Takes a name and a block:
+Takes a name and a block:
 
-    meta.model 'Customer' do |customer|
+    model 'Customer' do |customer|
       # ...
     end
 
@@ -51,9 +55,9 @@ Defined on Model. Takes a name and options:
 
 
 ### WUI (Web User Interface)
-Defined on Metamodel. Takes a name, options and a block:
+Takes a name, options and a block:
 
-    meta.wui 'Customer', model: 'User' do |wui|
+    wui 'Customer', model: 'User' do |wui|
       # ...
     end
 
@@ -72,7 +76,7 @@ Defined on WUI. Takes a name and options:
 
 ## Extending Wheelie
 
-Wheelie is (planned to be) easily extendable with plugins.
+Wheelie is (planned to be) easily extendable with a plugin system.
 
 
 ## Contributing
@@ -83,7 +87,7 @@ Wheelie is (planned to be) easily extendable with plugins.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request -->
 
-Wheelie caches a pristine Rails application inside its `tmp/` directory. Keep this in mind, as it may lead to issues when switching Ruby versions or installing a new version of the Rails gem.
+Wheelie caches a pristine Rails application inside its `tmp/` directory to speed up testing. Keep this in mind, as it may lead to issues when switching Ruby versions or installing a new version of the Rails gem.
 
 Since Wheelie has full-stack integration tests, it requires a MySQL account. Create a dedicated account by running this command in a MySQL console (as-is):
 

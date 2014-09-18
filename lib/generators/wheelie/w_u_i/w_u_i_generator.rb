@@ -40,7 +40,7 @@ module Wheelie
         end
 
         def navigation
-          wui.metamodel.navigation
+          wui.application_model.navigation
         end
       end
 

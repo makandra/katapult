@@ -7,13 +7,13 @@ Feature: <%= model.name(:human_plural).titleize %>
     When I follow "Add <%= model.name(:variable) %>"
 <% model.attrs.each do |attr| -%>
   <%- if attr.assignable_values -%>
-      And I select "<%= attr.test_value %>" from "<%= attr.name.titleize %>"
+      And I select "<%= attr.test_value %>" from "<%= attr.name.humanize %>"
   <%- else -%>
     <%- case attr.type -%>
     <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
-      And I fill in "<%= attr.name.titleize %>" with "<%= attr.test_value %>"
+      And I fill in "<%= attr.name.humanize %>" with "<%= attr.test_value %>"
     <%- when :flag -%>
-      And I check "<%= attr.name.titleize %>"
+      And I check "<%= attr.name.humanize %>"
     <%- end -%>
   <%- end -%>
 <% end -%>
@@ -23,10 +23,12 @@ Feature: <%= model.name(:human_plural).titleize %>
     Then I should be on the page for the <%= model.name(:variable) %> above
 <% model.attrs.each do |attr| -%>
   <%- case attr.type -%>
-    <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
+    <%- when :string, :email, :url, :integer, :money, :text, :markdown -%>
       And I should see "<%= attr.test_value %>"
   <%- when :flag -%>
-      And I should see "<%= attr.name.titleize %> Yes"
+      And I should see "<%= attr.name.humanize %> Yes"
+  <%- when :datetime -%>
+      And I should see "<%= I18n.localize(attr.test_value) %>"
   <%- end -%>
 <% end -%>
 
@@ -35,13 +37,13 @@ Feature: <%= model.name(:human_plural).titleize %>
     Then I should be on the form for the <%= model.name(:variable) %> above
 <% model.attrs.each do |attr| -%>
   <%- if attr.assignable_values -%>
-      And "<%= attr.test_value %>" should be selected for "<%= attr.name.titleize %>"
+      And "<%= attr.test_value %>" should be selected for "<%= attr.name.humanize %>"
   <%- else -%>
     <%- case attr.type -%>
     <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
-      And the "<%= attr.name.titleize %>" field should contain "<%= attr.test_value %>"
+      And the "<%= attr.name.humanize %>" field should contain "<%= attr.test_value %>"
     <%- when :flag -%>
-      And the "<%= attr.name.titleize %>" checkbox should be checked
+      And the "<%= attr.name.humanize %>" checkbox should be checked
     <%- end -%>
   <%- end -%>
 <% end -%>

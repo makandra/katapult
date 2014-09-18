@@ -17,7 +17,7 @@ module Wheelie
       super
     end
 
-    # Metamodel API
+    # DSL
     def action(name, options = {})
       actions << Action.new(:new, options) if name.to_s == 'create'
       actions << Action.new(:edit, options) if name.to_s == 'update'
@@ -25,7 +25,7 @@ module Wheelie
       actions << Action.new(name, options)
     end
 
-    # Metamodel API
+    # DSL
     def rails_actions(*actions)
       options = actions.extract_options!
       actions.each { |a| action(a, options) }
@@ -33,7 +33,8 @@ module Wheelie
 
     def model
       model_name = @model || self.name
-      metamodel.get_model(model_name) or raise UnknownModelError, "Could not find a model named #{model_name}"
+      application_model.get_model(model_name) or raise UnknownModelError,
+        "Could not find a model named #{model_name}"
     end
 
     def custom_actions

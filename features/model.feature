@@ -7,11 +7,11 @@ Feature: Generate Models
 
 
   Scenario: Generate ActiveRecord Model
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Car'
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "app/models/car.rb" should contain exactly:
       """
       class Car < ActiveRecord::Base
@@ -53,7 +53,7 @@ Feature: Generate Models
 
 
   Scenario: Generate ActiveRecord Model with attributes
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Person' do |person|
 
@@ -69,7 +69,7 @@ Feature: Generate Models
         person.attr :locked, type: :flag, default: false
       end
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base
@@ -135,25 +135,25 @@ Feature: Generate Models
 
 
   Scenario: Get a helpful error message when an attribute has an unknown option
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Person' do |person|
         person.attr :x, invalid_option: 'here'
       end
       """
-    And I render the metamodel
+    And I render the application model
     Then the output should contain "Wheelie::Attribute does not support option :invalid_option. (Wheelie::Element::UnknownOptionError)"
 
 
   Scenario: Specify assignable values
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Person' do |person|
         person.attr :age, type: :integer, assignable_values: 9..99
         person.attr :hobby, assignable_values: %w[soccer baseball], default: 'soccer', allow_blank: true
       end
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base

@@ -8,7 +8,7 @@ When /^I generate wheelie basics$/ do
   run_simple('bin/rails generate wheelie:basics')
 end
 
-When /^I( successfully)? render the metamodel$/ do |require_success|
+When /^I( successfully)? render the application model$/ do |require_success|
   # the second parameter would be true when not specified
-  run_simple('bin/rails generate wheelie:render lib/wheelie/metamodel.rb', !!require_success)
+  run_simple('bin/rails generate wheelie:render lib/wheelie/application_model.rb', !!require_success)
 end

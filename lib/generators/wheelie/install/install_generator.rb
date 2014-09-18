@@ -5,7 +5,7 @@ module Wheelie
     source_root File.expand_path('../templates', __FILE__)
 
     def setup_lib
-      template 'lib/wheelie/metamodel.rb'
+      template 'lib/wheelie/application_model.rb'
     end
 
   end

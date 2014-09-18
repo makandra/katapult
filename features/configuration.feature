@@ -7,7 +7,7 @@ Feature: Configure Wheelie
 
 
   Scenario: Custom model template
-    When I overwrite "lib/wheelie/metamodel.rb" with:
+    When I overwrite "lib/wheelie/application_model.rb" with:
       """
       model 'Car'
       """
@@ -16,7 +16,7 @@ Feature: Configure Wheelie
       # custom model template for <%= class_name %>
 
       """
-    And I successfully render the metamodel
+    And I successfully render the application model
     Then the file "app/models/car.rb" should contain exactly:
       """
       # custom model template for Car
