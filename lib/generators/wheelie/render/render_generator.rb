@@ -7,9 +7,12 @@ module Wheelie
     argument :path, required: true, type: :string,
       description: 'The path to the application model file'
 
+
     def render_application_model
+      say_status :parse, path
       @app_model = Wheelie::Parser.new.parse(path)
 
+      say_status :render, "Application model > #{application_name}"
       @app_model.render
     end
 
@@ -25,6 +28,12 @@ module Wheelie
       run 'bin/rake db:drop:all &> /dev/null'
       run 'bin/rake db:create db:migrate RAILS_ENV=development'
       run 'bin/rake db:create db:migrate RAILS_ENV=test'
+    end
+
+    private
+
+    def application_name
+       File.basename(Dir.pwd)
     end
 
   end
