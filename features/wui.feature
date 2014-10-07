@@ -26,6 +26,7 @@ Feature: Web User Interface
         wui.action :get_member, method: :get, scope: :member
         wui.action :post_member, method: :post, scope: :member
         wui.action :get_collection, method: :get, scope: :collection
+        wui.action :put_collection, method: :put, scope: :collection
       end
       """
     And I successfully render the application model
@@ -80,6 +81,11 @@ Feature: Web User Interface
           load_customers
         end
 
+        def put_collection
+          load_customers
+          redirect_to customers_path
+        end
+
         private
 
         def load_customers
@@ -122,6 +128,7 @@ Feature: Web User Interface
           end
           collection do
             get 'get_collection'
+            put 'put_collection'
           end
         end
       """
@@ -133,6 +140,7 @@ Feature: Web User Interface
       .tools
         = link_to 'Add customer', new_customer_path, class: 'tools__button is_primary'
         = link_to 'Get Collection', get_collection_customers_path, class: 'tools__button'
+        = link_to 'Put Collection', put_collection_customers_path, class: 'tools__button'
 
       - if @customers.any?
         %table.items
@@ -264,6 +272,7 @@ Feature: Web User Interface
         = link_to 'All customers', customers_path, class: 'tools__button'
 
       """
+    But a file named "app/views/customers/put_collection.html.haml" should not exist
     And the file "features/customers.feature" should contain exactly:
       """
       Feature: Customers

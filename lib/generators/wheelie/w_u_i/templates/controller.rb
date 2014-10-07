@@ -56,11 +56,14 @@ class <%= model_name(:classes) %>Controller < ApplicationController
   def <%= action.name %>
 <% if action.member? -%>
     <%= method_name(:load_object) %>
-  <%- if action.post? or action.put? -%>
+  <%- unless action.get? -%>
     redirect_to <%= model_name(:ivar) %>
   <%- end -%>
 <% elsif action.collection? -%>
     <%= method_name(:load_collection) %>
+  <%- unless action.get? -%>
+    redirect_to <%= wui.path(:index) %>
+  <%- end -%>
 <% end -%>
   end
 <% end -%>
