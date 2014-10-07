@@ -1,7 +1,9 @@
 Feature: Wheelie binary `wheelie`
 
   Scenario: Start new Rails application
-    When I successfully run `wheelie new binary_test`
+    Given The default aruba timeout is 120 seconds
+
+    When I successfully run `wheelie target binary_test`
     And I cd to "binary_test"
 
     Then a file named "lib/wheelie/application_model.rb" should exist
@@ -13,10 +15,10 @@ Feature: Wheelie binary `wheelie`
 
 
   Scenario: Forget to pass application name
-    When I run `wheelie new # without app name`
+    When I run `wheelie target # without app name`
     Then the output should contain "No value provided for required arguments 'app_path'"
 
 
   Scenario: Run without arguments
     When I run `wheelie # without arguments`
-    Then the output should contain "Usage: wheelie new APP_NAME"
+    Then the output should contain "Usage: wheelie [target APP_NAME | render]"
