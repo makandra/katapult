@@ -36,6 +36,6 @@
   <%- when :flag -%>
     = <%= model_attribute %> ? 'Yes' : 'No'
   <%- when :datetime -%>
-    = l(<%= model_attribute %>)
+    = l(<%= model_attribute %>) if model_attribute
   <%- end -%>
 <%- end -%>
