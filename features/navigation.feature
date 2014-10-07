@@ -15,7 +15,6 @@ Feature: Navigation
       """
       model 'Customer' do |customer|
         customer.attr :name
-        customer.label_attr = :name
       end
 
       wui 'Customer', model: 'Customer' do |wui|

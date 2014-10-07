@@ -17,8 +17,6 @@ Feature: Web User Interface
         customer.attr :revenue, type: :money
         customer.attr :homepage, type: :url, default: 'http://www.makandra.de'
         customer.attr :locked, type: :flag, default: false
-
-        customer.label_attr = :name
       end
 
       wui 'Customer', model: 'Customer' do |wui|
