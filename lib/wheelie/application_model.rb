@@ -3,7 +3,7 @@
 module Wheelie
   class ApplicationModel
 
-    attr_reader :models, :wuis, :navigation, :home_wui
+    attr_reader :models, :wuis, :navigation
 
     def initialize
       @models = []
@@ -31,10 +31,6 @@ module Wheelie
     def set_navigation(navigation)
       navigation.set_application_model(self)
       @navigation = navigation
-    end
-
-    def set_home_wui(wui)
-      @home_wui = wui
     end
 
     # ---

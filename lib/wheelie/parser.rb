@@ -28,11 +28,6 @@ module Wheelie
       application_model.set_navigation Navigation.new(name)
     end
 
-    def homepage(wui_name)
-      wui = application_model.get_wui(wui_name) or raise 'WUI not found'
-      application_model.set_home_wui(wui)
-    end
-
     private
 
     attr_accessor :application_model

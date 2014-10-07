@@ -57,23 +57,22 @@ Feature: Navigation
       """
 
 
-  Scenario: Set homepage (aka root route)
+  Scenario: Homepage (aka root route) is set automatically
+
+    The first WUI with an index action is set as home page
+
     When I overwrite "lib/wheelie/application_model.rb" with:
       """
-      model 'Customer' do |customer|
-        customer.attr :name
-        customer.label_attr = :name
+      model 'Customer'
+      model 'Elephant'
+
+      wui 'Elephant' do |wui|
+        wui.action :trumpet, scope: :member, method: :post
       end
 
-      wui 'Customer', model: 'Customer' do |wui|
-        wui.action :index
-        wui.action :show
-        wui.action :create
-        wui.action :update
-        wui.action :destroy
+      wui 'Customer' do |wui|
+        wui.crud
       end
-
-      homepage 'Customer'
       """
     And I successfully render the application model
     Then the file "config/routes.rb" should contain:

@@ -8,12 +8,17 @@ module Wheelie
       description: 'The path to the application model file'
 
     def render_application_model
-      app_model = Wheelie::Parser.new.parse(path)
-      app_model.render
+      @app_model = Wheelie::Parser.new.parse(path)
 
-      if wui = app_model.home_wui
-        route "root '#{ wui.model_name(:variables) }#index'"
+      @app_model.render
+    end
+
+    def write_root_route
+      root_wui = @app_model.wuis.find do |wui|
+        wui.find_action :index
       end
+
+      route "root '#{ root_wui.model_name(:variables) }#index'" if root_wui
     end
 
     def migrate

@@ -48,6 +48,7 @@ Feature: <%= model.name(:human_plural).titleize %>
   <%- end -%>
 <% end -%>
 
+<% if model.label_attr # do not crash when the model has no label attr -%>
     # destroy
     When I go to the list of <%= model.name(:variables) %>
     Then I should see "<%= model.label_attr.test_value %>"
@@ -55,3 +56,4 @@ Feature: <%= model.name(:human_plural).titleize %>
     When I follow "Destroy"
     Then I should be on the list of <%= model.name(:variables) %>
       But I should not see "<%= model.label_attr.test_value %>"
+<% end -%>
