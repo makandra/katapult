@@ -74,11 +74,6 @@ Defined on WUI. Takes a name and options:
     wui.action :other_action, method: :get, scope: :collection
 
 
-## Extending Wheelie
-
-Wheelie is (planned to be) easily extendable with a plugin system.
-
-
 ## Contributing
 
 <!-- 1. Fork it ( http://github.com/<my-github-username>/wheelie/fork )
@@ -98,4 +93,5 @@ The user `wheelie` is hereby granted any action (SELECT, UPDATE, etc. except for
 
 ## Credits
 
-Dominik Schöler from [makandra](makandra.com)
+Development: Dominik Schöler from [makandra](makandra.com)
+Katapult image: [Nemo](http://pixabay.com/de/katapult-30061)
