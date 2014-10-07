@@ -26,9 +26,8 @@ module Wheelie
     end
 
     # DSL
-    def rails_actions(*actions)
-      options = actions.extract_options!
-      actions.each { |a| action(a, options) }
+    def crud
+      %i(index show create update destroy).each &method(:action)
     end
 
     def model

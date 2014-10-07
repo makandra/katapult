@@ -22,11 +22,7 @@ Feature: Web User Interface
       end
 
       wui 'Customer', model: 'Customer' do |wui|
-        wui.action :index
-        wui.action :show
-        wui.action :create
-        wui.action :update
-        wui.action :destroy
+        wui.crud
         wui.action :get_member, method: :get, scope: :member
         wui.action :post_member, method: :post, scope: :member
         wui.action :get_collection, method: :get, scope: :collection
