@@ -9,6 +9,7 @@ module Wheelie
     attr_accessor :type, :default, :assignable_values, :allow_blank
 
     UnknownTypeError = Class.new(StandardError)
+    MissingOptionError = Class.new(StandardError)
     TYPES = %i(string email url integer money text markdown flag datetime)
 
     def initialize(*args)
@@ -16,8 +17,8 @@ module Wheelie
 
       self.type ||= :email if name.to_s =~ /email/
       self.type ||= :string
-      TYPES.include?(type) or raise UnknownTypeError,
-        "Attribute type :#{type} is not supported. Use one of #{TYPES.inspect}."
+
+      validate
     end
 
     delegate :flag?, to: :type_inquiry
@@ -64,6 +65,16 @@ module Wheelie
 
     def type_inquiry
       @type.to_s.inquiry
+    end
+
+    def validate
+      TYPES.include?(type) or raise UnknownTypeError,
+        "Attribute type :#{type} is not supported. Use one of #{TYPES.inspect}."
+
+      if flag? and default.nil?
+        raise MissingOptionError,
+          "The :flag attribute '#{name}' requires a default (true or false)."
+      end
     end
 
   end

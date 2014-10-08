@@ -8,6 +8,13 @@ describe Wheelie::Attribute do
     expect(described_class.new('address').type).to eql(:string)
   end
 
+  it 'requires a default for :flag attributes' do
+    expect do
+      described_class.new('attr', type: :flag)
+    end.to raise_error(Wheelie::Attribute::MissingOptionError,
+      "The :flag attribute 'attr' requires a default (true or false).")
+  end
+
   describe '#flag?' do
     it 'returns whether it is of type :flag' do
       expect(described_class.new('attr', type: :flag).flag?).to be true
