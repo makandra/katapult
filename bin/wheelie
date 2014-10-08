@@ -1,38 +1,27 @@
 #!/usr/bin/env ruby
 
-def wheelie_gemfile_line
-  gem_line = "gem 'wheelie'"
-
-  wheelie_bin_dir = File.expand_path(__dir__)
-  if ENV['PATH'].include?(wheelie_bin_dir)
-    gem_line << ", path: '../../..'"
-
-    puts <<-TEST_MESSAGE
-
-* The PATH environment variable contains wheelie's bin/ directory (#{wheelie_bin_dir}),
-* so this binary is probably run from a gem integration test. Hence, install
-* wheelie with the :path option so the correct version of wheelie is used.
-* In Gemfile: #{gem_line}
-
-    TEST_MESSAGE
-  end
-
-  gem_line
-end
-
 case (command = ARGV.shift)
 when 'target'
   app_name = ARGV.shift
 
-  # new Rails app
+  puts 'Creating new Rails application ...'
   system "rails new #{app_name} --skip-test-unit --skip-bundle --database mysql"
   Dir.chdir app_name
 
-  # install wheelie
-  File.open('Gemfile', 'a') { |file| file.puts(wheelie_gemfile_line) }
+  puts
+  puts 'Installing wheelie ...'
+  File.open('Gemfile', 'a') do |file|
+    file.puts "gem 'wheelie'#{ ENV['WHEELIE_GEMFILE_OPTIONS'] }"
+  end
   system 'bundle install'
   system 'bundle exec rails generate wheelie:install'
+
+  puts
+  puts 'Generating wheelie basics ...'
   system 'bundle exec rails generate wheelie:basics'
+
+  puts
+  puts 'Done.'
 
 when 'fire'
   app_model_path = 'lib/wheelie/application_model.rb'
