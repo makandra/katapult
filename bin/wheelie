@@ -20,7 +20,7 @@ def wheelie_gemfile_line
   gem_line
 end
 
-case ARGV.shift
+case (command = ARGV.shift)
 when 'target'
   app_name = ARGV.shift
 
@@ -35,9 +35,11 @@ when 'target'
   system 'bundle exec rails generate wheelie:basics'
 
 when 'fire'
-  puts 'Loading ...'
-  system 'rails generate wheelie:render lib/wheelie/metamodel.rb'
+  app_model_path = 'lib/wheelie/application_model.rb'
+
+  puts 'Loading katapult ...'
+  system 'bin/rails generate wheelie:render ' + app_model_path
 
 else
-  puts 'Usage: wheelie [target APP_NAME | render]'
+  puts 'Usage: wheelie [target APP_NAME | fire]'
 end

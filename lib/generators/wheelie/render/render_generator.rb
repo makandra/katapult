@@ -12,7 +12,7 @@ module Wheelie
       say_status :parse, path
       @app_model = Wheelie::Parser.new.parse(path)
 
-      say_status :render, "Application model > #{application_name}"
+      say_status :render, "into #{application_name}"
       @app_model.render
     end
 

@@ -21,4 +21,15 @@ Feature: Wheelie binary `wheelie`
 
   Scenario: Run without arguments
     When I run `wheelie # without arguments`
-    Then the output should contain "Usage: wheelie [target APP_NAME | render]"
+    Then the output should contain "Usage: wheelie [target APP_NAME | fire]"
+
+
+  Scenario: Render the application model
+    Given a pristine Rails application
+    And I install wheelie
+    And I generate wheelie basics
+
+    When I run `wheelie fire`
+    Then the output should contain "Loading katapult"
+    And the output should contain "parse  lib/wheelie/application_model"
+    And the output should contain "render  into wheelie_test_app"
