@@ -118,5 +118,5 @@ for granting privileges) on any database and table (`*.*`).
 
 ## Credits
 
-Development: Dominik Schöler from [makandra](makandra.com)
+Development: Dominik Schöler from [makandra](makandra.com)<br />
 Katapult image: [Nemo](http://pixabay.com/de/katapult-30061)
