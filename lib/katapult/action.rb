@@ -7,7 +7,7 @@ require 'active_support/core_ext/string/inquiry'
 module Katapult
   class Action < Element
 
-    attr_accessor :method, :scope
+    options :method, :scope
 
     def initialize(*args)
       super

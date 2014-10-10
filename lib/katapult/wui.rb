@@ -8,7 +8,8 @@ require 'generators/katapult/w_u_i/w_u_i_generator'
 module Katapult
   class WUI < Element
 
-    attr_accessor :model, :actions
+    options :model
+    attr_accessor :actions
 
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     UnknownActionError = Class.new(StandardError)

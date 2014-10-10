@@ -12,6 +12,12 @@ module Katapult
     attr_accessor :name, :options
     attr_reader :application_model
 
+    # Improve semantics in element classes
+    class << self
+      alias_method :options, :attr_accessor
+    end
+
+
     def initialize(name, options = {})
       self.name = name.to_s
       self.options = options
