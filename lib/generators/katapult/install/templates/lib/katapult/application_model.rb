@@ -13,3 +13,6 @@
 #   wui.action :show
 #   wui.action :lock, scope: :member, method: :post
 # end
+#
+# Add navigation
+# navigation :main
