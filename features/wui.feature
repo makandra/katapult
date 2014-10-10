@@ -27,7 +27,7 @@ Feature: Web User Interface
         wui.action :put_collection, method: :put, scope: :collection
       end
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "app/controllers/customers_controller.rb" should contain exactly:
       """
       class CustomersController < ApplicationController

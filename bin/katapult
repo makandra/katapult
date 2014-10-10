@@ -27,7 +27,7 @@ when 'fire'
   app_model_path = 'lib/katapult/application_model.rb'
 
   puts 'Loading katapult ...'
-  system 'bin/rails generate katapult:render ' + app_model_path
+  system 'bin/rails generate katapult:transform ' + app_model_path
 
 else
   puts 'Usage: katapult [target APP_NAME | fire]'

@@ -27,7 +27,7 @@ Feature: Navigation
 
       navigation 'main'
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "app/models/navigation.rb" should contain exactly:
       """
       class Navigation
@@ -73,7 +73,7 @@ Feature: Navigation
         wui.crud
       end
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "config/routes.rb" should contain:
       """
       root 'customers#index'

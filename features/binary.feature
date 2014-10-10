@@ -28,7 +28,7 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Usage: katapult [target APP_NAME | fire]"
 
 
-  Scenario: Render the application model
+  Scenario: Transform the application model
     Given a pristine Rails application
     And I install katapult
     And I generate katapult basics

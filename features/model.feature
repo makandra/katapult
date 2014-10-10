@@ -11,7 +11,7 @@ Feature: Generate Models
       """
       model 'Car'
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "app/models/car.rb" should contain exactly:
       """
       class Car < ActiveRecord::Base
@@ -69,7 +69,7 @@ Feature: Generate Models
         person.attr :locked, type: :flag, default: false
       end
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base
@@ -141,7 +141,7 @@ Feature: Generate Models
         person.attr :x, invalid_option: 'here'
       end
       """
-    And I render the application model
+    And I transform the application model
     Then the output should contain "Katapult::Attribute does not support option :invalid_option. (Katapult::Element::UnknownOptionError)"
 
 
@@ -153,7 +153,7 @@ Feature: Generate Models
         person.attr :hobby, assignable_values: %w[soccer baseball], default: 'soccer', allow_blank: true
       end
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base

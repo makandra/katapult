@@ -16,7 +16,7 @@ Feature: Configure katapult
       # custom model template for <%= class_name %>
 
       """
-    And I successfully render the application model
+    And I successfully transform the application model
     Then the file "app/models/car.rb" should contain exactly:
       """
       # custom model template for Car
