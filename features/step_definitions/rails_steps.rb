@@ -1,4 +1,4 @@
-module WheelieRailsHelper
+module KatapultRailsHelper
 
   def with_aruba_timeout(timeout, &block)
     original_aruba_timeout = @aruba_timeout_seconds
@@ -27,7 +27,7 @@ module WheelieRailsHelper
   end
 
 end
-World(WheelieRailsHelper)
+World(KatapultRailsHelper)
 
 
 Given /^a pristine Rails application$/ do
@@ -38,7 +38,7 @@ Given /^a pristine Rails application$/ do
     end
 
     # copy cached app to aruba directory
-    FileUtils.cp_r('tmp/cached_test_app', File.join(current_dir, 'wheelie_test_app'))
-    cd 'wheelie_test_app' # Aruba::Api method
+    FileUtils.cp_r('tmp/cached_test_app', File.join(current_dir, 'katapult_test_app'))
+    cd 'katapult_test_app' # Aruba::Api method
   end
 end

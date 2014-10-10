@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'wheelie/action'
+require 'katapult/action'
 
-describe Wheelie::Action do
+describe Katapult::Action do
 
   subject { described_class.new 'action' }
 

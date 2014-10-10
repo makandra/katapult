@@ -1,35 +1,39 @@
-Feature: Wheelie binary `wheelie`
+Feature: Katapult binary `katapult`
 
   Scenario: Start new Rails application
     Given The default aruba timeout is 120 seconds
 
-    When I successfully run `wheelie target binary_test`
-    And I cd to "binary_test"
+    When I successfully run `katapult target binary_test`
+    Then the output should contain "Creating new Rails application"
+    And the output should contain "Installing katapult"
+    And the output should contain "Generating katapult basics"
+    And the output should contain "Done."
 
-    Then a file named "lib/wheelie/application_model.rb" should exist
+    When I cd to "binary_test"
+    Then a file named "lib/katapult/application_model.rb" should exist
     And a file named "config/database.yml" should exist
-    And the file "Gemfile" should contain "gem 'wheelie'"
+    And the file "Gemfile" should contain "gem 'katapult'"
 
     When I run `bundle check`
     Then the output should contain "The Gemfile's dependencies are satisfied"
 
 
   Scenario: Forget to pass application name
-    When I run `wheelie target # without app name`
+    When I run `katapult target # without app name`
     Then the output should contain "No value provided for required arguments 'app_path'"
 
 
   Scenario: Run without arguments
-    When I run `wheelie # without arguments`
-    Then the output should contain "Usage: wheelie [target APP_NAME | fire]"
+    When I run `katapult # without arguments`
+    Then the output should contain "Usage: katapult [target APP_NAME | fire]"
 
 
   Scenario: Render the application model
     Given a pristine Rails application
-    And I install wheelie
-    And I generate wheelie basics
+    And I install katapult
+    And I generate katapult basics
 
-    When I run `wheelie fire`
+    When I run `katapult fire`
     Then the output should contain "Loading katapult"
-    And the output should contain "parse  lib/wheelie/application_model"
-    And the output should contain "render  into wheelie_test_app"
+    And the output should contain "parse  lib/katapult/application_model"
+    And the output should contain "render  into katapult_test_app"

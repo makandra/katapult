@@ -1,26 +1,26 @@
 require 'spec_helper'
-require 'wheelie/wui'
-require 'wheelie/model'
-require 'wheelie/application_model'
+require 'katapult/wui'
+require 'katapult/model'
+require 'katapult/application_model'
 
-describe Wheelie::WUI do
+describe Katapult::WUI do
 
   subject { described_class.new 'wui' }
 
-  let(:application_model) { Wheelie::ApplicationModel.new }
+  let(:application_model) { Katapult::ApplicationModel.new }
 
   describe '#path' do
     it 'raises an error if the given action does not exist' do
       expect do
         subject.path(:foobar)
-      end.to raise_error(Wheelie::WUI::UnknownActionError)
+      end.to raise_error(Katapult::WUI::UnknownActionError)
     end
   end
 
   describe '#model' do
     it 'returns the model object' do
       subject = described_class.new('Customer', model: 'User')
-      model = Wheelie::Model.new('User')
+      model = Katapult::Model.new('User')
 
       application_model.add_wui(subject)
       application_model.add_model(model)
@@ -30,7 +30,7 @@ describe Wheelie::WUI do
 
     it 'detects the model from its own name, if not stated explicitly' do
       subject = described_class.new('Customer')
-      model = Wheelie::Model.new('Customer')
+      model = Katapult::Model.new('Customer')
 
       application_model.add_wui(subject)
       application_model.add_model(model)
@@ -42,29 +42,7 @@ describe Wheelie::WUI do
       subject = described_class.new('MissingModel')
       application_model.add_wui(subject)
 
-      expect{ subject.model }.to raise_error(Wheelie::WUI::UnknownModelError)
-    end
-  end
-
-  describe '#model' do
-    it 'returns the model object' do
-      subject = described_class.new('Customer', model: 'User')
-      model = Wheelie::Model.new('User')
-
-      application_model.add_wui(subject)
-      application_model.add_model(model)
-
-      expect(subject.model).to eql(model)
-    end
-
-    it 'detects the model from its own name, if not stated explicitly' do
-      subject = described_class.new('Customer')
-      model = Wheelie::Model.new('Customer')
-
-      application_model.add_wui(subject)
-      application_model.add_model(model)
-
-      expect(subject.model).to eql(model)
+      expect{ subject.model }.to raise_error(Katapult::WUI::UnknownModelError)
     end
   end
 

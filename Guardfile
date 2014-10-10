@@ -6,6 +6,6 @@ guard 'cucumber' do
   watch(%r{^features/support/.+$})          { 'features' }
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
   
-  watch(%r{^lib/generators/wheelie/.+/.+_generator\.rb$}) { 'features/wheelie.feature:12' }
-  watch(%r{^lib/wheelie/.+\.rb$}) { 'features/wheelie.feature:12' }
+  watch(%r{^lib/generators/katapult/.+/.+_generator\.rb$}) { 'features/katapult.feature:12' }
+  watch(%r{^lib/katapult/.+\.rb$}) { 'features/katapult.feature:12' }
 end

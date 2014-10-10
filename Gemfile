@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in wheelie.gemspec
+# Specify your gem's dependencies in katapult.gemspec
 gemspec

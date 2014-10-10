@@ -1,17 +1,17 @@
-Feature: Configure Wheelie
+Feature: Configure katapult
 
   Background:
     Given a pristine Rails application
-    And I install wheelie
-    And I generate wheelie basics
+    And I install katapult
+    And I generate katapult basics
 
 
   Scenario: Custom model template
-    When I overwrite "lib/wheelie/application_model.rb" with:
+    When I overwrite "lib/katapult/application_model.rb" with:
       """
       model 'Car'
       """
-    And a file named "lib/templates/wheelie/model/model.rb" with:
+    And a file named "lib/templates/katapult/model/model.rb" with:
       """
       # custom model template for <%= class_name %>
 

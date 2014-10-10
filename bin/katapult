@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+case (command = ARGV.shift)
+when 'target'
+  app_name = ARGV.shift
+
+  puts 'Creating new Rails application ...'
+  system "rails new #{app_name} --skip-test-unit --skip-bundle --database mysql"
+  Dir.chdir app_name
+
+  puts
+  puts 'Installing katapult ...'
+  File.open('Gemfile', 'a') do |file|
+    file.puts "gem 'katapult'#{ ENV['KATAPULT_GEMFILE_OPTIONS'] }"
+  end
+  system 'bundle install'
+  system 'bundle exec rails generate katapult:install'
+
+  puts
+  puts 'Generating katapult basics ...'
+  system 'bundle exec rails generate katapult:basics'
+
+  puts
+  puts 'Done.'
+
+when 'fire'
+  app_model_path = 'lib/katapult/application_model.rb'
+
+  puts 'Loading katapult ...'
+  system 'bin/rails generate katapult:render ' + app_model_path
+
+else
+  puts 'Usage: katapult [target APP_NAME | fire]'
+end

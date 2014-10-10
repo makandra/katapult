@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'wheelie/model'
-require 'wheelie/attribute'
+require 'katapult/model'
+require 'katapult/attribute'
 
-describe Wheelie::Model do
+describe Katapult::Model do
 
   subject { described_class.new('model') }
 

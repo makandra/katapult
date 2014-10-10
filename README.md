@@ -1,38 +1,45 @@
-# Wheelie
+# Katapult
 
-Wheelie is a kickstart framework for Rails applications. It makes starting
+<img src="katapult.png" width="200px" align="right" />
+
+
+`Katapult` is a kickstart framework for Rails applications. It makes starting
 Rails applications a bliss.
 
-Wheelie will always support current Versions of Ruby and Rails, at the moment
-it's Rails 4.1 and Ruby 2.1.
+`Katapult` will always support current versions of Ruby and Rails, at the
+moment it's Rails 4.1 and Ruby 2.1.
 
 ## Installation
 
-As Wheelie is designed to *start* Rails applications, it works best with a
+As `katapult` is designed to *start* Rails applications, it works best with a
 clean new Rails app. To create one, run
 
-    rails new choose_your_name
+    katapult target MY_APPLICATION_NAME
 
-Add `gem 'wheelie'` to the Gemfile, `bundle` and then run
+This will add the `katapult` gem to the Gemfile and then integrate `katapult`
+by running
 
-    rails generate wheelie:install
+    rails generate katapult:install
+    rails generate katapult:basics
 
-This will create `lib/wheelie/application_model.rb` where you will draft your
-application.
+
+It will install application basics, such as a `database.yml`, basics styles as
+well as RSpec and Cucumber and prepare `lib/katapult/application_model.rb`
+where you will draft your application.
 
 
 ## Usage
 
-After installation, you'll find a file `lib/wheelie/application_model.rb` where
-you will define the fundamentals of your application. Inside this file, you'll
-use Wheelie's simple DSL (domain specific language) to express yourself.
+After installation, you'll find a file `lib/katapult/application_model.rb` where
+you will define the properties of your application. Inside this file, you'll
+use `katapult`'s simple DSL (domain specific language) to express yourself.
 
-Wheelie brings several basic elements: Model, Attribute, WUI (which stands for
-*Web User Interface*) and Action. Each Wheelie element has the same syntax,
-taking a name, options and a block:
+The DSL consists of elements: Model, Attribute, WUI (which stands for *Web User
+Interface*), Action, and more. Each `katapult` element has the same syntax,
+taking a name, options, and a block:
 
-    element 'name', options: 'go here' do |element|
-      element.method
+    element_type 'name', options: 'example' do |element|
+      element.some_method
     end
 
 
@@ -48,7 +55,7 @@ Takes a name and a block:
 Defined on Model. Takes a name and options:
 
     model.attr :email
-    model.attr :age, type: :integer
+    model.attr :age, type: :integer, assignable_values: 18..99
     model.attr :income, type: :money
     model.attr :homepage, type: :url, default: 'http://www.makandra.de'
     model.attr :locked, type: :flag, default: false
@@ -67,28 +74,41 @@ Defined on WUI. Takes a name and options:
 
     wui.action :index
     wui.action :show
-    wui.action :create
-    wui.action :update
+    wui.action :create # also creates :new
+    wui.action :update # also creates :edit
     wui.action :destroy
+    wui.crud   # creates all the standard rails actions above
     wui.action :custom_action, method: :post, scope: :member
     wui.action :other_action, method: :get, scope: :collection
 
 
+### Navigation
+Takes a name, will generate a navigation with links to the index pages of all
+WUIs.
+
+    navigation :main
+
+
 ## Contributing
 
-<!-- 1. Fork it ( http://github.com/<my-github-username>/wheelie/fork )
+<!-- 1. Fork it ( http://github.com/<my-github-username>/katapult/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request -->
 
-Wheelie caches a pristine Rails application inside its `tmp/` directory to speed up testing. Keep this in mind, as it may lead to issues when switching Ruby versions or installing a new version of the Rails gem.
+`Katapult` caches a pristine Rails application inside its `tmp/` directory to
+speed up test runs. Keep this in mind, as it may lead to caching issues when
+switching Ruby versions or installing a new version of the Rails gem.
 
-Since Wheelie has full-stack integration tests, it requires a MySQL account. Create a dedicated account by running this command in a MySQL console (as-is):
+Since `katapult` has full-stack integration tests, it requires a MySQL account.
+Create a dedicated account on your MySQL server by running this command in a
+MySQL console (as-is):
 
-    GRANT ALL ON *.* TO 'wheelie'@'localhost' IDENTIFIED BY 'secret';
+    GRANT ALL ON *.* TO 'katapult'@'localhost' IDENTIFIED BY 'secret';
 
-The user `wheelie` is hereby granted any action (SELECT, UPDATE, etc. except for granting privileges) on any database and table (`*.*`).
+The user `katapult` is hereby granted any action (SELECT, UPDATE, etc. except
+for granting privileges) on any database and table (`*.*`).
 
 
 ## Credits

@@ -2,12 +2,12 @@ Feature: Generate Models
 
   Background:
     Given a pristine Rails application
-    And I install wheelie
-    And I generate wheelie basics
+    And I install katapult
+    And I generate katapult basics
 
 
   Scenario: Generate ActiveRecord Model
-    When I overwrite "lib/wheelie/application_model.rb" with:
+    When I overwrite "lib/katapult/application_model.rb" with:
       """
       model 'Car'
       """
@@ -53,7 +53,7 @@ Feature: Generate Models
 
 
   Scenario: Generate ActiveRecord Model with attributes
-    When I overwrite "lib/wheelie/application_model.rb" with:
+    When I overwrite "lib/katapult/application_model.rb" with:
       """
       model 'Person' do |person|
 
@@ -135,18 +135,18 @@ Feature: Generate Models
 
 
   Scenario: Get a helpful error message when an attribute has an unknown option
-    When I overwrite "lib/wheelie/application_model.rb" with:
+    When I overwrite "lib/katapult/application_model.rb" with:
       """
       model 'Person' do |person|
         person.attr :x, invalid_option: 'here'
       end
       """
     And I render the application model
-    Then the output should contain "Wheelie::Attribute does not support option :invalid_option. (Wheelie::Element::UnknownOptionError)"
+    Then the output should contain "Katapult::Attribute does not support option :invalid_option. (Katapult::Element::UnknownOptionError)"
 
 
   Scenario: Specify assignable values
-    When I overwrite "lib/wheelie/application_model.rb" with:
+    When I overwrite "lib/katapult/application_model.rb" with:
       """
       model 'Person' do |person|
         person.attr :age, type: :integer, assignable_values: 9..99

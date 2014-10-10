@@ -1,8 +1,8 @@
 require 'aruba/cucumber'
 require 'pry'
 
-# Make sure tests use the correct wheelie gem
-ENV['WHEELIE_GEMFILE_OPTIONS'] = ", path: '../../..'"
+# Make sure tests use the correct katapult gem
+ENV['KATAPULT_GEMFILE_OPTIONS'] = ", path: '../../..'"
 
 Before do
   @aruba_timeout_seconds = 30

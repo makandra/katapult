@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'wheelie/attribute'
+require 'katapult/attribute'
 
-describe Wheelie::Attribute do
+describe Katapult::Attribute do
 
   it 'is of type :string by default' do
     expect(described_class.new('name').type).to eql(:string)
@@ -11,7 +11,7 @@ describe Wheelie::Attribute do
   it 'requires a default for :flag attributes' do
     expect do
       described_class.new('attr', type: :flag)
-    end.to raise_error(Wheelie::Attribute::MissingOptionError,
+    end.to raise_error(Katapult::Attribute::MissingOptionError,
       "The :flag attribute 'attr' requires a default (true or false).")
   end
 
@@ -26,8 +26,8 @@ describe Wheelie::Attribute do
     it 'raises an error if the specified type is not supported' do
       expect do
         described_class.new('attr', type: :undefined)
-      end.to raise_error(Wheelie::Attribute::UnknownTypeError,
-        "Attribute type :undefined is not supported. Use one of #{Wheelie::Attribute::TYPES.inspect}."
+      end.to raise_error(Katapult::Attribute::UnknownTypeError,
+        "Attribute type :undefined is not supported. Use one of #{Katapult::Attribute::TYPES.inspect}."
       )
     end
   end
