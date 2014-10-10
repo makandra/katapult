@@ -17,7 +17,7 @@ describe Katapult::Attribute do
 
   describe '#flag?' do
     it 'returns whether it is of type :flag' do
-      expect(described_class.new('attr', type: :flag).flag?).to be true
+      expect(described_class.new('attr', type: :flag, default: false).flag?).to be true
       expect(described_class.new('attr', type: :string).flag?).to be false
     end
   end
