@@ -1,3 +1,5 @@
+# Install katapult into an application.
+
 module Katapult
   class InstallGenerator < Rails::Generators::Base
 

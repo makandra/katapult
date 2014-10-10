@@ -1,3 +1,6 @@
+# This class reads an application model file and turns it into an
+# ApplicationModel instance.
+
 require_relative 'application_model'
 require 'katapult/model'
 require 'katapult/wui'

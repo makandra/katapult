@@ -1,3 +1,5 @@
+# Models a navigation.
+
 require 'katapult/element'
 require 'generators/katapult/navigation/navigation_generator'
 

@@ -1,3 +1,5 @@
+# Models a model attribute. To be used within the block of a model element.
+
 require 'katapult/element'
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/string/inquiry'

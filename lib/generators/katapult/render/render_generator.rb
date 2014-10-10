@@ -1,3 +1,6 @@
+# Generate files and directories from an application model file. Afterwards do
+# any setup left necessary (e.g. updating the database)
+
 require 'katapult/parser'
 
 module Katapult

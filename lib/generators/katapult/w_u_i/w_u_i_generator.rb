@@ -1,3 +1,5 @@
+# Generate a controller, routes and view files for a WUI.
+
 require 'katapult/generator'
 require 'generators/katapult/haml/haml_generator'
 

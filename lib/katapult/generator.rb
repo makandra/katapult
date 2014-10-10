@@ -1,3 +1,5 @@
+# The katapult generator base class, slightly adapted from Rails generators.
+
 require 'rails/generators'
 
 module Katapult

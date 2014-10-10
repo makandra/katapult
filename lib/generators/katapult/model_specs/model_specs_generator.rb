@@ -1,3 +1,5 @@
+# Generate model specs.
+
 require 'katapult/generator'
 
 module Katapult

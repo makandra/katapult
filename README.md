@@ -3,11 +3,13 @@
 <img src="katapult.png" width="200px" align="right" />
 
 
-`Katapult` is a kickstart framework for Rails applications. It makes starting
-Rails applications a bliss.
+`Katapult` is a kickstart generator for Rails applications. It creates
+application basics and generates (makandra-flavored) code from an application
+model, significantly speeding up the initial phase of a Rails project.
 
-`Katapult` will always support current versions of Ruby and Rails, at the
-moment it's Rails 4.1 and Ruby 2.1.
+`Katapult` will always support current versions of Ruby and Rails, currently
+Rails 4.1 and Ruby 2.1.
+
 
 ## Installation
 
@@ -27,16 +29,19 @@ It will install application basics, such as a `database.yml`, basics styles as
 well as RSpec and Cucumber and prepare `lib/katapult/application_model.rb`
 where you will draft your application.
 
+### Manual installation
+You may also integrate the gem into an existing Rails application. Just add it to the Gemfile and run the generators stated above.
+
 
 ## Usage
 
-After installation, you'll find a file `lib/katapult/application_model.rb` where
-you will define the properties of your application. Inside this file, you'll
-use `katapult`'s simple DSL (domain specific language) to express yourself.
+After installation, you find a file `lib/katapult/application_model.rb` where
+you will define the properties of your application. Inside this file, use
+`katapult`'s simple DSL (domain specific language) to express yourself.
 
-The DSL consists of elements: Model, Attribute, WUI (which stands for *Web User
-Interface*), Action, and more. Each `katapult` element has the same syntax,
-taking a name, options, and a block:
+The DSL consists of elements, e.g. Model or WUI (which stands for *Web User
+Interface*). Each `katapult` element has the same syntax, taking a name,
+options, and a block:
 
     element_type 'name', options: 'example' do |element|
       element.some_method
@@ -55,7 +60,7 @@ Takes a name and a block:
 Defined on Model. Takes a name and options:
 
     model.attr :email
-    model.attr :age, type: :integer, assignable_values: 18..99
+    model.attr :age, type: :integer, assignable_values: 18..99, allow_blank: true
     model.attr :income, type: :money
     model.attr :homepage, type: :url, default: 'http://www.makandra.de'
     model.attr :locked, type: :flag, default: false

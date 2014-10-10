@@ -1,3 +1,5 @@
+# Models a Rails model.
+
 require 'katapult/element'
 require 'katapult/attribute'
 require 'generators/katapult/model/model_generator'

@@ -1,3 +1,5 @@
+# Generate views for a WUI.
+
 require 'katapult/generator'
 require 'generators/katapult/cucumber_features/cucumber_features_generator'
 

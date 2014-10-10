@@ -1,3 +1,5 @@
+# Generates model-independent application basics (see method names).
+
 module Katapult
   module Generators
     class BasicsGenerator < Rails::Generators::Base

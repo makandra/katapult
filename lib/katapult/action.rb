@@ -1,3 +1,5 @@
+# Models a controller action. To be used within the block of a WUI.
+
 require 'katapult/element'
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/string/inquiry'

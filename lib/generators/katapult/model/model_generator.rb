@@ -1,3 +1,5 @@
+# Generate a Rails model, including migration and spec.
+
 require 'katapult/generator'
 require 'generators/katapult/model_specs/model_specs_generator'
 

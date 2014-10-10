@@ -1,3 +1,5 @@
+# Generate navigation.
+
 require 'katapult/generator'
 
 module Katapult

@@ -1,3 +1,6 @@
+# Models a controller, including routes and views. Little more than a container
+# class for the Attribute element.
+
 require 'katapult/element'
 require 'katapult/action'
 require 'generators/katapult/w_u_i/w_u_i_generator'
