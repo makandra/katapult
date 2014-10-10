@@ -1,4 +1,5 @@
-require 'katapult/util'
+require 'active_support'
+require 'active_support/core_ext/hash/slice'
 
 module Katapult
 end

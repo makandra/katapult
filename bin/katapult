@@ -1,12 +1,20 @@
 #!/usr/bin/env ruby
 
+require_relative '../lib/katapult/util'
+
 case (command = ARGV.shift)
 when 'target'
   app_name = ARGV.shift
 
   puts 'Creating new Rails application ...'
   system "rails new #{app_name} --skip-test-unit --skip-bundle --database mysql"
+
   Dir.chdir app_name
+
+  puts
+  puts 'Initializing git repository ...'
+  system 'git init'
+  Katapult::Util.git_commit "rails new #{app_name}"
 
   puts
   puts 'Installing katapult ...'
@@ -15,10 +23,12 @@ when 'target'
   end
   system 'bundle install'
   system 'bundle exec rails generate katapult:install'
+  Katapult::Util.git_commit 'rails generate katapult:install'
 
   puts
   puts 'Generating katapult basics ...'
   system 'bundle exec rails generate katapult:basics'
+  Katapult::Util.git_commit 'rails generate katapult:basics'
 
   puts
   puts 'Done.'

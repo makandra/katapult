@@ -10,12 +10,21 @@ Feature: Katapult binary `katapult`
     And the output should contain "Done."
 
     When I cd to "binary_test"
-    Then a file named "lib/katapult/application_model.rb" should exist
-    And a file named "config/database.yml" should exist
-    And the file "Gemfile" should contain "gem 'katapult'"
 
+    # test whether katapult is installed
+    Then the file "Gemfile" should contain "gem 'katapult'"
+    And a file named "lib/katapult/application_model.rb" should exist
+
+    # test whether the application is already bundled
     When I run `bundle check`
     Then the output should contain "The Gemfile's dependencies are satisfied"
+
+    # test whether katapult made git commits
+    When I run `git log`
+    Then the output should contain "rails new binary_test"
+    And the output should contain "rails generate katapult:install"
+    And the output should contain "rails generate katapult:basics"
+    And the output should contain "Author: katapult <katapult@makandra.com>"
 
 
   Scenario: Forget to pass application name
