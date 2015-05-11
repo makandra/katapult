@@ -28,7 +28,7 @@ Feature: Generate Models
         def change
           create_table :cars do |t|
 
-            t.timestamps
+            t.timestamps null: false
           end
         end
       end
@@ -95,7 +95,7 @@ Feature: Generate Models
             t.string :homepage
             t.boolean :locked
 
-            t.timestamps
+            t.timestamps null: false
           end
         end
       end

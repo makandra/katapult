@@ -28,6 +28,12 @@ module Katapult
 
       def bundle_install
         bundle 'install'
+
+        # There is a bug in the current version of Compass, so we use an older
+        # one in our Gemfile template. Since its dependencies "sprockets" and
+        # "sass-rails" are already in the Gemfile.lock (from installing Rails),
+        # we need to explicitly update them.
+        bundle 'update sprockets sass-rails'
       end
 
       def remove_turbolinks_js

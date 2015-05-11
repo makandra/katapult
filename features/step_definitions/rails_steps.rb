@@ -21,7 +21,7 @@ module KatapultRailsHelper
   def ensure_bundled(path)
     Dir.chdir(path) do
       Bundler.with_clean_env do
-        system('bundle check &> /dev/null') or system('bundle install')
+        system('bundle check > /dev/null 2>&1') or system('bundle install')
       end
     end
   end

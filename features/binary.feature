@@ -1,7 +1,7 @@
 Feature: Katapult binary `katapult`
 
   Scenario: Start new Rails application
-    Given The default aruba timeout is 120 seconds
+    Given the default aruba timeout is 120 seconds
 
     When I successfully run `katapult target binary_test`
     Then the output should contain "Creating new Rails application"

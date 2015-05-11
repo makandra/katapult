@@ -38,11 +38,10 @@ Feature: Katapult in general
       source 'https://rubygems.org'
 
       # from original Gemfile
-      gem 'rails', '4.1.0'
+      gem 'rails', '4.2.1'
       gem 'mysql2'
       gem 'jquery-rails'
       gem 'jbuilder', '~> 2.0'
-      gem 'spring',        group: :development
       gem 'katapult', path: '../../..'
 
       # engines
@@ -79,7 +78,7 @@ Feature: Katapult in general
       gem 'autoprefixer-rails'
       gem 'coffee-rails'
       gem 'uglifier'
-      gem 'compass-rails'
+      gem 'compass-rails', '>= 2.0.4' # fixes "uninitialized constant Sprockets::SassCacheStore"
       gem 'compass-rgbapng'
 
       group :development do
@@ -98,6 +97,7 @@ Feature: Katapult in general
         gem 'byebug'
         gem 'factory_girl_rails'
         gem 'rspec-rails'
+        gem 'spring'
       end
 
       group :test do
@@ -113,7 +113,7 @@ Feature: Katapult in general
         gem 'selenium-webdriver'
         gem 'spreewald'
 
-        gem 'rspec_candy'
+        gem 'rspec'
         gem 'shoulda-matchers', require: false
       end
 
@@ -161,7 +161,6 @@ Feature: Katapult in general
 
     And the file "features/support/env-custom.rb" should contain:
       """
-      require 'rspec_candy/all'
       require 'spreewald/all_steps'
       """
     And a file named "features/support/paths.rb" should exist
