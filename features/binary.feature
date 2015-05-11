@@ -26,6 +26,12 @@ Feature: Katapult binary `katapult`
     And the output should contain "rails generate katapult:basics"
     And the output should contain "Author: katapult <katapult@makandra.com>"
 
+    And the output should contain:
+    """
+    Next step: Model your application in lib/katapult/application_model.rb and
+    trigger the code generation by running `katapult fire`.
+    """
+
 
   Scenario: Forget to pass application name
     When I run `katapult target # without app name`
@@ -46,3 +52,9 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Loading katapult"
     And the output should contain "parse  lib/katapult/application_model"
     And the output should contain "render  into katapult_test_app"
+
+    And the output should contain:
+    """
+    You're done! Now boot up your development server (e.g. with `rails server`)
+    and try your kickstarted application in the browser.
+    """

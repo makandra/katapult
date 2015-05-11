@@ -39,7 +39,9 @@ After installation, you find a file `lib/katapult/application_model.rb` where
 you will define the properties of your application. Inside this file, use
 `katapult`'s simple DSL (domain specific language) to express yourself.
 
-The DSL consists of elements, e.g. Model or WUI (which stands for *Web User
+
+### DSL syntax example
+The DSL consists of _elements_, e.g. Model or WUI (which stands for *Web User
 Interface*). Each `katapult` element has the same syntax, taking a name,
 options, and a block:
 
@@ -94,13 +96,7 @@ WUIs.
     navigation :main
 
 
-## Contributing
-
-<!-- 1. Fork it ( http://github.com/<my-github-username>/katapult/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request -->
+## Development
 
 `Katapult` caches a pristine Rails application inside its `tmp/` directory to
 speed up test runs. Keep this in mind, as it may lead to caching issues when

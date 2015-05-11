@@ -84,6 +84,14 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       #   template 'config/deploy.rb'
       # end
 
+      def print_instructions
+        puts <<-INSTRUCTIONS.strip_heredoc
+
+          Next step: Model your application in lib/katapult/application_model.rb and
+          trigger the code generation by running `katapult fire`.
+        INSTRUCTIONS
+      end
+
       private
 
       def app_name
