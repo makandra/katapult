@@ -10,6 +10,10 @@ module Katapult
       source_root File.expand_path('../templates', __FILE__)
 
 
+      def write_ruby_version
+        template '.ruby-version'
+      end
+
       def write_database_ymls
         template 'config/database.yml', force: true
         template 'config/database.sample.yml'

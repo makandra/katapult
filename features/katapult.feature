@@ -33,7 +33,8 @@ Feature: Katapult in general
   Scenario: Generate basic files and settings
     Given I install katapult
     When I generate katapult basics
-    Then the file "Gemfile" should contain exactly:
+    Then the file ".ruby-version" should contain "2.1.5"
+    And the file "Gemfile" should contain exactly:
       """
       source 'https://rubygems.org'
 
