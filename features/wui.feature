@@ -9,7 +9,7 @@ Feature: Web User Interface
   Scenario: Generate a Web User Interface
     When I overwrite "lib/katapult/application_model.rb" with:
       """
-      model 'Customer' do |customer|
+      model 'customer' do |customer|
         customer.attr :name
         customer.attr :age, type: :integer
 
@@ -19,7 +19,7 @@ Feature: Web User Interface
         customer.attr :locked, type: :flag, default: false
       end
 
-      wui 'Customer', model: 'Customer' do |wui|
+      wui 'customer', model: 'customer' do |wui|
         wui.crud
         wui.action :get_member, method: :get, scope: :member
         wui.action :post_member, method: :post, scope: :member

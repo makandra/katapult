@@ -1,5 +1,5 @@
 %h1
-  <%= model_name(:human_plural).capitalize %>
+  <%= model_name(:humans).capitalize %>
 
 .tools
   = link_to 'Add <%= model_name(:human) %>', <%= wui.path(:new) %>, class: 'tools__button is_primary'
@@ -26,4 +26,4 @@
 
 - else
   %p.help-block
-    There are no <%= model_name(:human_plural) %> yet.
+    There are no <%= model_name(:humans) %> yet.

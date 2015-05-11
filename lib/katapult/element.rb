@@ -8,6 +8,7 @@ module Katapult
   class Element
 
     UnknownOptionError = Class.new(StandardError)
+    UnknownFormattingError = Class.new(StandardError)
 
     attr_accessor :name, :options
     attr_reader :application_model
@@ -36,18 +37,18 @@ module Katapult
       machine_name = @name.underscore
 
       case kind.to_s
-      when 'symbol'       then ":#{machine_name}"
-      when 'symbols'      then ":#{machine_name.pluralize}"
-      when 'variable'     then machine_name
-      when 'variables'    then machine_name.pluralize
-      when 'ivar'         then "@#{machine_name}"
-      when 'ivars'        then "@#{machine_name.pluralize}"
-      when 'human_plural' then human_name.pluralize
-      when 'human'        then human_name
-      when 'class'        then machine_name.classify
-      when 'classes'      then machine_name.classify.pluralize
-      else
-        @name
+      when ''          then @name
+      when 'symbol'    then ":#{machine_name}"
+      when 'symbols'   then ":#{machine_name.pluralize}"
+      when 'variable'  then machine_name
+      when 'variables' then machine_name.pluralize
+      when 'ivar'      then "@#{machine_name}"
+      when 'ivars'     then "@#{machine_name.pluralize}"
+      when 'human'     then human_name
+      when 'humans'    then human_name.pluralize
+      when 'class'     then machine_name.classify
+      when 'classes'   then machine_name.classify.pluralize
+      else raise UnknownFormattingError, "Unknown name formatting: #{ kind.inspect }"
       end
     end
 

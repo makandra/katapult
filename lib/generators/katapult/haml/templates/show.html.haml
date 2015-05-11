@@ -2,7 +2,7 @@
   = <%= model_name(:ivar) %>.to_s
 
 .tools
-  = link_to 'All <%= model_name(:human_plural) %>', <%= wui.path(:index) %>, class: 'tools__button'
+  = link_to 'All <%= model_name(:humans) %>', <%= wui.path(:index) %>, class: 'tools__button'
   = link_to 'Edit', <%= wui.path(:edit, model_name(:ivar)) %>, class: 'tools__button is_primary'
   = link_to 'Destroy', <%= wui.path(:destroy, model_name(:ivar)) %>, method: :delete, class: 'tools__button', confirm: 'Really destroy?'
 <% wui.custom_actions.select(&:member?).each do |action| -%>
@@ -15,7 +15,7 @@
 <% wui.model.attrs.each do |attribute| -%>
   <%- model_attribute = "#{model_name(:ivar)}.#{attribute.name}" -%>
   %dt
-    = <%= model_name(:class_name) %>.human_attribute_name(:<%= attribute.name %>)
+    = <%= model_name(:class) %>.human_attribute_name(:<%= attribute.name %>)
   %dd
   <%- case attribute.type -%>
   <%- when :string -%>

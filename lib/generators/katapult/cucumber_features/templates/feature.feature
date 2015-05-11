@@ -1,6 +1,6 @@
-Feature: <%= model.name(:human_plural).titleize %>
+Feature: <%= model.name(:humans).titleize %>
 
-  Scenario: CRUD <%= model.name(:human_plural) %>
+  Scenario: CRUD <%= model.name(:humans) %>
     Given I am on the list of <%= model.name(:variables) %>
 
     # create

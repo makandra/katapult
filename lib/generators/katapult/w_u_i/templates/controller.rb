@@ -95,7 +95,7 @@ class <%= model_name(:classes) %>Controller < ApplicationController
   end
 
   def <%= method_name(:scope) %>
-    <%= model_name(:class_name) %>.scoped
+    <%= model_name(:class) %>.scoped
   end
 
 <%- if navigation -%>
