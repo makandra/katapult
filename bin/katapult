@@ -30,14 +30,26 @@ when 'target'
   system 'bundle exec rails generate katapult:basics'
   Katapult::Util.git_commit 'rails generate katapult:basics'
 
-  puts
-  puts 'Done.'
+  puts <<-INSTRUCTIONS
+
+Application initialization done.
+
+Next step: Model your application in lib/katapult/application_model.rb and
+transform it into code by running `katapult fire`.
+  INSTRUCTIONS
 
 when 'fire'
   app_model_path = 'lib/katapult/application_model.rb'
 
   puts 'Loading katapult ...'
   system 'bin/rails generate katapult:transform ' + app_model_path
+  puts <<-INSTRUCTIONS
+
+Model transformation done.
+
+Now boot up your development server (e.g. with `rails server`) and try your
+kickstarted application in the browser!
+  INSTRUCTIONS
 
 else
   puts 'Usage: katapult [target APP_NAME | fire]'

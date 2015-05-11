@@ -37,14 +37,6 @@ module Katapult
       run 'bin/rake db:create db:migrate RAILS_ENV=test'
     end
 
-    def print_instructions
-      puts <<-INSTRUCTIONS.strip_heredoc
-
-        You're done! Now boot up your development server (e.g. with `rails server`)
-        and try your kickstarted application in the browser.
-      INSTRUCTIONS
-    end
-
     private
 
     def application_name

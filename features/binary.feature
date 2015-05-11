@@ -7,7 +7,13 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Creating new Rails application"
     And the output should contain "Installing katapult"
     And the output should contain "Generating katapult basics"
-    And the output should contain "Done."
+    And the output should contain:
+    """
+    Application initialization done.
+
+    Next step: Model your application in lib/katapult/application_model.rb and
+    transform it into code by running `katapult fire`.
+    """
 
     When I cd to "binary_test"
 
@@ -25,12 +31,6 @@ Feature: Katapult binary `katapult`
     And the output should contain "rails generate katapult:install"
     And the output should contain "rails generate katapult:basics"
     And the output should contain "Author: katapult <katapult@makandra.com>"
-
-    And the output should contain:
-    """
-    Next step: Model your application in lib/katapult/application_model.rb and
-    trigger the code generation by running `katapult fire`.
-    """
 
 
   Scenario: Forget to pass application name
@@ -55,6 +55,8 @@ Feature: Katapult binary `katapult`
 
     And the output should contain:
     """
-    You're done! Now boot up your development server (e.g. with `rails server`)
-    and try your kickstarted application in the browser.
+    Model transformation done.
+
+    Now boot up your development server (e.g. with `rails server`) and try your
+    kickstarted application in the browser!
     """
