@@ -4,8 +4,9 @@
 
 
 `Katapult` is a kickstart generator for Rails applications. It creates
-application basics and generates (makandra-flavored) code from an application
-model, significantly speeding up the initial phase of a Rails project.
+application basics and generates ([makandra-flavored](https://leanpub.com/growing-rails))
+code from an application model, significantly speeding up the initial phase
+of a Rails project.
 
 `Katapult` will always support current versions of Ruby and Rails, currently
 Rails 4.2 and Ruby 2.1.
