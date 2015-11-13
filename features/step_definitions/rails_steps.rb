@@ -1,12 +1,13 @@
 module KatapultRailsHelper
 
   def with_aruba_timeout(timeout, &block)
-    original_aruba_timeout = @aruba_timeout_seconds
-    @aruba_timeout_seconds = timeout
+    original_aruba_timeout = aruba.config.exit_timeout
+    aruba.config.exit_timeout = timeout.to_i
+    # print "(timeout: #{ timeout })"
 
     block.call
   ensure
-    @aruba_timeout_seconds = original_aruba_timeout
+    aruba.config.exit_timeout = original_aruba_timeout
   end
 
   def create_cached_app(name)
@@ -38,7 +39,7 @@ Given /^a pristine Rails application$/ do
     end
 
     # copy cached app to aruba directory
-    FileUtils.cp_r('tmp/cached_test_app', File.join(current_dir, 'katapult_test_app'))
+    FileUtils.cp_r 'tmp/cached_test_app', File.join(expand_path('.'), 'katapult_test_app')
     cd 'katapult_test_app' # Aruba::Api method
   end
 end
