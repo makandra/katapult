@@ -9,6 +9,8 @@
     = csrf_meta_tags
 
   %body
+    = query_diet_widget(bad_count: 15) if Rails.env.development?
+
     .layout
 
       .layout__head
