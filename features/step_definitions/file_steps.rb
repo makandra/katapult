@@ -12,3 +12,14 @@ Then /^there should be a migration with:$/ do |migration|
   all_migrations = Dir.glob(migrations_path).map(&File.method(:read)).join
   expect(all_migrations).to include(migration)
 end
+
+Then /^the file named "(.+?)" should contain "(.+?)" exactly once$/ do |file_name, content|
+  cd '.' do
+    occurrences = File.read(file_name).scan(content)
+
+    expect( occurrences.count ).to eq(1), <<-ERROR_MESSAGE
+      Expected file "#{ file_name }" to contain "#{ content }"
+      once, but had it #{ occurrences.count } times.
+    ERROR_MESSAGE
+  end
+end

@@ -14,7 +14,6 @@ module Katapult
     argument :path, required: true, type: :string,
       description: 'The path to the application model file'
 
-
     def transform_application_model
       say_status :parse, path
       @app_model = Katapult::Parser.new.parse(path)
@@ -24,11 +23,10 @@ module Katapult
     end
 
     def write_root_route
-      root_wui = @app_model.wuis.find do |wui|
-        wui.find_action :index
+      unless File.read('config/routes.rb').include? '  root'
+        root_wui = @app_model.wuis.find { |w| w.find_action :index }
+        route "root '#{ root_wui.model_name(:variables) }#index'" if root_wui
       end
-
-      route "root '#{ root_wui.model_name(:variables) }#index'" if root_wui
     end
 
     def migrate

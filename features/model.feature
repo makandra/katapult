@@ -201,3 +201,43 @@ Feature: Generate Models
 
       """
     And the specs should pass
+
+
+  Scenario: Transform the application model multiple times
+
+    Do not add routes twice.
+
+    When I overwrite "lib/katapult/application_model.rb" with:
+      """
+      model 'Car'
+      wui 'Car' do |wui|
+        wui.crud
+      end
+      """
+      And I successfully transform the application model
+    Then the file named "config/routes.rb" should contain:
+      """
+      Rails.application.routes.draw do
+        root 'cars#index'
+        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+          member do
+          end
+          collection do
+          end
+        end
+      """
+      And I successfully transform the application model
+    Then the file named "config/routes.rb" should contain:
+      """
+      Rails.application.routes.draw do
+        root 'cars#index'
+        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+          member do
+          end
+          collection do
+          end
+        end
+      """
+      And the file named "config/routes.rb" should contain "root 'cars#index'" exactly once
+      And the file named "config/routes.rb" should contain "resources :cars" exactly once
+      And the output should contain "Routes for :cars already exist! Not updated."
