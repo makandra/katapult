@@ -316,4 +316,19 @@ Feature: Web User Interface
             But I should not see "name-string"
 
       """
-    And the features should pass
+
+    When I run cucumber
+    Then the features should pass
+
+
+  Scenario: Generate layout file with query diet widget
+    When I overwrite "lib/katapult/application_model.rb" with:
+      """
+      model 'Car'
+      wui 'Car'
+      """
+    And I successfully transform the application model
+    Then the file "app/views/layouts/application.html.haml" should contain:
+      """
+      = query_diet_widget(bad_count: 15) if Rails.env.development?
+      """

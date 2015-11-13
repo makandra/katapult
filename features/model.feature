@@ -131,7 +131,9 @@ Feature: Generate Models
       end
 
       """
-    And the specs should pass
+
+    When I run rspec
+    Then the specs should pass
 
 
   Scenario: Get a helpful error message when an attribute has an unknown option
@@ -200,7 +202,9 @@ Feature: Generate Models
       end
 
       """
-    And the specs should pass
+
+    When I run rspec
+    Then the specs should pass
 
 
   Scenario: Transform the application model multiple times
