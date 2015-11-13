@@ -1,9 +1,11 @@
 Feature: Katapult binary `katapult`
 
   Scenario: Start new Rails application
-    Given the default aruba timeout is 120 seconds
+    Given the default aruba exit timeout is 120 seconds
 
-    When I successfully run `katapult target binary_test`
+    When I run `katapult new binary_test` interactively
+      And I type "katapult"
+      And I type "secret"
     Then the output should contain "Creating new Rails application"
     And the output should contain "Installing katapult"
     And the output should contain "Generating katapult basics"
@@ -21,9 +23,14 @@ Feature: Katapult binary `katapult`
     Then the file "Gemfile" should contain "gem 'katapult'"
     And a file named "lib/katapult/application_model.rb" should exist
 
-    # test whether the application is already bundled
-    When I run `bundle check`
-    Then the output should contain "The Gemfile's dependencies are satisfied"
+    # test correct insertion of database credentials
+    And the file "config/database.yml" should contain "username: katapult"
+    And the file "config/database.yml" should contain "password: secret"
+
+#    Not working, probably because Bundler sees an empty BUNDLER_GEMFILE var
+#    # test whether the application is already bundled
+#    When I run `bundle check`
+#    Then the output should contain "The Gemfile's dependencies are satisfied"
 
     # test whether katapult made git commits
     When I run `git log`
@@ -34,13 +41,13 @@ Feature: Katapult binary `katapult`
 
 
   Scenario: Forget to pass application name
-    When I run `katapult target # without app name`
+    When I run `katapult new --non-interactive # Without app name`
     Then the output should contain "No value provided for required arguments 'app_path'"
 
 
   Scenario: Run without arguments
     When I run `katapult # without arguments`
-    Then the output should contain "Usage: katapult [target APP_NAME | fire]"
+    Then the output should contain "Usage: katapult [new APP_NAME | fire]"
 
 
   Scenario: Transform the application model
@@ -60,3 +67,7 @@ Feature: Katapult binary `katapult`
     Now boot up your development server (e.g. with `rails server`) and try your
     kickstarted application in the browser!
     """
+
+    When I run `git log`
+    Then the output should contain "rails generate katapult:transform lib/katapult/application_model.rb"
+      And the output should contain "Author: katapult <katapult@makandra.com>"

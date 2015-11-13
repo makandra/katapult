@@ -1,37 +1,58 @@
 #!/usr/bin/env ruby
 
+# This script simplifies the usage of `katapult` by grouping relevant actions
+# that the user else had to perform manually.
+# See bottom for USAGE.
+
 require_relative '../lib/katapult/util'
+require 'bundler'
 
-case (command = ARGV.shift)
-when 'target'
+def pink_puts(*args)
+  message = "\n> #{ args.join ' ' }"
+  Kernel.puts "\e[35m#{ message }\e[0m" # pink
+end
+
+# With clean Bundler env
+def run(command)
+  Bundler.with_clean_env { system command }
+end
+
+case (transform_command = ARGV.shift)
+when 'new'
+  interactive = !ARGV.delete('--non-interactive')
   app_name = ARGV.shift
+  basics_command = 'bundle exec rails generate katapult:basics'
 
-  puts 'Creating new Rails application ...'
-  system "rails new #{app_name} --skip-test-unit --skip-bundle --database mysql"
+  if interactive
+    pink_puts 'Please enter your database user: '
+    basics_command << ' --db-user ' << gets.chomp
+
+    pink_puts 'Please enter your database password: '
+    basics_command << ' --db-password ' << gets.chomp
+  end
+
+  pink_puts 'Creating new Rails application ...'
+  run "rails new #{ app_name } --skip-test-unit --skip-bundle --database mysql"
 
   Dir.chdir app_name
 
-  puts
-  puts 'Initializing git repository ...'
-  system 'git init'
-  Katapult::Util.git_commit "rails new #{app_name}"
+  pink_puts 'Initializing git repository ...'
+  run 'git init'
+  Katapult::Util.git_commit "rails new #{ app_name }"
 
-  puts
-  puts 'Installing katapult ...'
+  pink_puts 'Installing katapult ...'
   File.open('Gemfile', 'a') do |file|
-    file.puts "gem 'katapult'#{ ENV['KATAPULT_GEMFILE_OPTIONS'] }"
+    file.puts "gem 'katapult'#{ ENV['KATAPULT_GEMFILE_OPTIONS'] }, group: :development"
   end
-  system 'bundle install'
-  system 'bundle exec rails generate katapult:install'
+  run 'bundle install'
+  run 'bundle exec rails generate katapult:install'
   Katapult::Util.git_commit 'rails generate katapult:install'
 
-  puts
-  puts 'Generating katapult basics ...'
-  system 'bundle exec rails generate katapult:basics'
+  pink_puts 'Generating katapult basics ...'
+  run basics_command
   Katapult::Util.git_commit 'rails generate katapult:basics'
 
-  puts <<-INSTRUCTIONS
-
+  pink_puts <<-INSTRUCTIONS
 Application initialization done.
 
 Next step: Model your application in lib/katapult/application_model.rb and
@@ -40,11 +61,13 @@ transform it into code by running `katapult fire`.
 
 when 'fire'
   app_model_path = 'lib/katapult/application_model.rb'
+  transform_command = 'bin/rails generate katapult:transform ' + app_model_path
 
-  puts 'Loading katapult ...'
-  system 'bin/rails generate katapult:transform ' + app_model_path
-  puts <<-INSTRUCTIONS
+  pink_puts 'Loading katapult ...'
+  run transform_command
+  Katapult::Util.git_commit transform_command
 
+  pink_puts <<-INSTRUCTIONS
 Model transformation done.
 
 Now boot up your development server (e.g. with `rails server`) and try your
@@ -52,5 +75,8 @@ kickstarted application in the browser!
   INSTRUCTIONS
 
 else
-  puts 'Usage: katapult [target APP_NAME | fire]'
+  puts <<-USAGE
+Usage: katapult [new APP_NAME | fire]
+Hint: Suppress database credentials prompt with `--non-interactive`
+  USAGE
 end
