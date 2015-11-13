@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 
 # engines
 gem 'haml-rails'
+gem 'mysql2', '~> 0.3.18' # Work around require-error in Rails 4.2
 
 # internal
 gem 'exception_notification'
@@ -46,6 +47,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'thin'
 
+  gem 'parallel_tests'
   gem 'guard-livereload', require: false
   gem 'rack-livereload'
   gem 'spring-commands-rspec'
@@ -60,15 +62,14 @@ group :development, :test do
 end
 
 group :test do
-  gem 'parallel_tests'
   gem 'database_cleaner'
   gem 'timecop'
   gem 'launchy'
 
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'cucumber-rails', require: false
   gem 'cucumber_factory'
-  gem 'cucumber_spinner'
   gem 'selenium-webdriver'
   gem 'spreewald'
 

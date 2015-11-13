@@ -4,17 +4,29 @@ module Katapult
   module Generators
     class BasicsGenerator < Rails::Generators::Base
 
-      SKIP_GEMS = %w(sass-rails coffee-rails turbolinks sdoc uglifier)
+      SKIP_GEMS = %w(sass-rails coffee-rails turbolinks sdoc uglifier mysql2)
 
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)
 
+      class_option :db_user, type: :string,
+        description: 'The user to set in config/database.yml'
+      class_option :db_password, type: :string,
+        description: 'The password to set in config/database.yml'
+
+
+      def add_gitignore
+        template '.gitignore', force: true
+      end
 
       def write_ruby_version
         template '.ruby-version'
       end
 
       def write_database_ymls
+        @db_user = options.db_user || 'root'
+        @db_password = options.db_password || ''
+
         template 'config/database.yml', force: true
         template 'config/database.sample.yml'
       end
@@ -31,13 +43,13 @@ module Katapult
       end
 
       def bundle_install
-        bundle 'install'
+        run 'bundle install'
 
         # There is a bug in the current version of Compass, so we use an older
         # one in our Gemfile template. Since its dependencies "sprockets" and
         # "sass-rails" are already in the Gemfile.lock (from installing Rails),
         # we need to explicitly update them.
-        bundle 'update sprockets sass-rails'
+        run 'bundle update sprockets sass-rails'
       end
 
       def remove_turbolinks_js
@@ -45,13 +57,35 @@ module Katapult
       end
 
       def setup_spring
-        bundle 'exec spring binstub --all'
-        template 'config/spring.rb'
-        run 'spring stop' # reload
+        # run 'spring binstub --all'
+        # # remove_file 'bin/bundle' # Won't play together with parallel_tests
+        # template 'config/spring.rb'
+        # template 'bin/rake'
+        run 'spring stop' # Reload (just in case)
+      end
+
+      def create_databases
+        run 'rake db:create:all parallel:create'
+      end
+
+      def set_timezone
+        gsub_file 'config/application.rb',
+          /# config\.time_zone =.*$/,
+          "config.time_zone = 'Berlin'"
+      end
+
+      def make_assets_debuggable
+        gsub_file 'config/application.rb',
+          /config\.assets\.debug =.*$/,
+          'config.assets.debug = false'
+      end
+
+      def install_initializers
+        directory 'config/initializers'
       end
 
       def add_modularity_load_paths
-        # This results in correct formatting :)
+        # This results in correct indentation :)
         application <<-'LOAD_PATHS'
 config.autoload_paths << "#{Rails.root}/app/controllers/shared"
     config.autoload_paths << "#{Rails.root}/app/models/shared"
@@ -62,20 +96,19 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
       def install_cucumber
         generate 'cucumber:install'
+        directory 'features/support'
+        template 'config/cucumber.yml', force: true
 
-        template 'features/support/paths.rb'
-        template 'features/support/env-custom.rb'
+        # Remove cucumber section from database.yml. Don't need this.
+        gsub_file 'config/database.yml', /^cucumber.*\z/m, ''
       end
 
       def install_rspec
         generate 'rspec:install'
 
-        # Do not show Ruby warnings in RSpec runs.
-        gsub_file '.rspec', "--warnings\n", ''
-
-        inject_into_file 'spec/rails_helper.rb', after: "require 'rspec/rails'\n" do
-          "require 'shoulda/matchers'\n"
-        end
+        gsub_file '.rspec', "--warnings\n", '' # Don't show Ruby warnings
+        uncomment_lines 'spec/rails_helper.rb', /Dir.Rails.root.join.+spec.support/
+        template 'spec/support/shoulda_matchers.rb'
       end
 
       def install_styles
@@ -88,15 +121,15 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       #   template 'config/deploy.rb'
       # end
 
-      private
+    private
 
       def app_name
         File.basename(Dir.pwd)
       end
 
-      def bundle(command)
+      def run(*)
         Bundler.with_clean_env do
-          run 'bundle ' + command
+          super
         end
       end
 

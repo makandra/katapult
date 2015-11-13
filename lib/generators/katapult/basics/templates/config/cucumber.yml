@@ -1,0 +1,10 @@
+<%%
+  rerun_log = 'tmp/parallel_cucumber_failures.log'
+  rerun_failures = File.file?(rerun_log) ? File.read(rerun_log).gsub("\n", ' ') : ''
+  std_opts = "-r features --format #{ ENV['CUCUMBER_FORMAT'] || 'progress' } --strict --tags ~@wip"
+  log_failures = "--format ParallelTests::Cucumber::FailuresLogger --out #{ rerun_log }"
+%>
+default: <%%= std_opts %> features
+wip: --tags @wip:3 --wip features
+parallel: <%%= std_opts %> features <%%= log_failures %>
+rerun: -r features --format pretty --strict <%%= rerun_failures %> <%%= log_failures %>

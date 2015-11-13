@@ -8,9 +8,6 @@ development:
   <<: *common
   database: <%= app_name %>_development
 
-test: &test
+test:
   <<: *common
   database: <%= app_name %>_test<%%= ENV['TEST_ENV_NUMBER'] %>
-
-cucumber:
-  <<: *test

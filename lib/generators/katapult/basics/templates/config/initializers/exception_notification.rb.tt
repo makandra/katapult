@@ -1,0 +1,16 @@
+require 'exception_notification/rails'
+
+ExceptionNotification.configure do |config|
+
+  config.add_notifier :email, {
+    email_prefix: '[<%= app_name %>] ',
+    exception_recipients: %w[fail@makandra.de],
+    sender_address: 'fail@makandra.de',
+    sections: %w[request backtrace],
+    background_sections: %w[backtrace],
+  }
+
+  # Regularly occurs when users have multiple tabs open
+  config.ignored_exceptions += %w[ActionController::InvalidAuthenticityToken]
+
+end
