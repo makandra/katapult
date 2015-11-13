@@ -29,16 +29,21 @@ module Katapult
       end
     end
 
-    def migrate
-      run 'bin/rake db:drop:all &> /dev/null'
-      run 'bin/rake db:create db:migrate RAILS_ENV=development'
-      run 'bin/rake db:create db:migrate RAILS_ENV=test'
+    def remigrate_all_databases
+      run 'spring stop' # parallel_tests does not work together with Spring
+      run 'rake db:drop:all db:create:all db:migrate parallel:create parallel:prepare'
     end
 
-    private
+  private
 
     def application_name
        File.basename(Dir.pwd)
+    end
+
+    def run(*)
+      Bundler.with_clean_env do
+        super
+      end
     end
 
   end
