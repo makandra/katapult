@@ -47,57 +47,6 @@ Feature: Katapult in general
 
 
       And the file ".gitignore" should contain "config/database.yml"
-      And the file ".bundle/config" should match /NOKOGIRI.*--use-system-libraries/
-      And the file "Guardfile" should contain:
-      """
-      guard 'livereload' do
-        watch %r{app/views/.+\.(erb|haml)$}
-        watch 'app/models/navigation.rb' # Navy
-        watch 'app/models/power.rb' # Consul
-        watch %r{app/helpers/.+\.rb}
-        watch %r{public/.+\.(css|js|html)}
-        watch %r{config/locales/.+\.yml}
-        watch %r{spec/javascripts/} # Jasmine
-
-        # Rails Assets Pipeline
-        watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|js|coffee|html|png|jpg))).*}) do |m|
-          filename = m[3]
-          # When a .sass (or .css.sass) file was changed, tell the client to load the .css version.
-          # Similarly, for .coffee / .js.coffee files we ask the client to reload the .js file.
-          filename.gsub! /(\.css)?\.sass$/, '.css'
-          filename.gsub! /(\.js)?\.coffee$/, '.js'
-          "/assets/#{filename}"
-        end
-      end
-      """
-    And the file "Capfile" should contain:
-    """
-    # Load DSL and set up stages
-    require 'capistrano/setup'
-
-    # Include default deployment tasks
-    require 'capistrano/deploy'
-
-    # Include tasks from other gems included in your Gemfile
-    require 'capistrano/bundler'
-    require 'capistrano/maintenance'
-    require 'capistrano/rails/assets'
-    require 'capistrano/rails/migrations'
-    require 'whenever/capistrano'
-
-    Dir.glob('lib/capistrano/tasks/*.rake').each do |r|
-      # `import r` calls Rake.application.add_import(r), which imports the file only
-      # *after* this file has been processed, so the imported tasks would not be
-      # available to the hooks below.
-      Rake.load_rakefile r
-    end
-
-    before 'deploy:updating', 'db:dump'
-    after 'deploy:published', 'deploy:restart'
-    after 'deploy:published', 'db:warn_if_pending_migrations'
-    after 'deploy:published', 'db:show_dump_usage'
-    after 'deploy:finished', 'deploy:cleanup' # https://makandracards.com/makandra/1432
-    """
       And the file "Gemfile" should contain "gem 'rails', '4.2.6'"
       And the file "Gemfile" should contain exactly:
       """
@@ -183,29 +132,12 @@ Feature: Katapult in general
         gem 'shoulda-matchers', require: false
       end
 
-      group :deploy do
-        gem 'capistrano-rails', require: false
-        gem 'capistrano-bundler', require: false
-        gem 'capistrano-maintenance'
-      end
       """
-
-    # Just checking turbolinks was properly removed
-    And the file "app/views/layouts/application.html.erb" should not contain "turbolinks"
-    But the file "app/views/layouts/application.html.erb" should contain:
-    """
-      <%= stylesheet_link_tag    'application', media: 'all' %>
-      <%= javascript_include_tag 'application' %>
-    """
 
 
 
       # Config
       And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
-      And the file "config/environments/development.rb" should contain:
-      """
-        config.middleware.use Rack::LiveReload
-      """
       And the file "config/database.yml" should contain exactly:
       """
       common: &common
@@ -249,73 +181,12 @@ Feature: Katapult in general
       parallel: <%= std_opts %> features <%= log_failures %>
       rerun: -r features --format pretty --strict <%= rerun_failures %> <%= log_failures %>
       """
-    And the file "config/deploy.rb" should contain:
-    """
-    abort 'You must run this using "bundle exec ..."' unless ENV['BUNDLE_BIN_PATH'] || ENV['BUNDLE_GEMFILE']
+    And the file "config/initializers/find_by_anything.rb" should contain:
+      """
+      ActiveRecord::Base.class_eval do
 
-    # config valid only for current version of Capistrano
-    lock '3.4.0'
-
-    # Default value for :format is :pretty
-    # set :format, :pretty
-
-    set :log_level, :info # %i(debug info error), default: :debug
-
-    # Default value for :pty is false
-    # set :pty, true
-
-    # Default value for :linked_files is []
-    # set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
-    set :linked_files, %w(config/database.yml)
-
-    # Default value for linked_dirs is []
-    # set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
-    set :linked_dirs, %w(log public/system)
-
-    # Default value for default_env is {}
-    # set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-    set :application, 'pura'
-    set :keep_releases, 10
-    set :ssh_options, {
-      forward_agent: true
-    }
-    set :scm, :git
-    set :repo_url, 'git@code.makandra.de:makandra/pura.git'
-
-    # set :whenever_roles, :cron
-    # set :whenever_environment, defer { stage }
-    # set :whenever_command, 'bundle exec whenever'
-
-    set :maintenance_template_path, 'public/maintenance.html.erb'
-    """
-    And the file "config/deploy/staging.rb" should contain:
-    """
-    set :stage, :staging
-
-    set :deploy_to, '/var/www/katapult-test-app-staging.makandra.de'
-    set :rails_env, 'staging'
-    set :branch, 'master'
-
-    server 'c23.staging.makandra.de', user: 'deploy-katapult_test_app_s', roles: %w(app web cron db) # first is primary
-    server 'c42.staging.makandra.de', user: 'deploy-katapult_test_app_s', roles: %w(app web)
-    """
-    And the file "config/deploy/production.rb" should contain exactly:
-    """
-    set :stage, :production
-
-    set :deploy_to # TODO
-    set :rails_env, 'production'
-    set :branch, 'production'
-
-    # TODO add servers
-    """
-    And the file "config/initializers/ext.rb" should contain exactly:
-    """
-    Dir.glob(Rails.root.join('lib/ext/**/*.rb')).each do |filename|
-      require filename
-    end
-    """
+        def self.find_by_anything(identifier)
+      """
     And the file "config/initializers/exception_notification.rb" should contain:
       """
       ExceptionNotification.configure do |config|
@@ -324,161 +195,15 @@ Feature: Katapult in general
           email_prefix: '[katapult_test_app] ',
           exception_recipients: %w[fail@makandra.de],
       """
+    And the file "config/initializers/form_for_with_development_errors.rb" should contain:
+      """
+      if Rails.env == 'development'
 
+        ActionView::Helpers::FormHelper.class_eval do
 
-    # Lib
-    And the file "lib/capistrano/tasks/db.rake" should contain:
-    """
-    namespace :db do
-      desc 'Warn about pending migrations'
-      task :warn_if_pending_migrations do
-        on primary :db do
-          within current_path do
-            with rails_env: fetch(:rails_env, 'production') do
-              rake 'db:warn_if_pending_migrations'
-            end
-          end
-        end
-      end
+          def form_for_with_development_errors(*args, &block)
+      """
 
-      desc 'Do a dump of the DB on the remote machine using dumple'
-      task :dump do
-        on primary :db do
-          within current_path do
-            execute :dumple, '--fail-gently', fetch(:rails_env, 'production')
-          end
-        end
-      end
-
-      desc 'Show usage of ~/dumps/ on remote host'
-      task :show_dump_usage do
-        on primary :db do
-          info capture :dumple, '-i'
-        end
-      end
-    end
-    """
-    And the file "lib/capistrano/tasks/deploy.rake" should contain:
-    """
-    namespace :deploy do
-      desc 'Restart application'
-      task :restart do
-        invoke 'passenger:restart'
-      end
-
-      desc 'Show deployed revision'
-      task :revision do
-        on roles :app do
-          within current_path do
-            info "Revision: #{ capture :cat, 'REVISION' }"
-          end
-        end
-      end
-    end
-    """
-    And the file "lib/capistrano/tasks/passenger.rake" should contain:
-    """
-    namespace :passenger do
-      desc 'Restart Application'
-      task :restart do
-        on roles :app do
-          execute "sudo passenger-config restart-app --ignore-app-not-running #{ fetch(:deploy_to) }"
-        end
-      end
-    end
-    """
-    And the file "lib/ext/active_record/find_by_anything.rb" should contain:
-    """
-    ActiveRecord::Base.class_eval do
-
-      def self.find_by_anything(identifier)
-    """
-    And the file "lib/ext/action_view/spec_label.rb" should contain:
-    """
-    ActionView::Helpers::FormBuilder.class_eval do
-
-      def spec_label(field, text = nil, options = {})
-    """
-    And the file "lib/ext/action_view/form_for_with_development_errors.rb" should contain:
-    """
-    if Rails.env == 'development'
-
-      ActionView::Helpers::FormHelper.class_eval do
-
-        def form_for_with_development_errors(*args, &block)
-    """
-    And the file "lib/ext/active_record/these.rb" should contain:
-    """
-    ActiveRecord::Base.class_eval do
-
-      def self.these(arg)
-        where(id: arg.collect_ids)
-      end
-
-    end
-    """
-    And the file "lib/ext/array/xss_aware_join.rb" should contain:
-    """
-    Array.class_eval do
-      def xss_aware_join(delimiter = '')
-        ''.html_safe.tap do |str|
-          each_with_index do |element, i|
-            str << delimiter if i > 0
-            str << element
-          end
-        end
-      end
-    end
-    """
-    And the file "lib/ext/enumerable/natural_sort.rb" should contain:
-    """
-    module Enumerable
-
-      def natural_sort
-    """
-    And the file "lib/ext/hash/infinite.rb" should contain:
-    """
-    class Hash
-
-      def self.infinite
-        new { |h, k| h[k] = new(&h.default_proc) }
-      end
-
-    end
-    """
-    And the file "lib/ext/string/html_entities.rb" should contain:
-    """
-    class String
-
-      def self.nbsp
-        ' '
-      end
-
-      def self.ndash
-        '–'
-      end
-
-    end
-    """
-    And the file "lib/ext/string/to_sort_atoms.rb" should contain:
-    """
-    String.class_eval do
-
-      def to_sort_atoms
-        SmartSortAtom.parse(self)
-      end
-
-    end
-    """
-    And the file "lib/tasks/pending_migrations.rake" should contain:
-    """
-          pending_migrations = ActiveRecord::Migrator.new(:up, all_migrations).pending_migrations
-
-          if pending_migrations.any?
-            puts ''
-            puts '======================================================='
-            puts "You have #{ pending_migrations.size } pending migrations:"
-    """
 
 
     # Tests
