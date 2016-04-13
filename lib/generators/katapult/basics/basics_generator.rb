@@ -116,10 +116,17 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         directory 'app/assets/stylesheets', force: true
       end
 
-      # def install_capistrano
-      #   capify!
-      #   template 'config/deploy.rb'
-      # end
+      def install_capistrano
+        run 'cap install'
+
+        template 'Capfile', force: true
+        template 'config/deploy.rb', force: true
+        template 'config/deploy/staging.rb', force: true
+        template 'config/deploy/production.rb', force: true
+
+        directory 'lib/capistrano/tasks'
+        template 'lib/tasks/pending_migrations.rake'
+      end
 
     private
 

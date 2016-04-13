@@ -75,3 +75,9 @@ group :test do
   gem 'rspec'
   gem 'shoulda-matchers', require: false
 end
+
+group :deploy do
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-maintenance'
+end
