@@ -78,7 +78,7 @@ Inside this file, use `katapult`'s simple DSL (domain specific language) to
 express yourself. When you are done developing the application model, transform
 it into code with:
 
-    katapult fire
+    katapult fire [path/to/application_model]
 
 See an overview of the DSL below. The respective sections hold examples of what
 options are available to each element.

@@ -48,7 +48,7 @@ Feature: Katapult binary `katapult`
 
   Scenario: Run without arguments
     When I run `katapult # without arguments`
-    Then the output should contain "Usage: katapult [new APP_NAME | fire]"
+    Then the output should contain "Usage: katapult [new APP_NAME | fire [path/to/model] ]"
 
 
   Scenario: Transform the application model
@@ -74,6 +74,21 @@ Feature: Katapult binary `katapult`
       And the output should contain "Author: katapult <katapult@makandra.com>"
 
 
+  Scenario: Transform a custom application model
+    Given a pristine Rails application
+    And I install katapult
+    And I generate katapult basics
+
+    When I write to "lib/katapult/custom_model.rb" with:
+    """
+    model 'custom'
+    """
+    And I run `katapult fire lib/katapult/custom_model.rb`
+    Then the output should contain "Loading katapult"
+    And the output should contain "parse  lib/katapult/custom_model"
+    And a file named "app/models/custom.rb" should exist
+
+
   Scenario: When the transformation fails, an error message is printed
     Given a pristine Rails application
     And I install katapult
@@ -81,7 +96,9 @@ Feature: Katapult binary `katapult`
 
     When I overwrite "lib/katapult/application_model.rb" with:
       """
-      invalid
+      model 'failing example' do |ex|
+        ex.attr :fail, type: :nonexistent
+      end
       """
     And I run `katapult fire`
     Then the output should not contain "Model transformation done"

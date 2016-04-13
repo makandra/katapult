@@ -1,3 +1,5 @@
+require 'katapult/binary_util'
+
 module KatapultRailsHelper
 
   def with_aruba_timeout(timeout, &block)
@@ -12,10 +14,9 @@ module KatapultRailsHelper
 
   def create_cached_app(name)
     job = 'Cached Rails app generation'
-    rails_new_command = "bundle exec rails new #{name} --skip-test-unit --skip-bundle --database postgresql"
 
     puts "#{job} started (in #{Dir.pwd})"
-    system(rails_new_command) or raise "#{job} failed"
+    Katapult::BinaryUtil.create_rails_app(name)
     puts "#{job} done."
   end
 
