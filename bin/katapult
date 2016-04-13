@@ -14,7 +14,11 @@ end
 
 # With clean Bundler env
 def run(command)
-  Bundler.with_clean_env { system command }
+  success = Bundler.with_clean_env { system command }
+  if !success
+    pink_puts 'x Something went wrong'
+    exit(1)
+  end
 end
 
 case (transform_command = ARGV.shift)
@@ -77,6 +81,6 @@ kickstarted application in the browser!
 else
   puts <<-USAGE
 Usage: katapult [new APP_NAME | fire]
-Hint: Suppress database credentials prompt with `--non-interactive`
+Suppress database credentials prompt with `--non-interactive`
   USAGE
 end
