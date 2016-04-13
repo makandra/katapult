@@ -47,13 +47,13 @@ Feature: Katapult in general
 
 
       And the file ".gitignore" should contain "config/database.yml"
-      And the file "Gemfile" should contain "gem 'rails', '4.2.4'"
+      And the file "Gemfile" should contain "gem 'rails', '4.2.6'"
       And the file "Gemfile" should contain exactly:
       """
       source 'https://rubygems.org'
 
       # from original Gemfile
-      gem 'rails', '4.2.4'
+      gem 'rails', '4.2.6'
       gem 'jquery-rails'
       gem 'jbuilder', '~> 2.0'
       gem 'katapult', path: '../../..'
