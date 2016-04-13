@@ -129,11 +129,8 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         gsub_file '.rspec', "--warnings\n", '' # Don't show Ruby warnings
         uncomment_lines 'spec/rails_helper.rb', /Dir.Rails.root.join.+spec.support/
         template 'spec/support/shoulda_matchers.rb'
-      end
-
-      def install_styles
-        remove_file 'app/assets/stylesheets/application.css'
-        directory 'app/assets/stylesheets', force: true
+        template 'spec/support/factory_girl.rb'
+        directory 'spec/factories'
       end
 
       def install_capistrano
@@ -147,6 +144,12 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         directory 'lib/capistrano/tasks'
         template 'lib/tasks/pending_migrations.rake'
       end
+
+      def install_styles
+        remove_file 'app/assets/stylesheets/application.css'
+        directory 'app/assets/stylesheets', force: true
+      end
+
 
     private
 

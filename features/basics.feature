@@ -511,6 +511,10 @@ Feature: Katapult in general
       DatabaseCleaner.strategy = :transaction
       Cucumber::Rails::Database.javascript_strategy = :deletion
       """
+    And the file "features/support/factory_girl.rb" should contain:
+      """
+      World(FactoryGirl::Syntax::Methods)
+      """
       And a file named "features/support/paths.rb" should exist
       And a file named "features/support/selectors.rb" should exist
       And the file "spec/rails_helper.rb" should match /^Dir.Rails.root.join.+spec.support/
@@ -523,6 +527,24 @@ Feature: Katapult in general
           with.test_framework :rspec
           with.library :rails
         end
+      end
+      """
+      And the file "spec/support/factory_girl.rb" should contain:
+      """
+      RSpec.configure do |config|
+        config.include FactoryGirl::Syntax::Methods
+      end
+      """
+      And the file "spec/factories/factories.rb" should contain:
+      """
+      FactoryGirl.define do
+
+        factory :EXAMPLE do
+          status 'pending'
+          uuid { SecureRandom.uuid }
+          sequence(:title) { |i| "Titel #{ i }"}
+        end
+
       end
       """
 
