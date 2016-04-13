@@ -91,7 +91,7 @@ class <%= model_name(:classes) %>Controller < ApplicationController
 
   def <%= method_name(:params) %>
     <%= method_name(:params) %> = params[:<%= model_name(:variable) %>]
-    <%= method_name(:params) %> ? <%= method_name(:params) %>.permit(<%= wui.model.attrs.map(&:name).map(&:to_sym) %>) : {}
+    <%= method_name(:params) %> ? <%= method_name(:params) %>.permit(%i[<%= wui.model.attrs.map(&:name).join(' ') %>]) : {}
   end
 
   def <%= method_name(:scope) %>

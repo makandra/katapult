@@ -10,10 +10,12 @@ Feature: <%= model.name(:humans).titleize %>
       And I select "<%= attr.test_value %>" from "<%= attr.name.humanize %>"
   <%- else -%>
     <%- case attr.type -%>
-    <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
+    <%- when :string, :email, :url, :integer, :money, :text -%>
       And I fill in "<%= attr.name.humanize %>" with "<%= attr.test_value %>"
     <%- when :flag -%>
       And I check "<%= attr.name.humanize %>"
+    <%- when :datetime -%>
+      And I fill in "<%= attr.name.humanize %>" with "<%= attr.test_value.to_date %>"
     <%- end -%>
   <%- end -%>
 <% end -%>
@@ -23,12 +25,12 @@ Feature: <%= model.name(:humans).titleize %>
     Then I should be on the page for the <%= model.name(:variable) %> above
 <% model.attrs.each do |attr| -%>
   <%- case attr.type -%>
-    <%- when :string, :email, :url, :integer, :money, :text, :markdown -%>
+    <%- when :string, :email, :url, :integer, :money, :text -%>
       And I should see "<%= attr.test_value %>"
   <%- when :flag -%>
       And I should see "<%= attr.name.humanize %> Yes"
   <%- when :datetime -%>
-      And I should see "<%= I18n.localize(attr.test_value) %>"
+      And I should see "<%= I18n.localize(attr.test_value.to_date) %>"
   <%- end -%>
 <% end -%>
 
@@ -40,15 +42,17 @@ Feature: <%= model.name(:humans).titleize %>
       And "<%= attr.test_value %>" should be selected for "<%= attr.name.humanize %>"
   <%- else -%>
     <%- case attr.type -%>
-    <%- when :string, :email, :url, :integer, :money, :text, :markdown, :datetime -%>
+    <%- when :string, :email, :url, :integer, :money, :text -%>
       And the "<%= attr.name.humanize %>" field should contain "<%= attr.test_value %>"
     <%- when :flag -%>
       And the "<%= attr.name.humanize %>" checkbox should be checked
+    <%- when :datetime -%>
+      And the "<%= attr.name.humanize %>" field should contain "<%= attr.test_value.to_date %>"
     <%- end -%>
   <%- end -%>
 <% end -%>
 
-<% if model.label_attr # do not crash when the model has no label attr -%>
+<% if model.label_attr -%>
     # destroy
     When I go to the list of <%= model.name(:variables) %>
     Then I should see "<%= model.label_attr.test_value %>"

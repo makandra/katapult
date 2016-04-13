@@ -63,10 +63,11 @@ Feature: Generate Models
         person.attr :hobby # string is default
 
         # Special types
-        person.attr :email # type is detected as email
+        person.attr :email # type is auto-detected as email
         person.attr :income, type: :money
         person.attr :homepage, type: :url, default: 'http://www.makandra.de'
         person.attr :locked, type: :flag, default: false
+        person.attr :hobbies, type: :text
       end
       """
     And I successfully transform the application model
@@ -94,6 +95,7 @@ Feature: Generate Models
             t.decimal :income, precision: 10, scale: 2
             t.string :homepage
             t.boolean :locked
+            t.text :hobbies
 
             t.timestamps null: false
           end

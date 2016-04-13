@@ -12,7 +12,7 @@ module Katapult
 
     UnknownTypeError = Class.new(StandardError)
     MissingOptionError = Class.new(StandardError)
-    TYPES = %i(string email url integer money text markdown flag datetime)
+    TYPES = %i(string email url integer money text flag datetime)
 
     def initialize(*args)
       super

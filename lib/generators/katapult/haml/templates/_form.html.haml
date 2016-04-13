@@ -22,12 +22,10 @@
       €
     <%- when :text -%>
       = form.text_area <%= attribute.name(:symbol) %>, rows: 5
-    <%- when :markdown -%>
-      = form.text_area <%= attribute.name(:symbol) %>, rows: 15
     <%- when :flag -%>
       = form.check_box <%= attribute.name(:symbol) %>
     <%- when :datetime -%>
-      = form.datetime_field <%= attribute.name(:symbol) %>
+      = form.date_field <%= attribute.name(:symbol) %>
     <%- end -%>
   <%- end -%>
 <% end -%>

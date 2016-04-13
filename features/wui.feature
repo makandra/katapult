@@ -17,6 +17,8 @@ Feature: Web User Interface
         customer.attr :revenue, type: :money
         customer.attr :homepage, type: :url, default: 'http://www.makandra.de'
         customer.attr :locked, type: :flag, default: false
+        customer.attr :notes, type: :text
+        customer.attr :first_visit, type: :datetime
       end
 
       wui 'customer', model: 'customer' do |wui|
@@ -107,7 +109,7 @@ Feature: Web User Interface
 
         def customer_params
           customer_params = params[:customer]
-          customer_params ? customer_params.permit([:name, :age, :email, :revenue, :homepage, :locked]) : {}
+          customer_params ? customer_params.permit(%i[name age email revenue homepage locked notes first_visit]) : {}
         end
 
         def customer_scope
@@ -196,6 +198,14 @@ Feature: Web User Interface
           = Customer.human_attribute_name(:locked)
         %dd
           = @customer.locked ? 'Yes' : 'No'
+        %dt
+          = Customer.human_attribute_name(:notes)
+        %dd
+          = simple_format(@customer.notes)
+        %dt
+          = Customer.human_attribute_name(:first_visit)
+        %dd
+          = l(@customer.first_visit.to_date) if @customer.first_visit
 
       """
     And the file "app/views/customers/new.html.haml" should contain exactly:
@@ -244,6 +254,14 @@ Feature: Web User Interface
             = form.label :locked
           %dd
             = form.check_box :locked
+          %dt
+            = form.label :notes
+          %dd
+            = form.text_area :notes, rows: 5
+          %dt
+            = form.label :first_visit
+          %dd
+            = form.date_field :first_visit
 
         .tools
           = form.submit 'Save', class: 'tools__button is_primary'
@@ -286,6 +304,8 @@ Feature: Web User Interface
             And I fill in "Revenue" with "2.21"
             And I fill in "Homepage" with "homepage.example.com"
             And I check "Locked"
+            And I fill in "Notes" with "notes-text"
+            And I fill in "First visit" with "2022-03-25"
             And I press "Save"
 
           # read
@@ -296,6 +316,8 @@ Feature: Web User Interface
             And I should see "2.21"
             And I should see "homepage.example.com"
             And I should see "Locked Yes"
+            And I should see "notes-text"
+            And I should see "2022-03-25"
 
           # update
           When I follow "Edit"
@@ -306,6 +328,8 @@ Feature: Web User Interface
             And the "Revenue" field should contain "2.21"
             And the "Homepage" field should contain "homepage.example.com"
             And the "Locked" checkbox should be checked
+            And the "Notes" field should contain "notes-text"
+            And the "First visit" field should contain "2022-03-25"
 
           # destroy
           When I go to the list of customers

@@ -31,11 +31,9 @@
     €
   <%- when :text -%>
     = simple_format(<%= model_attribute %>)
-  <%- when :markdown -%>
-    = markdown(<%= model_attribute %>)
   <%- when :flag -%>
     = <%= model_attribute %> ? 'Yes' : 'No'
   <%- when :datetime -%>
-    = l(<%= model_attribute %>) if <%= model_attribute %>
+    = l(<%= model_attribute %>.to_date) if <%= model_attribute %>
   <%- end -%>
 <%- end -%>
