@@ -121,6 +121,10 @@ Defined on Model. Takes a name and options:
     # Boolean fields are modeled as flags. Default required!
     model.attr :locked, type: :flag, default: false
 
+    # JSON fields are supported
+    model.attr :prefer, type: :json # PostgreSQL "jsonb"
+    model.attr :avoid, type: :plain_json # PostgreSQL "json"
+
 
 ### WUI (Web User Interface)
 Takes a name, options and a block:

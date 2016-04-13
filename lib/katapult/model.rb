@@ -25,6 +25,10 @@ module Katapult
       attrs.first
     end
 
+    def renderable_attrs
+      attrs.reject { |a| a.type.to_s.include? 'json' }
+    end
+
     def render
       Generators::ModelGenerator.new(self).invoke_all
     end

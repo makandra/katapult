@@ -19,6 +19,8 @@ Feature: Web User Interface
         customer.attr :locked, type: :flag, default: false
         customer.attr :notes, type: :text
         customer.attr :first_visit, type: :datetime
+        customer.attr :indexable_data, type: :json
+        customer.attr :plain_data, type: :plain_json
       end
 
       wui 'customer', model: 'customer' do |wui|
@@ -109,7 +111,7 @@ Feature: Web User Interface
 
         def customer_params
           customer_params = params[:customer]
-          customer_params ? customer_params.permit(%i[name age email revenue homepage locked notes first_visit]) : {}
+          customer_params ? customer_params.permit(%i[name age email revenue homepage locked notes first_visit indexable_data plain_data]) : {}
         end
 
         def customer_scope
@@ -208,6 +210,9 @@ Feature: Web User Interface
           = l(@customer.first_visit.to_date) if @customer.first_visit
 
       """
+    # Note that no views are generated for JSON fields, as they are mainly data
+    # storage fields
+
     And the file "app/views/customers/new.html.haml" should contain exactly:
       """
       %h1

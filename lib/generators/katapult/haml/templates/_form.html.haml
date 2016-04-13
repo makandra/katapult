@@ -1,7 +1,7 @@
 = form_for <%= model_name(:ivar) %> do |form|
 
   %dl.controls
-<% wui.model.attrs.each do |attribute| -%>
+<% wui.model.renderable_attrs.each do |attribute| -%>
     %dt
       = form.label <%= attribute.name(:symbol) %>
     %dd

@@ -12,7 +12,7 @@
 <% end -%>
 
 %dl.values
-<% wui.model.attrs.each do |attribute| -%>
+<% wui.model.renderable_attrs.each do |attribute| -%>
   <%- model_attribute = "#{model_name(:ivar)}.#{attribute.name}" -%>
   %dt
     = <%= model_name(:class) %>.human_attribute_name(:<%= attribute.name %>)

@@ -68,6 +68,8 @@ Feature: Generate Models
         person.attr :homepage, type: :url, default: 'http://www.makandra.de'
         person.attr :locked, type: :flag, default: false
         person.attr :hobbies, type: :text
+        person.attr :indexable_json, type: :json
+        person.attr :plain_json, type: :plain_json
       end
       """
     And I successfully transform the application model
@@ -96,6 +98,8 @@ Feature: Generate Models
             t.string :homepage
             t.boolean :locked
             t.text :hobbies
+            t.jsonb :indexable_json
+            t.json :plain_json
 
             t.timestamps null: false
           end
