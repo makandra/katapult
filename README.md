@@ -9,7 +9,7 @@ code from an application model, significantly speeding up the initial phase of a
 Rails project.
 
 `Katapult` will always support current versions of Ruby and Rails, currently
-Rails 4.2 and Ruby 2.1.
+Rails 4.2 and Ruby 2.3.
 
 
 ## Installation

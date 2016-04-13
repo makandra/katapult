@@ -9,6 +9,7 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Creating new Rails application"
     And the output should contain "Installing katapult"
     And the output should contain "Generating katapult basics"
+    And the output should contain "Using rails 4.2.6"
     And the output should contain:
     """
     Application initialization done.

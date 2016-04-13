@@ -34,7 +34,7 @@ Feature: Katapult in general
     Given I install katapult
 
     When I generate katapult basics
-    Then the file ".ruby-version" should contain "2.1.5"
+    Then the file ".ruby-version" should contain "2.3.0"
 
 
     And the file "config/cucumber.yml" should contain:
