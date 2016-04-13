@@ -47,6 +47,7 @@ Feature: Katapult in general
 
 
       And the file ".gitignore" should contain "config/database.yml"
+      And the file ".bundle/config" should match /NOKOGIRI.*--use-system-libraries/
       And the file "Guardfile" should contain:
       """
       guard 'livereload' do
