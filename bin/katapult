@@ -32,7 +32,7 @@ when 'new'
   end
 
   pink_puts 'Creating new Rails application ...'
-  run "rails new #{ app_name } --skip-test-unit --skip-bundle --database mysql"
+  run "rails new #{ app_name } --skip-test-unit --skip-bundle --database postgresql"
 
   Dir.chdir app_name
 

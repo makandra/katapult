@@ -60,7 +60,7 @@ Feature: Katapult in general
 
       # engines
       gem 'haml-rails'
-      gem 'mysql2', '~> 0.3.18' # Work around require-error in Rails 4.2
+      gem 'pg'
 
       # internal
       gem 'exception_notification'
@@ -141,8 +141,9 @@ Feature: Katapult in general
       And the file "config/database.yml" should contain exactly:
       """
       common: &common
-        adapter: mysql2
-        encoding: utf8
+        adapter: postgresql
+        encoding: unicode
+        host: localhost
         username: katapult
         password: secret
 
@@ -158,8 +159,9 @@ Feature: Katapult in general
     And the file "config/database.sample.yml" should contain exactly:
       """
       common: &common
-        adapter: mysql2
-        encoding: utf8
+        adapter: postgresql
+        encoding: unicode
+        host: localhost
         username: root
         password:
 

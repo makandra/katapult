@@ -12,7 +12,7 @@ module KatapultRailsHelper
 
   def create_cached_app(name)
     job = 'Cached Rails app generation'
-    rails_new_command = "bundle exec rails new #{name} --skip-test-unit --skip-bundle --database mysql"
+    rails_new_command = "bundle exec rails new #{name} --skip-test-unit --skip-bundle --database postgresql"
 
     puts "#{job} started (in #{Dir.pwd})"
     system(rails_new_command) or raise "#{job} failed"

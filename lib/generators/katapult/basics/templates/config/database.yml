@@ -1,6 +1,7 @@
 common: &common
-  adapter: mysql2
-  encoding: utf8
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
   username: <%= @db_user %>
   password: <%= @db_password %>
 

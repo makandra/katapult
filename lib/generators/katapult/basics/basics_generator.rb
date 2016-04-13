@@ -4,7 +4,7 @@ module Katapult
   module Generators
     class BasicsGenerator < Rails::Generators::Base
 
-      SKIP_GEMS = %w(sass-rails coffee-rails turbolinks sdoc uglifier mysql2)
+      SKIP_GEMS = %w(sass-rails coffee-rails turbolinks sdoc uglifier)
 
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)

@@ -42,7 +42,7 @@ In detail, this will:
 - create a new Rails application (without turbolinks)
 - install common Gems, some of them commented out
 - add a .gitignore and a .ruby-version file
-- set up a `database.yml` file (for MySQL)
+- set up a `database.yml` file (for PostgreSQL)
 - create basic styles
 - install some handy initializers
 - install RSpec and Cucumber to the application
@@ -171,14 +171,12 @@ It caches a pristine Rails application inside its `tmp/` directory to
 speed up test runs. Keep this in mind, as it may lead to caching issues when
 switching Ruby versions or installing a new version of the Rails gem.
 
-Since `katapult` has full-stack integration tests, it requires a MySQL account.
-Create a dedicated account on your local MySQL server by running this command in
-a MySQL console (as-is):
+Since `katapult` has full-stack integration tests, it requires a PostgreSQL
+account. Create a dedicated account on your local PostgreSQL server:
 
-    GRANT ALL ON *.* TO 'katapult'@'localhost' IDENTIFIED BY 'secret';
-
-The user `katapult` is hereby granted any action (SELECT, UPDATE, etc. except
-for granting privileges) on any database and table (`*.*`).
+    $> sudo -iu postgres
+    postgres $> psql
+    postgres=# CREATE ROLE katapult WITH createdb LOGIN;
 
 ### Continuing development
 When you continue development on `katapult`, remove its `tmp/` directory first.
