@@ -143,8 +143,9 @@ Feature: Katapult in general
       gem 'sass-rails'
       gem 'autoprefixer-rails'
       gem 'coffee-rails'
+      gem 'therubyracer', platform: :ruby
       gem 'uglifier'
-      gem 'compass-rails', '>= 2.0.4' # fixes "uninitialized constant Sprockets::SassCacheStore"
+      gem 'compass-rails'
       gem 'compass-rgbapng'
 
       group :development do
