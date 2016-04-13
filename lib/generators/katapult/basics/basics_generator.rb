@@ -95,6 +95,10 @@ module Katapult
         directory 'config/initializers'
       end
 
+      def install_ext
+        directory 'lib/ext'
+      end
+
       def add_modularity_load_paths
         # This results in correct indentation :)
         application <<-'LOAD_PATHS'

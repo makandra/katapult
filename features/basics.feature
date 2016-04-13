@@ -249,12 +249,6 @@ Feature: Katapult in general
       parallel: <%= std_opts %> features <%= log_failures %>
       rerun: -r features --format pretty --strict <%= rerun_failures %> <%= log_failures %>
       """
-    And the file "config/initializers/find_by_anything.rb" should contain:
-      """
-      ActiveRecord::Base.class_eval do
-
-        def self.find_by_anything(identifier)
-      """
     And the file "config/deploy.rb" should contain:
     """
     abort 'You must run this using "bundle exec ..."' unless ENV['BUNDLE_BIN_PATH'] || ENV['BUNDLE_GEMFILE']
@@ -316,6 +310,12 @@ Feature: Katapult in general
     # server 'one.example.com', user: 'deploy-user', roles: %w(app web cron db)
     # server 'two.example.com', user: 'deploy-user', roles: %w(app web)
     """
+    And the file "config/initializers/ext.rb" should contain exactly:
+    """
+    Dir.glob(Rails.root.join('lib/ext/**/*.rb')).each do |filename|
+      require filename
+    end
+    """
     And the file "config/initializers/exception_notification.rb" should contain:
       """
       ExceptionNotification.configure do |config|
@@ -324,9 +324,6 @@ Feature: Katapult in general
           email_prefix: '[katapult_test_app] ',
           exception_recipients: %w[fail@makandra.de],
       """
-    And the file "config/initializers/form_for_with_development_errors.rb" should contain:
-      """
-      if Rails.env == 'development'
 
 
     # Lib
@@ -388,6 +385,89 @@ Feature: Katapult in general
           execute "sudo passenger-config restart-app --ignore-app-not-running #{ fetch(:deploy_to) }"
         end
       end
+    end
+    """
+    And the file "lib/ext/active_record/find_by_anything.rb" should contain:
+    """
+    ActiveRecord::Base.class_eval do
+
+      def self.find_by_anything(identifier)
+    """
+    And the file "lib/ext/action_view/spec_label.rb" should contain:
+    """
+    ActionView::Helpers::FormBuilder.class_eval do
+
+      def spec_label(field, text = nil, options = {})
+    """
+    And the file "lib/ext/action_view/form_for_with_development_errors.rb" should contain:
+    """
+    if Rails.env == 'development'
+
+      ActionView::Helpers::FormHelper.class_eval do
+
+        def form_for_with_development_errors(*args, &block)
+    """
+    And the file "lib/ext/active_record/these.rb" should contain:
+    """
+    ActiveRecord::Base.class_eval do
+
+      def self.these(arg)
+        where(id: arg.collect_ids)
+      end
+
+    end
+    """
+    And the file "lib/ext/array/xss_aware_join.rb" should contain:
+    """
+    Array.class_eval do
+      def xss_aware_join(delimiter = '')
+        ''.html_safe.tap do |str|
+          each_with_index do |element, i|
+            str << delimiter if i > 0
+            str << element
+          end
+        end
+      end
+    end
+    """
+    And the file "lib/ext/enumerable/natural_sort.rb" should contain:
+    """
+    module Enumerable
+
+      def natural_sort
+    """
+    And the file "lib/ext/hash/infinite.rb" should contain:
+    """
+    class Hash
+
+      def self.infinite
+        new { |h, k| h[k] = new(&h.default_proc) }
+      end
+
+    end
+    """
+    And the file "lib/ext/string/html_entities.rb" should contain:
+    """
+    class String
+
+      def self.nbsp
+        ' '
+      end
+
+      def self.ndash
+        '–'
+      end
+
+    end
+    """
+    And the file "lib/ext/string/to_sort_atoms.rb" should contain:
+    """
+    String.class_eval do
+
+      def to_sort_atoms
+        SmartSortAtom.parse(self)
+      end
+
     end
     """
     And the file "lib/tasks/pending_migrations.rake" should contain:
