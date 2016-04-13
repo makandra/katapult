@@ -59,6 +59,7 @@ module Katapult
 
       def remove_turbolinks_js
         gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", ''
+        gsub_file 'app/views/layouts/application.html.erb', ", 'data-turbolinks-track' => true", ''
       end
 
       def setup_spring

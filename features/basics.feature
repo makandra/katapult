@@ -190,6 +190,14 @@ Feature: Katapult in general
       end
       """
 
+    # Just checking turbolinks was properly removed
+    And the file "app/views/layouts/application.html.erb" should not contain "turbolinks"
+    But the file "app/views/layouts/application.html.erb" should contain:
+    """
+      <%= stylesheet_link_tag    'application', media: 'all' %>
+      <%= javascript_include_tag 'application' %>
+    """
+
 
 
       # Config
