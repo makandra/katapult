@@ -64,6 +64,11 @@ module Katapult
         run 'spring stop' # Reload (just in case)
       end
 
+      def setup_guard
+        template 'Guardfile'
+        environment 'config.middleware.use Rack::LiveReload', env: :development
+      end
+
       def create_databases
         run 'rake db:create:all parallel:create'
       end

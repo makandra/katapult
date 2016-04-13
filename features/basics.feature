@@ -47,6 +47,28 @@ Feature: Katapult in general
 
 
       And the file ".gitignore" should contain "config/database.yml"
+      And the file "Guardfile" should contain:
+      """
+      guard 'livereload' do
+        watch %r{app/views/.+\.(erb|haml)$}
+        watch 'app/models/navigation.rb' # Navy
+        watch 'app/models/power.rb' # Consul
+        watch %r{app/helpers/.+\.rb}
+        watch %r{public/.+\.(css|js|html)}
+        watch %r{config/locales/.+\.yml}
+        watch %r{spec/javascripts/} # Jasmine
+
+        # Rails Assets Pipeline
+        watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|js|coffee|html|png|jpg))).*}) do |m|
+          filename = m[3]
+          # When a .sass (or .css.sass) file was changed, tell the client to load the .css version.
+          # Similarly, for .coffee / .js.coffee files we ask the client to reload the .js file.
+          filename.gsub! /(\.css)?\.sass$/, '.css'
+          filename.gsub! /(\.js)?\.coffee$/, '.js'
+          "/assets/#{filename}"
+        end
+      end
+      """
     And the file "Capfile" should contain:
     """
     # Load DSL and set up stages
@@ -171,6 +193,10 @@ Feature: Katapult in general
 
       # Config
       And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
+      And the file "config/environments/development.rb" should contain:
+      """
+        config.middleware.use Rack::LiveReload
+      """
       And the file "config/database.yml" should contain exactly:
       """
       common: &common
