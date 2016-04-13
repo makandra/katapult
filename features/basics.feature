@@ -207,6 +207,7 @@ Feature: Katapult in general
       """
         config.middleware.use Rack::LiveReload
       """
+      And a file named "config/environments/staging.rb" should exist
       And the file "config/database.yml" should contain exactly:
       """
       common: &common
@@ -325,6 +326,12 @@ Feature: Katapult in general
           email_prefix: '[katapult_test_app] ',
           exception_recipients: %w[fail@makandra.de],
       """
+    And the file "config/secrets.yml" should contain:
+    """
+    staging:
+      secret_key_base:
+
+    """
 
 
     # Lib

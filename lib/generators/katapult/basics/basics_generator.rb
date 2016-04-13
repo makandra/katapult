@@ -69,6 +69,17 @@ module Katapult
         environment 'config.middleware.use Rack::LiveReload', env: :development
       end
 
+      def setup_staging
+        FileUtils.copy 'config/environments/production.rb', 'config/environments/staging.rb'
+        secret = `rake secret`.chomp
+        # Cheating in the "staging" secret between "test" and "production"
+        insert_into_file 'config/secrets.yml', <<~SECRET, after: "test:\n"
+          secret_key_base: #{ secret }
+
+        staging:
+        SECRET
+      end
+
       def create_databases
         run 'rake db:create:all parallel:create'
       end
