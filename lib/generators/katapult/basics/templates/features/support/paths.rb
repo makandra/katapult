@@ -30,6 +30,9 @@ module NavigationHelpers
       route = "new_#{model_prose_to_route_segment(model_prose)}_path"
       send(route)
 
+    when /"(.+?)"$/
+      $1
+
     end
   end
 
