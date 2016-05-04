@@ -81,7 +81,7 @@ module Katapult
       end
 
       def create_databases
-        run 'rake db:create:all parallel:create'
+        run 'rake db:drop:all db:create:all parallel:create'
       end
 
       def configure_action_mailer
