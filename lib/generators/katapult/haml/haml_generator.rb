@@ -14,6 +14,7 @@ module Katapult
       def install_application_layout
         remove_file 'app/views/layouts/application.html.erb'
         template 'app/views/layouts/application.html.haml'
+        template 'app/views/layouts/_flashes.html.haml'
       end
 
       def create_views_directory

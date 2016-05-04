@@ -356,7 +356,7 @@ Feature: Web User Interface
     Then the features should pass
 
 
-  Scenario: Generate layout file with query diet widget
+  Scenario: A WUI also generates the application layout file
     When I overwrite "lib/katapult/application_model.rb" with:
       """
       model 'Car'
@@ -366,4 +366,14 @@ Feature: Web User Interface
     Then the file "app/views/layouts/application.html.haml" should contain:
       """
       = query_diet_widget(bad_count: 15) if Rails.env.development?
+      """
+    And the file "app/views/layouts/application.html.haml" should contain:
+      """
+      = render 'layouts/flashes'
+      """
+    And the file "app/views/layouts/_flashes.html.haml" should contain:
+      """
+      - flash.each do |level, message|
+        .flash.alert.alert-info
+          = message
       """
