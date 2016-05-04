@@ -4,7 +4,7 @@ Feature: <%= model.name(:humans).titleize %>
     Given I am on the list of <%= model.name(:variables) %>
 
     # create
-    When I follow "Add <%= model.name(:variable) %>"
+    When I follow "Add <%= model.name(:human) %>"
 <% model.attrs.each do |attr| -%>
   <%- if attr.assignable_values -%>
       And I select "<%= attr.test_value %>" from "<%= attr.name.humanize %>"

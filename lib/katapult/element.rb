@@ -33,8 +33,8 @@ module Katapult
     end
 
     def name(kind = nil)
-      human_name = @name.downcase
       machine_name = @name.underscore
+      human_name = machine_name.humanize.downcase
 
       case kind.to_s
       when ''          then @name
