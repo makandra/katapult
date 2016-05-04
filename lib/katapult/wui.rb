@@ -34,6 +34,10 @@ module Katapult
       %i(index show create update destroy).each &method(:action)
     end
 
+    def crud_only?
+      actions.map(&:name).sort == RAILS_ACTIONS.sort
+    end
+
     def model
       model_name = @model || self.name
       application_model.get_model(model_name) or raise UnknownModelError,

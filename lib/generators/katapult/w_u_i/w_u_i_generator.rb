@@ -21,14 +21,16 @@ module Katapult
         route = model_name(:symbols)
         routes = File.read('config/routes.rb')
 
-        if routes.include? "resources #{ route }"
+        if routes =~ /^\s+resources #{ route }/
           say_status :warn, <<MESSAGE, :red
 Routes for #{ route } already exist! Not updated.
 
 In order to keep existing routes created by the user, the config/routes.rb file
-is not wiped on model transformation. To have Katapult update the #{ route}
+is not wiped on model transformation. To have Katapult update the #{ route }
 route for you, delete it before transforming the application model.
 MESSAGE
+        elsif wui.crud_only?
+          route "resources #{ route }"
         else
           route render_partial('_route.rb')
         end

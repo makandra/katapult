@@ -229,24 +229,14 @@ Feature: Generate Models
       """
       Rails.application.routes.draw do
         root 'cars#index'
-        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-          member do
-          end
-          collection do
-          end
-        end
+        resources :cars
       """
       And I successfully transform the application model
     Then the file named "config/routes.rb" should contain:
       """
       Rails.application.routes.draw do
         root 'cars#index'
-        resources :cars, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-          member do
-          end
-          collection do
-          end
-        end
+        resources :cars
       """
       And the file named "config/routes.rb" should contain "root 'cars#index'" exactly once
       And the file named "config/routes.rb" should contain "resources :cars" exactly once
