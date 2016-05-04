@@ -154,7 +154,7 @@ Feature: Web User Interface
               %td
                 .items__actions
                   = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
-                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?', title: "Destroy #{customer.to_s}"
+                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', data: { confirm: 'Really destroy?' }, title: "Destroy #{customer.to_s}"
                   = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
                   = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
 
