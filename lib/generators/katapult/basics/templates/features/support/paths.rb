@@ -3,6 +3,9 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
 
+    when 'the homepage'
+      root_path
+
     when /^the list of (.*?)$/
       models_prose = $1
       route = "#{model_prose_to_route_segment(models_prose)}_path"
