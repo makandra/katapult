@@ -11,21 +11,23 @@ Feature: Katapult in general
       # Here you define the fundamentals of your application.
       #
       # Add a model:
-      # model 'customer' do |customer|
-      #   customer.attr :name
-      #   customer.attr :birth, type: :date
-      #   customer.attr :email
+      # model 'user' do |user|
+      #   user.attr :name
+      #   user.attr :birth, type: :datetime
+      #   user.attr :email
       # end
       #
       # Add a web user interface:
-      # wui 'customer' do |wui|
-      #   wui.action :index
-      #   wui.action :show
+      # wui 'user' do |wui|
+      #   wui.crud # Creates all CRUD actions: index, new, show, etc.
       #   wui.action :lock, scope: :member, method: :post
       # end
       #
       # Add navigation
       # navigation :main
+      #
+      # Add authentication
+      # authenticate 'user', system_email: 'system@example.com'
 
       """
 
