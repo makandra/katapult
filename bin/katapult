@@ -27,20 +27,20 @@ when 'new'
   Dir.chdir app_name
 
   util.puts 'Initializing git repository ...'
-  util.run 'git init'
-  util.git_commit "rails new #{ app_name }"
+  util.run 'git init --quiet'
+  util.git_commit "rails new #{ app_name }", '--quiet'
 
   util.puts 'Installing katapult ...'
   File.open('Gemfile', 'a') do |file|
     file.puts "gem 'katapult'#{ ENV['KATAPULT_GEMFILE_OPTIONS'] }, group: :development"
   end
-  util.run 'bundle install'
+  util.run 'bundle install --quiet'
   util.run 'bundle exec rails generate katapult:install'
-  util.git_commit 'rails generate katapult:install'
+  util.git_commit 'rails generate katapult:install', '--quiet'
 
   util.puts 'Generating katapult basics ...'
   util.run basics_command
-  util.git_commit 'rails generate katapult:basics'
+  util.git_commit 'rails generate katapult:basics', '--quiet'
 
   util.puts <<-INSTRUCTIONS
 Application initialization done.

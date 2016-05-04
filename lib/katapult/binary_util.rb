@@ -9,9 +9,9 @@ module Katapult
   module BinaryUtil
     extend self
 
-    def git_commit(message)
+    def git_commit(message, options = nil)
       message.gsub! /'/, "" # remove single quotes
-      system "git add --all; git commit -m '#{ message }' --author='katapult <katapult@makandra.com>'"
+      system "git add --all; git commit -m '#{ message }' --author='katapult <katapult@makandra.com>' #{ options }"
     end
 
     def create_rails_app(name)

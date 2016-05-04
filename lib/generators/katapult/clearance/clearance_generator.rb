@@ -21,7 +21,7 @@ module Katapult
 gem 'clearance', '< 1.14.0' # Has broken InstallGenerator :(
 
         GEM
-        run 'bundle install'
+        run 'bundle install --quiet'
         generate 'clearance:install'
       end
 
