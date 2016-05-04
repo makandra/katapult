@@ -108,6 +108,10 @@ Defined on Model. Takes a name and options:
     
     # Inferred type :email (when attr name matches /email/)
     model.attr :email
+
+    # Inferred type :password. Password fields are rendered as password_field in
+    # forms, but never rendered in show views.
+    model.attr :password
     
     # Specify assignable values. Available options: allow_blank, default
     model.attr :age, type: :integer, assignable_values: 18..99, allow_blank: true

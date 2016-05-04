@@ -12,12 +12,13 @@ module Katapult
 
     UnknownTypeError = Class.new(StandardError)
     MissingOptionError = Class.new(StandardError)
-    TYPES = %i(string email url integer money text flag datetime json plain_json)
+    TYPES = %i(string email password url integer money text flag datetime json plain_json)
 
     def initialize(*args)
       super
 
       self.type ||= :email if name.to_s =~ /email/
+      self.type ||= :password if name.to_s =~ /password/
       self.type ||= :string
 
       validate
@@ -31,7 +32,7 @@ module Katapult
 
     def for_migration
       db_type = case type
-      when :email, :url then 'string'
+      when :email, :url, :password then 'string'
       when :flag then 'boolean'
       when :money then 'decimal{10,2}' # {precision,scale} = total digits, decimal places
       when :json then 'jsonb' # Indexable JSON
@@ -48,6 +49,7 @@ module Katapult
       else
         case type
         when :string     then "#{name}-string"
+        when :password   then "#{name}-password"
         when :email      then "#{name}@example.com"
         when :url        then "#{name}.example.com"
         when :text       then "#{name}-text"

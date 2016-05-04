@@ -22,11 +22,15 @@ module Katapult
     end
 
     def label_attr
-      attrs.first
+      renderable_attrs.first
     end
 
     def renderable_attrs
-      attrs.reject { |a| a.type.to_s.include? 'json' }
+      attrs.reject { |a| %w[plain_json json password].include? a.type.to_s }
+    end
+
+    def editable_attrs
+      attrs.reject { |a| %w[plain_json json].include? a.type.to_s }
     end
 
     def render
