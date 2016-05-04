@@ -8,7 +8,7 @@ require 'zlib'
 module Katapult
   class Attribute < Element
 
-    options :type, :default, :assignable_values, :allow_blank
+    options :type, :default, :assignable_values, :allow_blank, :skip_db
 
     UnknownTypeError = Class.new(StandardError)
     MissingOptionError = Class.new(StandardError)

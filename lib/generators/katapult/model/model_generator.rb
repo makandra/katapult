@@ -15,7 +15,7 @@ module Katapult
 
       def create_migration_file
         migration_name = "create_#{table_name}"
-        migration_attributes = model.attrs.map(&:for_migration)
+        migration_attributes = model.db_fields.map(&:for_migration)
 
         args = [migration_name] + migration_attributes
         options = { timestamps: true, force: true }

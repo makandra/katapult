@@ -25,6 +25,10 @@ module Katapult
       renderable_attrs.first
     end
 
+    def db_fields
+      attrs.reject(&:skip_db)
+    end
+
     def renderable_attrs
       attrs.reject { |a| %w[plain_json json password].include? a.type.to_s }
     end
