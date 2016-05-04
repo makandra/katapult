@@ -13,6 +13,8 @@
       = form.text_field <%= attribute.name(:symbol) %>
     <%- when :email -%>
       = form.email_field <%= attribute.name(:symbol) %>
+    <%- when :password -%>
+      = form.password_field <%= attribute.name(:symbol) %>
     <%- when :url -%>
       = form.url_field <%= attribute.name(:symbol) %>
     <%- when :integer -%>

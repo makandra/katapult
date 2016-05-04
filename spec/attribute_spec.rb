@@ -32,6 +32,19 @@ describe Katapult::Attribute do
     end
   end
 
+  describe 'password attributes' do
+    it 'recognizes password attributes' do
+      expect(described_class.new('password').type).to eql(:password)
+      expect(described_class.new('encrypted_password').type).to eql(:password)
+      expect(described_class.new('name').type).to_not eql(:password)
+    end
+
+    it 'does not overwrite a given type' do
+      expect(described_class.new('password', type: :string).type).to eql(:string)
+      expect(described_class.new('password_updated_at', type: :datetime).type).to eql(:datetime)
+    end
+  end
+
   describe 'email attributes' do
     it 'recognizes email attributes' do
       expect(described_class.new('email').type).to eql(:email)

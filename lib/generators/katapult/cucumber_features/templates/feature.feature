@@ -10,7 +10,7 @@ Feature: <%= model.name(:humans).titleize %>
       And I select "<%= attr.test_value %>" from "<%= attr.name.humanize %>"
   <%- else -%>
     <%- case attr.type -%>
-    <%- when :string, :email, :url, :integer, :money, :text -%>
+    <%- when :string, :email, :url, :integer, :money, :text, :password -%>
       And I fill in "<%= attr.name.humanize %>" with "<%= attr.test_value %>"
     <%- when :flag -%>
       And I check "<%= attr.name.humanize %>"
