@@ -84,6 +84,20 @@ module Katapult
         run 'rake db:create:all parallel:create'
       end
 
+      def configure_action_mailer
+        app_con = 'app/controllers/application_controller.rb'
+        inject_into_file app_con, <<-CONFIG, before: /end\n\z/
+  before_filter :make_action_mailer_use_request_host_and_protocol
+
+  private
+
+  def make_action_mailer_use_request_host_and_protocol
+    ActionMailer::Base.default_url_options[:protocol] = request.protocol
+    ActionMailer::Base.default_url_options[:host] = request.host_with_port
+  end
+        CONFIG
+      end
+
       def set_timezone
         gsub_file 'config/application.rb',
           /# config\.time_zone =.*$/,

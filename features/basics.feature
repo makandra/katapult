@@ -191,6 +191,18 @@ Feature: Katapult in general
       end
       """
 
+    And the file "app/controllers/application_controller.rb" should contain:
+    """
+      before_filter :make_action_mailer_use_request_host_and_protocol
+
+      private
+
+      def make_action_mailer_use_request_host_and_protocol
+        ActionMailer::Base.default_url_options[:protocol] = request.protocol
+        ActionMailer::Base.default_url_options[:host] = request.host_with_port
+      end
+    """
+
     # Just checking turbolinks was properly removed
     And the file "app/views/layouts/application.html.erb" should not contain "turbolinks"
     But the file "app/views/layouts/application.html.erb" should contain:
