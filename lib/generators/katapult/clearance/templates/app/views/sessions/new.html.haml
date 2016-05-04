@@ -1,0 +1,19 @@
+%h1
+  Please sign in
+
+= form_for :session, url: session_path do |form|
+  .form-group
+    = form.label :email
+    = form.email_field :email, class: 'form-control',
+      placeholder: 'Email Address', required: true, autofocus: true
+
+  .form-group
+    = form.label :password
+    = form.password_field :password, class: 'form-control', required: true,
+      placeholder: 'Password'
+
+  %p
+    = form.submit 'Sign in', class: 'btn btn-primary'
+
+  %p
+    = link_to 'Forgot password', new_password_path, class: 'text-muted'

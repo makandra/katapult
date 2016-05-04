@@ -16,3 +16,6 @@
 #
 # Add navigation
 # navigation :main
+#
+# Add authentication (requires a "user" model)
+# authenticate 'user', system_email: 'system@example.com'

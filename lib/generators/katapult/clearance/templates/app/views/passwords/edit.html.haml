@@ -1,0 +1,16 @@
+%h1
+  Reset Password
+
+%p
+  Choose your new password:
+
+= form_for :password_reset,
+  url: user_password_path(@user, token: @user.confirmation_token),
+  html: { method: :put } do |form|
+
+  .form-group
+    = form.label :password
+    = form.password_field :password, class: 'form-control',
+      placeholder: 'New Password'
+
+  = form.submit 'Update Password', class: 'btn btn-primary'

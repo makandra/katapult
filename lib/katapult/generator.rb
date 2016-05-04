@@ -24,5 +24,11 @@ module Katapult
       ERB.new(::File.binread(path), nil, '%').result(given_binding || binding)
     end
 
+    def run(*)
+      Bundler.with_clean_env do
+        super
+      end
+    end
+
   end
 end

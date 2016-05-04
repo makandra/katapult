@@ -5,6 +5,7 @@ require_relative 'application_model'
 require 'katapult/model'
 require 'katapult/wui'
 require 'katapult/navigation'
+require 'katapult/authentication'
 
 module Katapult
   class Parser
@@ -29,6 +30,12 @@ module Katapult
 
     def navigation(name)
       application_model.set_navigation Navigation.new(name)
+    end
+
+    def authenticate(name, system_email:)
+      application_model.set_authentication Authentication.new(name,
+        system_email: system_email
+      )
     end
 
     private

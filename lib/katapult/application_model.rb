@@ -3,7 +3,7 @@
 module Katapult
   class ApplicationModel
 
-    attr_reader :models, :wuis, :navigation
+    attr_reader :models, :wuis, :navigation, :authentication
 
     def initialize
       @models = []
@@ -33,12 +33,19 @@ module Katapult
       @navigation = navigation
     end
 
+    def set_authentication(auth)
+      auth.set_application_model(self)
+      auth.ensure_user_model_attributes_present
+      @authentication = auth
+    end
+
     # ---
 
     def render
       models.each &:render
       wuis.each &:render
       navigation.render if navigation
+      authentication.render if authentication
     end
 
   end

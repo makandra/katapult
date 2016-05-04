@@ -1,0 +1,14 @@
+%h1
+  Password Reset
+
+%p
+  Please enter your email address. We will send you instructions on how
+  to reset your password.
+
+= form_for :password, url: passwords_path do |form|
+  .form-group
+    = form.label :email
+    = form.email_field :email, class: 'form-control',
+      placeholder: 'Email Address'
+
+  = form.submit 'Request Instructions', class: 'btn btn-primary'

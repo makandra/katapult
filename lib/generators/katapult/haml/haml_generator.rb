@@ -63,6 +63,10 @@ module Katapult
         def navigation
           wui.application_model.navigation
         end
+
+        def authentication
+          wui.application_model.authentication
+        end
       end
 
       private

@@ -168,6 +168,16 @@ WUIs.
     navigation :main
 
 
+### Authenticate
+Takes the name of the user model (currently only `User` (case-insensitive) is
+supported) and an email address. Generates authentication with [Clearance](https://github.com/thoughtbot/clearance).
+
+    authenticate 'User', system_email: 'system@example.com'
+
+The email address will be the sender for Clearance mails like password reset
+requests.
+
+
 ## Development
 
 ### Basic information
