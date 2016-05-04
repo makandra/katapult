@@ -216,8 +216,9 @@ Feature: Katapult in general
 
 
       # Config
-      And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
-      And the file "config/environments/development.rb" should contain:
+    And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
+    And the file "config/environments/development.rb" should contain "config.assets.debug = false"
+    And the file "config/environments/development.rb" should contain:
       """
         config.middleware.use Rack::LiveReload
       """

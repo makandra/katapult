@@ -104,8 +104,8 @@ module Katapult
           "config.time_zone = 'Berlin'"
       end
 
-      def make_assets_debuggable
-        gsub_file 'config/application.rb',
+      def disable_asset_debugging # Faster
+        gsub_file 'config/environments/development.rb',
           /config\.assets\.debug =.*$/,
           'config.assets.debug = false'
       end
