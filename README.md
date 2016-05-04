@@ -3,10 +3,14 @@
 <img src="katapult.png" width="200px" align="right" />
 
 
-`Katapult` is a kickstart generator for Rails applications. It creates a basic
-application and generates ([makandra-flavored](https://leanpub.com/growing-rails))
-code from an application model, significantly speeding up the initial phase of a
-Rails project.
+`Katapult` is a kickstart generator for Rails applications. It creates new Rails
+applications with [lots of pre-configuration](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb)
+and offers ([makandra-flavored](https://leanpub.com/growing-rails)) code
+generation from an application model.
+These two features significally speed up the initial phase of a Rails project by
+doing in minutes what took you weeks. After modeling your application, which
+typically takes about an hour, you can instantly start implementing the meat of
+your application.
 
 `Katapult` will only support current versions of Ruby and Rails, currently
 Rails 4.2 and Ruby 2.3.
@@ -18,15 +22,18 @@ Install the `katapult` gem with
 
     gem install katapult
 
+If you intend to extend an existing application, add it to the development group
+in your Gemfile.
+
 
 ## Usage
 
 `Katapult` does two separate things:
 
-1. Create a new Rails application, set up with many standard gems, snippets,
-   useful configuration, databases etc.
-2. Generate code from an application model, i.e. create files for models, views,
-   controllers, routes, stylesheets
+1. It creates a new Rails application, set up with many standard gems, snippets,
+   useful configuration, databases, testing libraries etc. See the [BasicsGenerator](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb) for details.
+2. It generates code from an application model, i.e. creates files for models,
+   views, controllers, routes, stylesheets; see the
 
 You may use both or only one of them.
 
@@ -37,28 +44,27 @@ Run the following command:
 
     katapult new $APPLICATION_NAME
 
-In detail, this will:
+This will:
  
-- create a new Rails application (without turbolinks)
-- install common Gems, some of them commented out
-- add a .gitignore and a .ruby-version file
+- create a new Rails application
+- install common Gems
 - set up a `database.yml` file (for PostgreSQL)
 - create basic styles
-- install some handy initializers
 - install RSpec and Cucumber to the application
-- create `lib/katapult/application_model.rb` (needed in Step 2)
+- install Capistrano
+- create `lib/katapult/application_model.rb` (needed for step 2)
 
-See `lib/generators/katapult/basics/basics_generator.rb`.
+See the [BasicsGenerator](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb)
+for details: Its methods are executed one-by-one and their names are a
+description of what it does.
 
-### Using Katapult in existing Rails applications
+### Alternative: Using Katapult in existing Rails applications
 `katapult` expects a clean application (that it would usually generate itself).
 If you have an existing Rails application, you *may* use `katapult`, but be
 warned: it is not designed to respect existing files, although it will usually
-ask before overwriting files.
+ask before overwriting anything.
 
-To add `katapult` to an existing Rails application, add
-`gem 'katapult', group: :development` to the Gemfile. Then run any of the
-following generators:
+After adding it to the Gemfile (see above), run any of the following generators:
 
     rails generate katapult:basics # Prepare the app with useful defaults
     rails generate katapult:install # Create application model file
@@ -72,16 +78,20 @@ following generators:
 > install it with `rails generate katapult:install`. See above.
 
 After installation, you will find a file `lib/katapult/application_model.rb`
-where you will define the properties of your application.
+where you will define the properties of your application. You're free to create
+more than one application model, however, you'll need to specify their location
+when running the transform.
 
-Inside this file, use `katapult`'s simple DSL (domain specific language) to
-express yourself. When you are done developing the application model, transform
+Inside the application model, use `katapult`'s simple DSL (domain specific
+language) to express yourself. When you are done developing the model, transform
 it into code with:
 
     katapult fire [path/to/application_model]
 
 See an overview of the DSL below. The respective sections hold examples of what
-options are available to each element.
+options are available to each element. For details, dive into
+`lib/generators/katapult` where all generators are stored. The method names
+inside a generator tell what it does.
 
 ### Generic DSL syntax example
 The DSL consists of _elements_, e.g. `Model` or `WUI` (Web User Interface). Each
