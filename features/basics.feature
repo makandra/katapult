@@ -586,8 +586,3 @@ Feature: Katapult in general
     And a file named "app/assets/stylesheets/application/blocks/_layout.sass" should exist
     And a file named "app/assets/stylesheets/application/blocks/_navigation.sass" should exist
     And a file named "app/assets/stylesheets/application/blocks/_tools.sass" should exist
-
-    # And the file "config/deploy.rb" should contain exactly:
-    #   """
-    #   stages
-    #   """
