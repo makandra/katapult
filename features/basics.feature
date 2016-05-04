@@ -103,19 +103,19 @@ Feature: Katapult in general
       """
       source 'https://rubygems.org'
 
-      # from original Gemfile
       gem 'rails', '4.2.6'
       gem 'pg', '~> 0.15'
       gem 'jquery-rails'
       gem 'jbuilder', '~> 2.0'
       gem 'katapult', path: '../../..'
 
-      # engines
-      gem 'haml-rails'
-
       # internal
       gem 'exception_notification'
+      # gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
+
+      # security
       gem 'breach-mitigation-rails'
+      gem 'safe_cookies'
 
       # better coding
       gem 'modularity'
@@ -139,6 +139,7 @@ Feature: Katapult in general
       gem 'makandra-navy', require: 'navy'
 
       # assets
+      gem 'haml-rails'
       gem 'bootstrap-sass'
       gem 'sass-rails'
       gem 'autoprefixer-rails'
@@ -175,6 +176,7 @@ Feature: Katapult in general
 
         gem 'capybara'
         gem 'capybara-screenshot'
+        gem 'cucumber', '< 2' # Incompatible with Cucumber Factory
         gem 'cucumber-rails', require: false
         gem 'cucumber_factory'
         gem 'selenium-webdriver'

@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
-# from original Gemfile
 <%= @original_gems.join %>
-
-# engines
-gem 'haml-rails'
 
 # internal
 gem 'exception_notification'
+# gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
+
+# security
 gem 'breach-mitigation-rails'
+gem 'safe_cookies'
 
 # better coding
 gem 'modularity'
@@ -32,6 +32,7 @@ gem 'will_paginate'
 gem 'makandra-navy', require: 'navy'
 
 # assets
+gem 'haml-rails'
 gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'autoprefixer-rails'
@@ -68,6 +69,7 @@ group :test do
 
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'cucumber', '< 2' # Incompatible with Cucumber Factory
   gem 'cucumber-rails', require: false
   gem 'cucumber_factory'
   gem 'selenium-webdriver'
