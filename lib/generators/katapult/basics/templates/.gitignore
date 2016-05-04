@@ -25,3 +25,4 @@ coverage/*
 dump_for_download.dump
 .~lock.*
 .*.swp
+.byebug_history
