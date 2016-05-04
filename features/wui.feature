@@ -154,7 +154,7 @@ Feature: Web User Interface
               %td
                 .items__actions
                   = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
-                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?'
+                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', confirm: 'Really destroy?', title: "Destroy #{customer.to_s}"
                   = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
                   = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
 
@@ -346,7 +346,7 @@ Feature: Web User Interface
           When I go to the list of customers
           Then I should see "name-string"
 
-          When I follow "Destroy"
+          When I follow "Destroy name-string"
           Then I should be on the list of customers
             But I should not see "name-string"
 

@@ -17,7 +17,7 @@
         %td
           .items__actions
             = link_to 'Edit', <%= wui.path(:edit, object_name) %>, class: 'items__action'
-            = link_to 'Destroy', <%= wui.path(:destroy, object_name) %>, method: :delete, class: 'items__action', confirm: 'Really destroy?'
+            = link_to 'Destroy', <%= wui.path(:destroy, object_name) %>, method: :delete, class: 'items__action', confirm: 'Really destroy?', title: "Destroy #{<%= object_name %>.to_s}"
           <%- wui.custom_actions.select(&:member?).each do |action| -%>
             = link_to '<%= action.name.humanize.titleize %>', <%= wui.path(action, object_name) %>, class: 'items__action'<%=
                 ", method: :#{action.method}" unless action.get?
