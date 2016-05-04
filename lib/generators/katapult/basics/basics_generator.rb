@@ -148,9 +148,11 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       end
 
       def install_capistrano
+        # Create Capfile *before* installing Capistrano to prevent annoying
+        # Harrow.io ad
+        template 'Capfile', force: true
         run 'cap install'
 
-        template 'Capfile', force: true
         template 'config/deploy.rb', force: true
         template 'config/deploy/staging.rb', force: true
         template 'config/deploy/production.rb', force: true
