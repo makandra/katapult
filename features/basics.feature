@@ -100,12 +100,12 @@ Feature: Katapult in general
     after 'deploy:published', 'db:show_dump_usage'
     after 'deploy:finished', 'deploy:cleanup' # https://makandracards.com/makandra/1432
     """
-      And the file "Gemfile" should contain "gem 'rails', '4.2.6'"
+      And the file "Gemfile" should contain "gem 'rails', '4.2.7.1'"
       And the file "Gemfile" should contain exactly:
       """
       source 'https://rubygems.org'
 
-      gem 'rails', '4.2.6'
+      gem 'rails', '4.2.7.1'
       gem 'pg', '~> 0.15'
       gem 'jquery-rails'
       gem 'jbuilder', '~> 2.0'
