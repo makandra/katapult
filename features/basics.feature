@@ -1,3 +1,4 @@
+#@announce-output
 Feature: Katapult in general
 
   Background:
@@ -36,7 +37,7 @@ Feature: Katapult in general
     Given I install katapult
 
     When I generate katapult basics
-    Then the file ".ruby-version" should contain "2.3.0"
+    Then the ruby-version file should be up-to-date
 
 
     And the file "config/cucumber.yml" should contain:
@@ -48,9 +49,9 @@ Feature: Katapult in general
       """
 
 
-      And the file ".gitignore" should contain "config/database.yml"
-      And the file ".bundle/config" should match /NOKOGIRI.*--use-system-libraries/
-      And the file "Guardfile" should contain:
+    And the file ".gitignore" should contain "config/database.yml"
+    And the file ".bundle/config" should match /NOKOGIRI.*--use-system-libraries/
+    And the file "Guardfile" should contain:
       """
       guard 'livereload' do
         watch %r{app/views/.+\.(erb|haml)$}
@@ -100,104 +101,13 @@ Feature: Katapult in general
     after 'deploy:published', 'db:show_dump_usage'
     after 'deploy:finished', 'deploy:cleanup' # https://makandracards.com/makandra/1432
     """
-      And the file "Gemfile" should contain "gem 'rails', '4.2.7.1'"
-      And the file "Gemfile" should contain exactly:
-      """
-      source 'https://rubygems.org'
 
-      gem 'rails', '4.2.7.1'
-      gem 'pg', '~> 0.15'
-      gem 'jquery-rails'
-      gem 'jbuilder', '~> 2.0'
-      gem 'katapult', path: '../../..'
-
-      # internal
-      gem 'exception_notification'
-      # gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
-
-      # security
-      gem 'breach-mitigation-rails'
-      gem 'safe_cookies'
-
-      # better coding
-      gem 'modularity'
-      gem 'edge_rider'
-      gem 'andand'
-
-      # models
-      gem 'has_defaults'
-      gem 'assignable_values'
-
-      # gem 'carrierwave'
-      # gem 'mini_magick'
-
-      # gem 'spreadsheet'
-      # gem 'vcard'
-
-      # views
-      # gem 'simple_form'
-      # gem 'nested_form'
-      gem 'will_paginate'
-      gem 'makandra-navy', require: 'navy'
-
-      # assets
-      gem 'haml-rails'
-      gem 'bootstrap-sass'
-      gem 'sass-rails'
-      gem 'autoprefixer-rails'
-      gem 'coffee-rails'
-      gem 'therubyracer', platform: :ruby
-      gem 'uglifier'
-      gem 'compass-rails'
-      gem 'compass-rgbapng'
-
-      group :development do
-        gem 'query_diet'
-        gem 'better_errors'
-        gem 'binding_of_caller'
-        gem 'thin'
-
-        gem 'parallel_tests'
-        gem 'guard-livereload', require: false
-        gem 'rack-livereload'
-        gem 'spring-commands-rspec'
-        gem 'spring-commands-cucumber'
-      end
-
-      group :development, :test do
-        gem 'byebug'
-        gem 'factory_girl_rails'
-        gem 'rspec-rails'
-        gem 'spring'
-      end
-
-      group :test do
-        gem 'database_cleaner'
-        gem 'timecop'
-        gem 'launchy'
-
-        gem 'capybara'
-        gem 'capybara-screenshot'
-        gem 'cucumber', '< 2' # Incompatible with Cucumber Factory
-        gem 'cucumber-rails', require: false
-        gem 'cucumber_factory'
-        gem 'selenium-webdriver'
-        gem 'spreewald'
-
-        gem 'rspec'
-        gem 'shoulda-matchers', require: false
-      end
-
-      group :deploy do
-        gem 'capistrano-rails', require: false
-        gem 'capistrano-bundler', require: false
-        gem 'capistrano-maintenance'
-      end
-      """
+    And the configured Rails version should be listed in the Gemfile.lock
+    And the file "Gemfile" should contain "gem 'katapult', path: '../../..'"
 
     And the file "app/controllers/application_controller.rb" should contain:
     """
-      before_filter :make_action_mailer_use_request_host_and_protocol
+      before_action :make_action_mailer_use_request_host_and_protocol
 
       private
 
@@ -211,8 +121,8 @@ Feature: Katapult in general
     And the file "app/views/layouts/application.html.erb" should not contain "turbolinks"
     But the file "app/views/layouts/application.html.erb" should contain:
     """
-      <%= stylesheet_link_tag    'application', media: 'all' %>
-      <%= javascript_include_tag 'application' %>
+        <%= stylesheet_link_tag    'application', media: 'all' %>
+        <%= javascript_include_tag 'application' %>
     """
 
 
@@ -427,10 +337,8 @@ Feature: Katapult in general
     And the file "lib/ext/action_view/form_for_with_development_errors.rb" should contain:
     """
     if Rails.env == 'development'
-
-      ActionView::Helpers::FormHelper.class_eval do
-
-        def form_for_with_development_errors(*args, &block)
+      ActionView::Helpers::FormHelper.prepend FormForWithErrors
+    end
     """
     And the file "lib/ext/active_record/these.rb" should contain:
     """
@@ -570,7 +478,6 @@ Feature: Katapult in general
     # styles
     And the file "app/assets/stylesheets/application.sass" should contain:
       """
-      @import compass
       @import bootstrap
 
       @import application/blocks/all

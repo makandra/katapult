@@ -15,7 +15,16 @@ module Katapult
     end
 
     def create_rails_app(name)
-      run "rails _#{ Katapult::RAILS_VERSION }_ new #{ name } --skip-test-unit --skip-bundle --database postgresql"
+      version = Katapult::RAILS_VERSION
+      options = %w[
+        --skip-test
+        --skip-system-test
+        --skip-bundle
+        --database postgresql
+        --skip-turbolinks
+      ]
+
+      run "rails _#{version}_ new #{name} " + options.join(' ')
     end
 
     def pink(*args)

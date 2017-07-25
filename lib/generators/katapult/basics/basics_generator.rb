@@ -4,8 +4,6 @@ module Katapult
   module Generators
     class BasicsGenerator < Rails::Generators::Base
 
-      SKIP_GEMS = %w(sass-rails coffee-rails turbolinks sdoc uglifier)
-
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)
 
@@ -31,14 +29,10 @@ module Katapult
         template 'config/database.sample.yml'
       end
 
-      # Overwrite Gemfile with the template, but transfer all gems that are not
-      # skipped (see SKIP_GEMS).
       def enhance_gemfile
-        gem_lines = File.readlines('Gemfile').select{ |line| line =~ /^gem/ }
-        @original_gems = gem_lines.reject do |line|
-          line =~ /'(#{ SKIP_GEMS.join '|' })'/
-        end
-
+        # Need to transfer the katapult line, because in tests, katapult is
+        # installed with a custom :path option
+        @katapult = File.readlines('Gemfile').find{ |line| line =~ /^gem 'katapult'/ }
         template 'Gemfile', force: true
       end
 
@@ -53,7 +47,7 @@ module Katapult
 
       def remove_turbolinks_js
         gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", ''
-        gsub_file 'app/views/layouts/application.html.erb', ", 'data-turbolinks-track' => true", ''
+        gsub_file 'app/views/layouts/application.html.erb', ", 'data-turbolinks-track': 'reload'", ''
       end
 
       def setup_spring
@@ -72,6 +66,7 @@ module Katapult
       def setup_staging
         FileUtils.copy 'config/environments/production.rb', 'config/environments/staging.rb'
         secret = `rake secret`.chomp
+
         # Cheating in the "staging" secret between "test" and "production"
         insert_into_file 'config/secrets.yml', <<~SECRET, after: "test:\n"
           secret_key_base: #{ secret }
@@ -87,7 +82,7 @@ module Katapult
       def configure_action_mailer
         app_con = 'app/controllers/application_controller.rb'
         inject_into_file app_con, <<-CONFIG, before: /end\n\z/
-  before_filter :make_action_mailer_use_request_host_and_protocol
+  before_action :make_action_mailer_use_request_host_and_protocol
 
   private
 
@@ -99,6 +94,12 @@ module Katapult
       end
 
       def set_timezone
+        # This results in correct indentation :)
+        application <<-'LOAD_PATHS'
+config.time_zone = 'Berlin'
+    config.active_record.default_timezone = :local
+    config.active_record.time_zone_aware_attributes = false
+    LOAD_PATHS
         gsub_file 'config/application.rb',
           /# config\.time_zone =.*$/,
           "config.time_zone = 'Berlin'"

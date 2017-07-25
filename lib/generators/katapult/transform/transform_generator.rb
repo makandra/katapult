@@ -30,8 +30,8 @@ module Katapult
     end
 
     def remigrate_all_databases
-      run 'spring stop' # parallel_tests does not work together with Spring
-      run 'rake db:drop:all db:create:all db:migrate parallel:create parallel:prepare'
+      # run 'spring stop' # parallel_tests does not work together with Spring
+      run 'rake db:drop db:create db:migrate parallel:drop parallel:create parallel:prepare'
     end
 
   private

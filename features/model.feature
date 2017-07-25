@@ -1,3 +1,4 @@
+#@announce-output
 Feature: Generate Models
 
   Background:
@@ -24,11 +25,11 @@ Feature: Generate Models
       """
     And there should be a migration with:
       """
-      class CreateCars < ActiveRecord::Migration
+      class CreateCars < ActiveRecord::Migration[5.1]
         def change
           create_table :cars do |t|
 
-            t.timestamps null: false
+            t.timestamps
           end
         end
       end
@@ -87,7 +88,7 @@ Feature: Generate Models
       """
     And there should be a migration with:
       """
-      class CreatePeople < ActiveRecord::Migration
+      class CreatePeople < ActiveRecord::Migration[5.1]
         def change
           create_table :people do |t|
             t.integer :age
@@ -101,7 +102,7 @@ Feature: Generate Models
             t.jsonb :indexable_json
             t.json :plain_json
 
-            t.timestamps null: false
+            t.timestamps
           end
         end
       end

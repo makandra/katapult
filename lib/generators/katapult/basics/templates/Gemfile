@@ -1,33 +1,24 @@
 source 'https://rubygems.org'
+git_source(:github) { |repo_path| "https://github.com/#{repo_path}.git" }
 
-<%= @original_gems.join %>
+gem 'rails'
+gem 'pg'
+<%= @katapult -%>
 
-# internal
+# Internals and security
 gem 'exception_notification'
-# gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
-
-# security
-gem 'breach-mitigation-rails'
 gem 'safe_cookies'
+# gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
+# gem 'breach-mitigation-rails' # broken
 
-# better coding
-gem 'modularity'
-gem 'edge_rider'
-gem 'andand'
-
-# models
-gem 'has_defaults'
+# Models
+gem 'active_type'
 gem 'assignable_values'
+gem 'edge_rider'
+gem 'has_defaults'
+gem 'modularity'
 
-# gem 'carrierwave'
-# gem 'mini_magick'
-
-# gem 'spreadsheet'
-# gem 'vcard'
-
-# views
-# gem 'simple_form'
-# gem 'nested_form'
+# Views
 gem 'will_paginate'
 gem 'makandra-navy', require: 'navy'
 
@@ -39,24 +30,32 @@ gem 'autoprefixer-rails'
 gem 'coffee-rails'
 gem 'therubyracer', platform: :ruby
 gem 'uglifier'
-gem 'compass-rails'
-gem 'compass-rgbapng'
+
+# server
+gem 'whenever'
 
 group :development do
   gem 'query_diet'
   gem 'better_errors'
   gem 'binding_of_caller'
+
+  gem 'web-console'
+  gem 'listen', '< 3.2'
+
   gem 'thin'
 
   gem 'parallel_tests'
+
   gem 'guard-livereload', require: false
   gem 'rack-livereload'
+
   gem 'spring-commands-rspec'
   gem 'spring-commands-cucumber'
 end
 
 group :development, :test do
   gem 'byebug'
+
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'spring'
@@ -69,7 +68,7 @@ group :test do
 
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'cucumber', '< 2' # Incompatible with Cucumber Factory
+  gem 'cucumber', '< 2.2' # Incompatible with Cucumber Factory
   gem 'cucumber-rails', require: false
   gem 'cucumber_factory'
   gem 'selenium-webdriver'

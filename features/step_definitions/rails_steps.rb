@@ -44,3 +44,12 @@ Given /^a pristine Rails application$/ do
     cd 'katapult_test_app' # Aruba::Api method
   end
 end
+
+Then 'the configured Rails version should be listed in the Gemfile.lock' do
+  rails_version = Katapult::RAILS_VERSION
+  step %(the file "Gemfile.lock" should contain "    rails (#{rails_version})")
+end
+
+Then 'the output should contain the configured Rails version' do
+  step %(the output should contain "Using rails #{Katapult::RAILS_VERSION}")
+end

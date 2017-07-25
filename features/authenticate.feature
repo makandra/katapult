@@ -1,3 +1,4 @@
+#@announce-output
 Feature: Add authentication to an application
 
   Background:
@@ -177,7 +178,7 @@ Feature: Add authentication to an application
       """
     And there should be a migration with:
       """
-      class AddClearanceToUsers < ActiveRecord::Migration
+      class AddClearanceToUsers < ActiveRecord::Migration[5.1]
         def self.up
           change_table :users do |t|
             t.string :encrypted_password, limit: 128

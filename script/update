@@ -64,6 +64,12 @@ puts <<-DEBUG
 All things automatic have been done. Now to the manual part: You need to fix
 whatever was broken by the updates.
 
-The suggested way is to run `cucumber features/basics.feature` and fix issues
-until it is green.
+The suggested way is to run the following features one by one, fixing issues as
+they occur:
+  features/basics.feature
+  features/binary.feature
+  features/model.feature
+
+In order to see the application output of Cucumber tests you may tag them with
+@announce-output.
 DEBUG
