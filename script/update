@@ -1,0 +1,69 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/katapult/version'
+require_relative '../lib/katapult/binary_util'
+
+u = Katapult::BinaryUtil
+version_path = 'lib/katapult/version.rb'
+
+
+# Intro ########################################################################
+
+at_project_root = File.exists?('lib/katapult.rb')
+at_project_root or fail 'Run this script from the Katapult project root.'
+
+puts <<INTRO
+Katapult #{Katapult::VERSION}
+
+This script will help you continue development on Katapult: updating the
+versions of Ruby and Rails, wiping tmp/ and more.
+
+It will always ask before doing anything.
+
+The script is intended as a one-time updater, but it wont' do harm if run
+repeatedly.
+
+INTRO
+
+u.pink "The Ruby version is #{`ruby -v`.chomp}."
+puts 'Should katapult use that version? [yN]'
+case $stdin.getch
+when 'y' then puts 'Ok.'
+else
+  u.pink 'Please configure the Ruby version in .ruby-version, then re-run this script.'
+  exit
+end
+
+# Jobs #########################################################################
+
+u.job 'update Bundler' do
+  system 'gem install bundler'
+end
+
+u.job 'update Rails version', "#{version_path} updated." do
+  print "Please enter the desired Rails version (current: #{Katapult::RAILS_VERSION}): "
+  rails_v = gets.strip
+
+  version_rb = File.read version_path
+  version_rb.gsub! /^(  RAILS_VERSION =).*$/, "\\1 '#{rails_v}'"
+  File.open version_path, 'w' do |f|
+    f.write version_rb
+  end
+end
+
+u.job 'update installed gems' do
+  system 'bundle update'
+end
+
+u.job 'wipe tmp directory' do
+  FileUtils.rm_rf 'tmp'
+end
+
+puts <<-DEBUG
+
+All things automatic have been done. Now to the manual part: You need to fix
+whatever was broken by the updates.
+
+The suggested way is to run `cucumber features/basics.feature` and fix issues
+until it is green.
+DEBUG

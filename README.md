@@ -207,19 +207,17 @@ account. Create a dedicated account on your local PostgreSQL server:
     postgres=# CREATE ROLE katapult WITH createdb LOGIN;
 
 ### Continuing development
-When you continue development on `katapult`, remove its `tmp/` directory first.
-It contains cached data that might lead to confusion.
+When you continue development on `katapult`, you first need to update a couple
+of things. `script/update` will guide you through the process.
 
 ### Debugging
 Add the `@announce-output` tag to `katapult` features in order to have any output
 logged to your terminal.
 
-To precisely debug errors occurring _inside_ the generated application, you may
-cd to `tmp/aruba/katapult_test_app`. Run the failing command manually.
-
-Note that after running a katapult feature, you need to call
-`cd ../../aruba/katapult_test_app` inside the generated app terminal. This is
-required because the `tmp/aruba` directory is being wiped before each scenario.
+To precisely debug errors occurring _inside_ the generated application, use
+`script/kta`. You could also just cd to the test app directory, but since it is
+destroyed between test runs, you'd need to `cd ../../aruba/katapult_test_app`
+after each test.
 
 ### Typical errors
 - Timeout error because of a script waiting for user input

@@ -1,8 +1,8 @@
 # Utility methods.
 
-# The Katapult::Util module is used inside the `katapult` script. It should not
-# require any gems in order to prevent version conflicts.
-require_relative '../katapult'
+# This module is used inside the `katapult` binary and thus should not
+# require any gems in order to prevent version conflicts
+require_relative '../katapult/version'
 require 'bundler'
 
 module Katapult
@@ -18,7 +18,7 @@ module Katapult
       run "rails _#{ Katapult::RAILS_VERSION }_ new #{ name } --skip-test-unit --skip-bundle --database postgresql"
     end
 
-    def puts(*args)
+    def pink(*args)
       message = "\n> #{ args.join ' ' }"
       Kernel.puts "\e[35m#{ message }\e[0m" # pink
     end
@@ -26,11 +26,24 @@ module Katapult
     # With clean Bundler env
     def run(command)
       success = Bundler.with_clean_env { system command }
+      success or fail 'Something went wrong'
+    end
 
-      if !success
-        puts 'x Something went wrong'
-        exit(1)
+    def job(do_something, done = 'Done.', &job)
+      pink "About to #{do_something}. [C]ontinue, [s]kip or [e]xit?"
+
+      case $stdin.getch
+      when 's' then puts('Skipped.')
+      when 'e' then fail('Cancelled.')
+      else
+        job.call
+        puts done
       end
+    end
+
+    def fail(message)
+      puts "x #{message}"
+      exit(1)
     end
 
   end

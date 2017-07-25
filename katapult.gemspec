@@ -18,18 +18,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '~> 2.0'
+  # spec.required_ruby_version = Katapult::RUBY_VERSION
 
-  spec.add_runtime_dependency 'rails'
+  spec.add_runtime_dependency 'rails', Katapult::RAILS_VERSION
   spec.add_runtime_dependency 'spring' # speed-up
-
-  # Development
-  spec.add_development_dependency 'bundler', '~> 1.5'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'pry'
-
-  # Testing
-  spec.add_development_dependency 'aruba', '~> 0.10.2'
-  spec.add_development_dependency 'guard-cucumber'
-  spec.add_development_dependency 'rspec', '~> 3.4.0'
 end

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# kta = katapult_test_app
+# This script performs any given command in the katapult test app directory
+
+cd tmp/aruba/katapult_test_app
+eval $@

@@ -2,7 +2,11 @@
 
 # This script simplifies the usage of `katapult` by grouping relevant actions
 # that the user else had to perform manually.
-# See bottom for USAGE.
+
+usage = <<-USAGE
+Usage: katapult [new APP_NAME | fire [path/to/model] ]
+Suppress database credentials prompt with `--non-interactive`
+USAGE
 
 require_relative '../lib/katapult/binary_util'
 util = Katapult::BinaryUtil
@@ -14,23 +18,23 @@ when 'new'
   basics_command = 'bundle exec rails generate katapult:basics'
 
   if interactive
-    util.puts 'Please enter your database user: '
+    util.pink 'Please enter your database user: '
     basics_command << ' --db-user ' << gets.chomp
 
-    util.puts 'Please enter your database password: '
+    util.pink 'Please enter your database password: '
     basics_command << ' --db-password ' << gets.chomp
   end
 
-  util.puts 'Creating new Rails application ...'
+  util.pink 'Creating new Rails application ...'
   util.create_rails_app app_name
 
   Dir.chdir app_name
 
-  util.puts 'Initializing git repository ...'
+  util.pink 'Initializing git repository ...'
   util.run 'git init --quiet'
   util.git_commit "rails new #{ app_name }", '--quiet'
 
-  util.puts 'Installing katapult ...'
+  util.pink 'Installing katapult ...'
   File.open('Gemfile', 'a') do |file|
     file.puts "gem 'katapult'#{ ENV['KATAPULT_GEMFILE_OPTIONS'] }, group: :development"
   end
@@ -38,11 +42,11 @@ when 'new'
   util.run 'bundle exec rails generate katapult:install'
   util.git_commit 'rails generate katapult:install', '--quiet'
 
-  util.puts 'Generating katapult basics ...'
+  util.pink 'Generating katapult basics ...'
   util.run basics_command
   util.git_commit 'rails generate katapult:basics', '--quiet'
 
-  util.puts <<-INSTRUCTIONS
+  util.pink <<-INSTRUCTIONS
 Application initialization done.
 
 Next step: Model your application in lib/katapult/application_model.rb and
@@ -53,11 +57,11 @@ when 'fire'
   app_model_path = ARGV.shift || 'lib/katapult/application_model.rb'
   transform_command = 'bin/rails generate katapult:transform ' + app_model_path
 
-  util.puts 'Loading katapult ...'
+  util.pink 'Loading katapult ...'
   util.run transform_command
   util.git_commit transform_command
 
-  util.puts <<-INSTRUCTIONS
+  util.pink <<-INSTRUCTIONS
 Model transformation done.
 
 Now boot up your development server (e.g. with `rails server`) and try your
@@ -65,8 +69,5 @@ kickstarted application in the browser!
   INSTRUCTIONS
 
 else
-  puts <<-USAGE
-Usage: katapult [new APP_NAME | fire [path/to/model] ]
-Suppress database credentials prompt with `--non-interactive`
-  USAGE
+  puts usage
 end
