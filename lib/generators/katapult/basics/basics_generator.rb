@@ -180,6 +180,8 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         template 'Capfile', force: true
         run 'cap install'
 
+        deploy_rb = File.read('config/deploy.rb')
+        @version = deploy_rb[/^lock.*?([\d\.]+)/, 1]
         template 'config/deploy.rb', force: true
         template 'config/deploy/staging.rb', force: true
         template 'config/deploy/production.rb', force: true
