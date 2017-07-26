@@ -54,11 +54,30 @@ module Katapult
       end
 
       def setup_spring
-        # run 'spring binstub --all'
-        # # remove_file 'bin/bundle' # Won't play together with parallel_tests
-        # template 'config/spring.rb'
-        # template 'bin/rake'
-        run 'spring stop' # Reload (just in case)
+        run 'spring binstub --all'
+
+        # Enhance Spring config
+        config = 'config/spring.rb'
+        inject_into_file config, <<-DIR, after: /\A%w\(\n/
+  lib/templates
+        DIR
+        prepend_to_file config, <<-MKDIR
+# Custom generator templates are put into lib/templates
+FileUtils.mkdir_p 'lib/templates'
+
+        MKDIR
+
+        # Parallel-fix binstubs
+        Dir['bin/*'].each do |binstub|
+          if File.read(binstub) =~ /load.*spring/
+            inject_into_file binstub, <<-PARALLEL, after: /\A.*\n/
+running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =~ /^parallel:/ }
+
+            PARALLEL
+
+            gsub_file binstub, /^(\s*load .*spring.*)$/, '\1 unless running_in_parallel'
+          end
+        end
       end
 
       def setup_guard

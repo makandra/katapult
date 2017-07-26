@@ -117,7 +117,7 @@ Feature: Katapult in general
       end
     """
 
-    # Just checking turbolinks was properly removed
+    # Check that turbolinks was properly removed
     And the file "app/views/layouts/application.html.erb" should not contain "turbolinks"
     But the file "app/views/layouts/application.html.erb" should contain:
     """
@@ -125,9 +125,30 @@ Feature: Katapult in general
         <%= javascript_include_tag 'application' %>
     """
 
+    # Spring
+    And the file "config/spring.rb" should contain:
+    """
+    # Custom generator templates are put into lib/templates
+    FileUtils.mkdir_p 'lib/templates'
+
+    %w(
+      lib/templates
+    """
+    And the file "bin/rails" should contain:
+    """
+    #!/usr/bin/env ruby
+    running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =~ /^parallel:/ }
+
+    begin
+      load File.expand_path('../spring', __FILE__) unless running_in_parallel
+    rescue LoadError => e
+    """
+    And the file "bin/rake" should contain "running_in_parallel ="
+    And the file "bin/rspec" should contain "running_in_parallel ="
+    And the file "bin/cucumber" should contain "running_in_parallel ="
 
 
-      # Config
+    # Config
     And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
     And the file "config/environments/development.rb" should contain "config.assets.debug = false"
     And the file "config/environments/development.rb" should contain:

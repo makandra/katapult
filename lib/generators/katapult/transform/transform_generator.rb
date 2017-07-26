@@ -33,8 +33,14 @@ module Katapult
     end
 
     def remigrate_all_databases
-      # run 'spring stop' # parallel_tests does not work together with Spring
-      run 'rake db:drop db:create db:migrate parallel:drop parallel:create parallel:prepare'
+      run 'rake db:drop db:create db:migrate'
+
+      # Need to unset RAILS_ENV variable for this sub command because
+      # parallel_tests defaults to "test" only if the variable is not set (<->
+      # empty string value). However, because this is run from a Rails
+      # generator, the variable is already set to "development". Cannot set to
+      # "test" either because parallel_tests is only loaded in development.
+      run 'unset RAILS_ENV; rake parallel:drop parallel:create parallel:prepare'
     end
 
   end
