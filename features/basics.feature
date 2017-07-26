@@ -181,7 +181,7 @@ Feature: Katapult in general
         adapter: postgresql
         encoding: unicode
         host: localhost
-        username: root
+        username:
         password:
 
       development:

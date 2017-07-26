@@ -2,7 +2,7 @@ common: &common
   adapter: postgresql
   encoding: unicode
   host: localhost
-  username: root
+  username:
   password:
 
 development:
