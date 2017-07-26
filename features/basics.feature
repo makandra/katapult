@@ -156,7 +156,7 @@ Feature: Katapult in general
       """
         config.middleware.use Rack::LiveReload
       """
-      And a file named "config/environments/staging.rb" should exist
+      And the file "config/environments/staging.rb" should contain "require_relative 'production'"
       And the file "config/database.yml" should contain exactly:
       """
       common: &common

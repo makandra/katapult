@@ -86,10 +86,10 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
       end
 
       def setup_staging
-        FileUtils.copy 'config/environments/production.rb', 'config/environments/staging.rb'
-        secret = `rake secret`.chomp
+        template 'config/environments/staging.rb'
 
         # Cheating in the "staging" secret between "test" and "production"
+        secret = run('rake secret', capture: true).chomp
         insert_into_file 'config/secrets.yml', <<~SECRET, after: "test:\n"
           secret_key_base: #{ secret }
 
