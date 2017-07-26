@@ -5,7 +5,7 @@ ExceptionNotification.configure do |config|
   config.add_notifier :email, {
     email_prefix: '[<%= app_name %>] ',
     exception_recipients: %w[fail@makandra.de],
-    sender_address: 'fail@makandra.de',
+    sender_address: Rails.configuration.system_email,
     sections: %w[request backtrace],
     background_sections: %w[backtrace],
   }

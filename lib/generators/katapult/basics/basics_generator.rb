@@ -127,6 +127,10 @@ config.time_zone = 'Berlin'
           "config.time_zone = 'Berlin'"
       end
 
+      def configure_system_email
+        application "config.system_email = 'system@#{app_name}.com'\n"
+      end
+
       def disable_asset_debugging # Faster
         gsub_file 'config/environments/development.rb',
           /config\.assets\.debug =.*$/,
