@@ -98,7 +98,7 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
       end
 
       def create_databases
-        run 'rake db:drop:all db:create:all parallel:create'
+        run 'rake db:drop db:create parallel:drop parallel:create'
       end
 
       def configure_action_mailer
