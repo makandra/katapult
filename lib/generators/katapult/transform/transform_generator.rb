@@ -6,9 +6,12 @@
 # 2) render the parsed model into code
 
 require 'katapult/parser'
+require 'katapult/generator_goodies'
 
 module Katapult
   class TransformGenerator < Rails::Generators::Base
+    include Katapult::GeneratorGoodies
+
     desc 'Transform the katapult application model'
 
     argument :path, required: true, type: :string,
@@ -18,7 +21,7 @@ module Katapult
       say_status :parse, path
       @app_model = Katapult::Parser.new.parse(path)
 
-      say_status :render, "into #{application_name}"
+      say_status :render, "into #{app_name}"
       @app_model.render
     end
 
@@ -32,18 +35,6 @@ module Katapult
     def remigrate_all_databases
       # run 'spring stop' # parallel_tests does not work together with Spring
       run 'rake db:drop db:create db:migrate parallel:drop parallel:create parallel:prepare'
-    end
-
-  private
-
-    def application_name
-       File.basename(Dir.pwd)
-    end
-
-    def run(*)
-      Bundler.with_clean_env do
-        super
-      end
     end
 
   end

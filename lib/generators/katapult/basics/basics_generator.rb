@@ -1,8 +1,11 @@
 # Generates model-independent application basics (see method names).
 
+require 'katapult/generator_goodies'
+
 module Katapult
   module Generators
     class BasicsGenerator < Rails::Generators::Base
+      include Katapult::GeneratorGoodies
 
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)
@@ -165,19 +168,6 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       def install_styles
         remove_file 'app/assets/stylesheets/application.css'
         directory 'app/assets/stylesheets', force: true
-      end
-
-
-    private
-
-      def app_name
-        File.basename(Dir.pwd)
-      end
-
-      def run(*)
-        Bundler.with_clean_env do
-          super
-        end
       end
 
     end

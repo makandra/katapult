@@ -1,9 +1,11 @@
 # The katapult generator base class, slightly adapted from Rails generators.
 
 require 'rails/generators'
+require 'katapult/generator_goodies'
 
 module Katapult
   class Generator < Rails::Generators::NamedBase
+    include Katapult::GeneratorGoodies
 
     attr_accessor :element
 
@@ -15,19 +17,9 @@ module Katapult
 
     private
 
-    def app_name
-      File.basename(Dir.pwd)
-    end
-
     def render_partial(template_path, given_binding = nil)
       path = File.join(self.class.source_root, template_path)
       ERB.new(::File.binread(path), nil, '%').result(given_binding || binding)
-    end
-
-    def run(*)
-      Bundler.with_clean_env do
-        super
-      end
     end
 
   end
