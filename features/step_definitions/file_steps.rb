@@ -23,8 +23,3 @@ Then /^the file named "(.+?)" should contain "(.+?)" exactly once$/ do |file_nam
     ERROR_MESSAGE
   end
 end
-
-Then 'the ruby-version file should be up-to-date' do
-  configured_ruby = File.read('.ruby-version').strip
-  expect(configured_ruby).to eq Katapult::RUBY_VERSION
-end
