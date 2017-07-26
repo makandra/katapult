@@ -10,7 +10,7 @@ module Katapult
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)
 
-      class_option :db_user, type: :string, default: 'root',
+      class_option :db_user, type: :string, default: '',
         description: 'The user to set in config/database.yml'
       class_option :db_password, type: :string, default: '',
         description: 'The password to set in config/database.yml'
