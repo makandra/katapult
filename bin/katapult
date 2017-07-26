@@ -11,10 +11,10 @@ USAGE
 require_relative '../lib/katapult/binary_util'
 util = Katapult::BinaryUtil
 
-case (transform_command = ARGV.shift)
+case ARGV.shift
 when 'new'
   interactive = !ARGV.delete('--non-interactive')
-  app_name = ARGV.shift
+  app_name = util.snake_case(ARGV.shift)
   basics_command = 'bundle exec rails generate katapult:basics'
 
   if interactive
@@ -25,7 +25,7 @@ when 'new'
     basics_command << ' --db-password ' << gets.chomp
   end
 
-  util.pink 'Creating new Rails application ...'
+  util.pink "Creating new Rails application in #{app_name} ..."
   util.create_rails_app app_name
 
   Dir.chdir app_name
@@ -59,6 +59,8 @@ when 'fire'
 
   util.pink 'Loading katapult ...'
   util.run transform_command
+
+  util.pink 'Committing result ...'
   util.git_commit transform_command
 
   util.pink <<-INSTRUCTIONS

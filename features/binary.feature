@@ -51,6 +51,11 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Usage: katapult [new APP_NAME | fire [path/to/model] ]"
 
 
+  Scenario: Run with CamelCased app name
+    When I run `katapult new TestApp --non-interactive`
+    Then the output should contain "Creating new Rails application in test_app ..."
+
+
   Scenario: Transform the application model
     Given a pristine Rails application
     And I install katapult

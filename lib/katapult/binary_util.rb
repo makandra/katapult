@@ -55,5 +55,9 @@ module Katapult
       exit(1)
     end
 
+    def snake_case(string)
+      string.gsub(/([a-z])([A-Z])/,'\1_\2').downcase
+    end
+
   end
 end
