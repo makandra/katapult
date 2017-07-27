@@ -467,6 +467,8 @@ Feature: Katapult in general
       And a file named "features/support/paths.rb" should exist
       And a file named "features/support/selectors.rb" should exist
       And the file "spec/rails_helper.rb" should match /^Dir.Rails.root.join.+spec.support/
+      And the file ".rspec" should contain "--require rails_helper"
+      And the file ".rspec_parallel" should contain "--require rails_helper"
       And the file "spec/support/shoulda_matchers.rb" should contain:
       """
       require 'shoulda/matchers'

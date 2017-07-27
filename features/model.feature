@@ -37,8 +37,6 @@ Feature: Generate Models
       """
     And the file "spec/models/car_spec.rb" should contain exactly:
       """
-      require 'rails_helper'
-
       describe Car do
 
         describe '#to_s' do
@@ -110,8 +108,6 @@ Feature: Generate Models
       """
     And the file "spec/models/person_spec.rb" should contain exactly:
       """
-      require 'rails_helper'
-
       describe Person do
 
         describe '#to_s' do
@@ -181,8 +177,6 @@ Feature: Generate Models
       """
     And the file "spec/models/person_spec.rb" should contain exactly:
       """
-      require 'rails_helper'
-
       describe Person do
 
         describe '#to_s' do

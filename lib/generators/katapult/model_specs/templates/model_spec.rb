@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe <%= model.name :class %> do
 
   describe '#to_s' do

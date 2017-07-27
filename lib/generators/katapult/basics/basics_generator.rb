@@ -174,6 +174,9 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         generate 'rspec:install'
 
         gsub_file '.rspec', "--warnings\n", '' # Don't show Ruby warnings
+        gsub_file '.rspec', '--require spec_helper', '--require rails_helper'
+        template '.rspec_parallel'
+
         uncomment_lines 'spec/rails_helper.rb', /Dir.Rails.root.join.+spec.support/
         template 'spec/support/shoulda_matchers.rb'
         template 'spec/support/factory_girl.rb'
