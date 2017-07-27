@@ -156,6 +156,10 @@ Feature: Katapult in general
       """
         config.middleware.use Rack::LiveReload
       """
+    And the file "config/environments/development.rb" should contain:
+    """
+      config.active_record.migration_error = false
+    """
       And the file "config/environments/staging.rb" should contain "require_relative 'production'"
       And the file "config/database.yml" should contain exactly:
       """

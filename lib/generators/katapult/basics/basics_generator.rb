@@ -85,6 +85,11 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
         environment 'config.middleware.use Rack::LiveReload', env: :development
       end
 
+      def disable_migration_errors
+        development = 'config/environments/development.rb'
+        gsub_file development, /(migration_error =) :page_load/, '\1 false'
+      end
+
       def setup_staging
         template 'config/environments/staging.rb'
 
