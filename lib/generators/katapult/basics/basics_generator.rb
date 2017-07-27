@@ -82,7 +82,8 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
 
       def setup_guard
         template 'Guardfile'
-        environment 'config.middleware.use Rack::LiveReload', env: :development
+        environment "config.middleware.use Rack::LiveReload\n", env: :development
+        environment "config.assets.digest = false # For Guard::Livereload\n", env: :development
       end
 
       def disable_migration_errors

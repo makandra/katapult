@@ -152,6 +152,7 @@ Feature: Katapult in general
     And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
     And the file "config/application.rb" should contain "config.system_email = 'system@katapult_test_app.com'"
     And the file "config/environments/development.rb" should contain "config.assets.debug = false"
+    And the file "config/environments/development.rb" should contain "config.assets.digest = false # For Guard::Livereload"
     And the file "config/environments/development.rb" should contain:
       """
         config.middleware.use Rack::LiveReload
