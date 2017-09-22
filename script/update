@@ -40,8 +40,8 @@ u.job 'update Bundler' do
   system 'gem install bundler'
 end
 
-u.job 'update Rails version', "#{version_path} updated." do
-  print "Please enter the desired Rails version (current: #{Katapult::RAILS_VERSION}): "
+u.job "update Rails version (current: #{Katapult::RAILS_VERSION})", "#{version_path} updated." do
+  print 'Please enter the desired Rails version: '
   rails_v = gets.strip
 
   version_rb = File.read version_path
@@ -59,10 +59,10 @@ u.job 'wipe tmp directory' do
   FileUtils.rm_rf 'tmp'
 end
 
+sleep 1
 puts <<-DEBUG
 
-All things automatic have been done. Now to the manual part: You need to fix
-whatever was broken by the updates.
+This script is done. Now you need to fix whatever was broken by the updates.
 
 The suggested way is to run the following features one by one, fixing issues as
 they occur:
