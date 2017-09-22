@@ -7,7 +7,6 @@ gem 'pg'
 
 # Internals and security
 gem 'exception_notification'
-gem 'safe_cookies'
 # gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
 # gem 'breach-mitigation-rails' # broken
 
