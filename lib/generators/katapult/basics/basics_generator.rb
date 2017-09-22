@@ -168,6 +168,10 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
         # Remove cucumber section from database.yml. Don't need this.
         gsub_file 'config/database.yml', /^cucumber.*\z/m, ''
+
+        environment <<~ACTIVE_JOB, env: 'test'
+          config.active_job.queue_adapter = :inline
+        ACTIVE_JOB
       end
 
       def install_rspec
