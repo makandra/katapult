@@ -3,32 +3,52 @@
 # This script simplifies the usage of `katapult` by grouping relevant actions
 # that the user else had to perform manually.
 
-usage = <<-USAGE
-Usage: katapult [new APP_NAME | fire [path/to/model] ]
-Suppress database credentials prompt with `--non-interactive`
-USAGE
+usage = 'Usage: katapult [new APP_NAME | fire [path/to/model] ]'
 
 require_relative '../lib/katapult/binary_util'
 util = Katapult::BinaryUtil
 
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.on '-u', '--db-user USER', 'Database user name' do |name|
+    options[:dbuser] = name
+  end
+  opts.on '-p', '--db-password PASS', 'Database password' do |password|
+    options[:dbpass] = password
+  end
+  opts.on '-r', '--ruby-version VERSION', 'Ruby version' do |version|
+    options[:rubyversion] = version
+  end
+end.parse!
+
 case ARGV.shift
 when 'new'
-  interactive = !ARGV.delete('--non-interactive')
-  app_name = util.snake_case(ARGV.shift)
-  basics_command = 'bundle exec rails generate katapult:basics'
+  app_name = ARGV.shift || util.ask('Please enter the application name:')
+  app_name = util.snake_case(app_name)
 
-  if interactive
-    util.pink 'Please enter your database user: '
-    basics_command << ' --db-user ' << gets.chomp
-
-    util.pink 'Please enter your database password: '
-    basics_command << ' --db-password ' << gets.chomp
+  # Any options that haven't be passed via command line should be asked for
+  options[:dbuser] ||= util.ask 'Please enter the database user:'
+  options[:dbpass] ||= util.ask 'Please enter the database password:'
+  options[:rubyversion] ||= begin
+    ruby_version = `ruby -v`.chomp
+    puts '', "Current Ruby version is: #{ruby_version}"
+    util.ask 'Please enter the Ruby version for the new project:'
   end
+
+  basics_command = 'bundle exec rails generate katapult:basics'
+  basics_command << ' --db-user ' << options[:dbuser]
+  basics_command << ' --db-password ' << options[:dbpass]
 
   util.pink "Creating new Rails application in #{app_name} ..."
   util.create_rails_app app_name
-
   Dir.chdir app_name
+
+  util.pink 'Writing .ruby-version ...'
+  File.open('.ruby-version', 'w') do |file|
+    file.puts options[:rubyversion]
+  end
 
   util.pink 'Initializing git repository ...'
   util.run 'git init --quiet'
@@ -44,6 +64,7 @@ when 'new'
 
   util.pink 'Generating katapult basics ...'
   util.run basics_command
+  # Do not use `basics_command` as commit message, as it contains the password!
   util.git_commit 'rails generate katapult:basics', '--quiet'
 
   util.pink <<-INSTRUCTIONS

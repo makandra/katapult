@@ -14,5 +14,7 @@ Before do
 end
 
 After do
+  # Spring doesn't like loosing its working directory. Since the test app
+  # directory is clobbered between runs, we stop Spring after each run.
   run_simple 'spring stop'
 end

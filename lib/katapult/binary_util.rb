@@ -27,9 +27,18 @@ module Katapult
       run "rails _#{version}_ new #{name} " + options.join(' ')
     end
 
-    def pink(*args)
-      message = "\n> #{ args.join ' ' }"
-      Kernel.puts "\e[35m#{ message }\e[0m" # pink
+    def pink(*args, linefeed: true)
+      message = "> #{ args.join ' ' }"
+      message.prepend($/) if linefeed
+      message << (linefeed ? $/ : ' ')
+
+      pink_message = "\e[35m#{ message }\e[0m"
+      print pink_message
+    end
+
+    def ask(question)
+      pink(question, linefeed: false)
+      gets.chomp
     end
 
     # With clean Bundler env

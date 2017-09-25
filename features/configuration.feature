@@ -1,3 +1,4 @@
+#@announce-output
 Feature: Configure katapult
 
   Background:

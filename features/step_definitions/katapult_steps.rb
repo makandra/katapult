@@ -8,7 +8,7 @@ end
 # This step is required for any feature because it generates config/database.yml
 When /^I generate katapult basics$/ do
   with_aruba_timeout 45 do
-    run_simple 'rails generate katapult:basics --db-user=katapult --db-password=secret'
+    run_simple 'rails generate katapult:basics --db-user katapult --db-password secret'
   end
 end
 

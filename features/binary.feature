@@ -1,4 +1,34 @@
+#@announce-output
 Feature: Katapult binary `katapult`
+
+  Scenario: Run without arguments
+    When I run `katapult`
+    Then the output should contain "Usage: katapult [new APP_NAME | fire [path/to/model] ]"
+
+
+  Scenario: Missing options are asked for
+    When I run `katapult new`
+    Then the output should contain "Please enter the application name"
+
+    When I run `katapult new binary_test`
+    Then the output should contain "Please enter the database user"
+
+    When I run `katapult new binary_test -u user`
+    Then the output should contain "Please enter the database password"
+
+    When I run `katapult new binary_test -u user -p pass`
+    Then the output should contain "Please enter the Ruby version for the new project"
+
+    # Note: Rails will refuse to create an application named "test". Calling it
+    # "test" here will cancel application creation and speed up this test ;)
+    When I run `katapult new test -u user -p pass -r 2.4.1`
+    Then the output should contain "Creating new Rails application"
+
+
+  Scenario: App name gets normalized
+    When I run `katapult new TestApp -u user -p pass -r2.4.1`
+    Then the output should contain "Creating new Rails application in test_app ..."
+
 
   Scenario: Start new Rails application
     Given the default aruba exit timeout is 120 seconds
@@ -6,6 +36,7 @@ Feature: Katapult binary `katapult`
     When I run `katapult new binary_test` interactively
       And I type "katapult"
       And I type "secret"
+      And I type the current Ruby version
     Then the output should contain "Creating new Rails application"
     And the output should contain "Installing katapult"
     And the output should contain "Generating katapult basics"
@@ -39,21 +70,6 @@ Feature: Katapult binary `katapult`
     And the output should contain "rails generate katapult:install"
     And the output should contain "rails generate katapult:basics"
     And the output should contain "Author: katapult <katapult@makandra.com>"
-
-
-  Scenario: Forget to pass application name
-    When I run `katapult new --non-interactive # Without app name`
-    Then the output should contain "No value provided for required arguments 'app_path'"
-
-
-  Scenario: Run without arguments
-    When I run `katapult # without arguments`
-    Then the output should contain "Usage: katapult [new APP_NAME | fire [path/to/model] ]"
-
-
-  Scenario: Run with CamelCased app name
-    When I run `katapult new TestApp --non-interactive`
-    Then the output should contain "Creating new Rails application in test_app ..."
 
 
   Scenario: Transform the application model

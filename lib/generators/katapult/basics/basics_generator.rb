@@ -20,10 +20,6 @@ module Katapult
         template '.gitignore', force: true
       end
 
-      def write_ruby_version
-        template '.ruby-version'
-      end
-
       def write_database_ymls
         @db_user = options.db_user
         @db_password = options.db_password
@@ -95,7 +91,7 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
         template 'config/environments/staging.rb'
 
         # Cheating in the "staging" secret between "test" and "production"
-        secret = run('rake secret', capture: true).chomp
+        secret = run('bundle exec rake secret', capture: true).chomp
         insert_into_file 'config/secrets.yml', <<~SECRET, after: "test:\n"
           secret_key_base: #{ secret }
 
@@ -104,7 +100,7 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
       end
 
       def create_databases
-        run 'rake db:drop db:create parallel:drop parallel:create'
+        run 'bundle exec rake db:drop db:create parallel:drop parallel:create'
       end
 
       def configure_action_mailer
