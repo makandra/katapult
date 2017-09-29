@@ -48,19 +48,8 @@ Feature: Katapult in general
         watch 'app/models/navigation.rb' # Navy
         watch 'app/models/power.rb' # Consul
         watch %r{app/helpers/.+\.rb}
-        watch %r{public/.+\.(css|js|html)}
         watch %r{config/locales/.+\.yml}
         watch %r{spec/javascripts/} # Jasmine
-
-        # Rails Assets Pipeline
-        watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|js|coffee|html|png|jpg))).*}) do |m|
-          filename = m[3]
-          # When a .sass (or .css.sass) file was changed, tell the client to load the .css version.
-          # Similarly, for .coffee / .js.coffee files we ask the client to reload the .js file.
-          filename.gsub! /(\.css)?\.sass$/, '.css'
-          filename.gsub! /(\.js)?\.coffee$/, '.js'
-          "/assets/#{filename}"
-        end
       end
       """
 
@@ -79,13 +68,15 @@ Feature: Katapult in general
       end
     """
 
-    # Check that turbolinks was properly removed
-    And the file "app/views/layouts/application.html.erb" should not contain "turbolinks"
-    But the file "app/views/layouts/application.html.erb" should contain:
-    """
-        <%= stylesheet_link_tag    'application', media: 'all' %>
-        <%= javascript_include_tag 'application' %>
-    """
+    And turbolinks should be removed
+    And the asset pipeline should be removed
+    But webpacker should be employed
+    And the file "app/webpack/assets/stylesheets/theme.sass" should contain "body"
+    And the file "app/webpack/assets/stylesheets/custom_bootstrap.sass" should contain "@import ~bootstrap-sass"
+    And a file named "app/webpack/assets/stylesheets/blocks/layout.sass" should exist
+    And a file named "app/webpack/assets/stylesheets/blocks/navigation.sass" should exist
+    And a file named "app/webpack/assets/stylesheets/blocks/items.sass" should exist
+    And a file named "app/webpack/assets/stylesheets/blocks/tools.sass" should exist
 
     # Spring
     And the file "config/spring.rb" should contain:
@@ -345,26 +336,3 @@ Feature: Katapult in general
 
       end
       """
-
-
-
-    # styles
-    And the file "app/assets/stylesheets/application.sass" should contain:
-      """
-      @import bootstrap
-
-      @import application/blocks/all
-
-      """
-    And the file "app/assets/stylesheets/application/blocks/_all.sass" should contain exactly:
-      """
-      @import items
-      @import layout
-      @import navigation
-      @import tools
-
-      """
-    And a file named "app/assets/stylesheets/application/blocks/_items.sass" should exist
-    And a file named "app/assets/stylesheets/application/blocks/_layout.sass" should exist
-    And a file named "app/assets/stylesheets/application/blocks/_navigation.sass" should exist
-    And a file named "app/assets/stylesheets/application/blocks/_tools.sass" should exist

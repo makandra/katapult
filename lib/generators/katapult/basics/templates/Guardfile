@@ -28,17 +28,6 @@ guard 'livereload' do
   watch 'app/models/navigation.rb' # Navy
   watch 'app/models/power.rb' # Consul
   watch %r{app/helpers/.+\.rb}
-  watch %r{public/.+\.(css|js|html)}
   watch %r{config/locales/.+\.yml}
   watch %r{spec/javascripts/} # Jasmine
-
-  # Rails Assets Pipeline
-  watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|js|coffee|html|png|jpg))).*}) do |m|
-    filename = m[3]
-    # When a .sass (or .css.sass) file was changed, tell the client to load the .css version.
-    # Similarly, for .coffee / .js.coffee files we ask the client to reload the .js file.
-    filename.gsub! /(\.css)?\.sass$/, '.css'
-    filename.gsub! /(\.js)?\.coffee$/, '.js'
-    "/assets/#{filename}"
-  end
 end

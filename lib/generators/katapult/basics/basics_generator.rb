@@ -199,9 +199,35 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         template 'lib/tasks/pending_migrations.rake'
       end
 
-      def install_styles
-        remove_file 'app/assets/stylesheets/application.css'
-        directory 'app/assets/stylesheets', force: true
+      # We're using Webpacker
+      def remove_asset_pipeline_traces
+        remove_dir 'app/assets'
+      end
+
+      def setup_webpacker
+        webpack_dir = 'app/webpack'
+        remove_dir 'app/javascript'
+        directory webpack_dir
+
+        gsub_file 'config/webpacker.yml', /^(  source_path:).*$/, '\1 ' + webpack_dir
+        inject_into_file 'config/webpack/environment.js', <<~JQUERY, after: /\A.*\n/ # 1st line
+        const webpack = require('webpack')
+
+        environment.plugins.set('Provide', new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+          })
+        )
+        JQUERY
+
+        webpack_libs = %w[
+          autoprefixer
+          autosize
+          bootstrap-sass
+          jquery
+          jquery-ujs
+        ]
+        run "bin/yarn add #{webpack_libs.join ' '}"
       end
 
     end

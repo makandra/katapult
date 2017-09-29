@@ -109,3 +109,35 @@ CONTENT
   step 'the file "lib/capistrano/tasks/passenger.rake" should contain "Restart Application"'
 
 end
+
+Then 'turbolinks should be removed' do
+  step 'the file "app/views/layouts/application.html.erb" should not contain "turbolinks"'
+  step 'the file "app/views/layouts/application.html.erb" should contain:', <<-CONTENT
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  CONTENT
+end
+
+Then 'the asset pipeline should be removed' do
+  step 'the directory "app/assets" should not exist'
+
+  step 'the file "Gemfile" should not contain "sass-rails"'
+  step 'the file "Gemfile" should not contain "therubyracer"'
+end
+
+Then 'webpacker should be employed' do
+  step 'the file "app/webpack/packs/application.js" should contain "window.$ = jQuery"'
+  step %(the file "app/webpack/assets/index.js" should contain "import './stylesheets/theme'")
+
+  step 'the file "config/webpacker.yml" should contain "source_path: app/webpack"'
+  step 'the file "config/webpack/environment.js" should contain:', <<-CONTENT
+environment.plugins.set('Provide', new webpack.ProvidePlugin({
+    $: 'jquery',
+  CONTENT
+
+  step 'the file "features/support/webpacker.rb" should contain "def compile_once"'
+  step 'the file "package.json" should contain "jquery"'
+  step 'the file "package.json" should contain "bootstrap-sass"'
+
+  step 'the file ".gitignore" should contain "node_modules"'
+end

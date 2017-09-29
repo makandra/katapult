@@ -3,6 +3,7 @@ git_source(:github) { |repo_path| "https://github.com/#{repo_path}.git" }
 
 gem 'rails'
 gem 'pg'
+gem 'webpacker'
 <%= @katapult -%>
 
 # Internals and security
@@ -18,19 +19,11 @@ gem 'has_defaults'
 gem 'modularity'
 
 # Views
+gem 'haml-rails'
 gem 'will_paginate'
 gem 'makandra-navy', require: 'navy'
 
-# assets
-gem 'haml-rails'
-gem 'bootstrap-sass'
-gem 'sass-rails'
-gem 'autoprefixer-rails'
-gem 'coffee-rails'
-gem 'therubyracer', platform: :ruby
-gem 'uglifier'
-
-# server
+# Jobs
 gem 'whenever'
 
 group :development do

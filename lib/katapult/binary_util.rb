@@ -17,10 +17,12 @@ module Katapult
     def create_rails_app(name)
       version = Katapult::RAILS_VERSION
       options = %w[
+        --database postgresql
+        --webpack
+
         --skip-test
         --skip-system-test
         --skip-bundle
-        --database postgresql
         --skip-turbolinks
       ]
 

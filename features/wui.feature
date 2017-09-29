@@ -1,3 +1,4 @@
+#@announce-stderr
 Feature: Web User Interface
 
   Background:

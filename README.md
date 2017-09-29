@@ -219,6 +219,9 @@ To precisely debug errors occurring _inside_ the generated application, use
 destroyed between test runs, you'd need to `cd ../../aruba/katapult_test_app`
 after each test.
 
+When fixing issues in the generated app, make a commit in the app first. When
+you've fixed it, the diff will show you what you need to port back to katapult.
+
 ### Typical errors
 - Timeout error because of a script waiting for user input
 - Executing (bash) commands in the test application without resetting the
