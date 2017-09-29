@@ -39,16 +39,6 @@ Feature: Katapult in general
     When I generate katapult basics
     Then the ruby-version file should be up-to-date
 
-
-    And the file "config/cucumber.yml" should contain:
-      """
-      default: <%= std_opts %> features
-      wip: --tags @wip:3 --wip features
-      parallel: <%= std_opts %> features <%= log_failures %>
-      rerun: -r features --format pretty --strict <%= rerun_failures %> <%= log_failures %>
-      """
-
-
     And the file ".gitignore" should contain "config/database.yml"
     And the file ".bundle/config" should match /NOKOGIRI.*--use-system-libraries/
     And the file "Guardfile" should contain:
@@ -73,34 +63,6 @@ Feature: Katapult in general
         end
       end
       """
-    And the file "Capfile" should contain:
-    """
-    # Load DSL and set up stages
-    require 'capistrano/setup'
-
-    # Include default deployment tasks
-    require 'capistrano/deploy'
-
-    # Include tasks from other gems included in your Gemfile
-    require 'capistrano/bundler'
-    require 'capistrano/maintenance'
-    require 'capistrano/rails/assets'
-    require 'capistrano/rails/migrations'
-    require 'whenever/capistrano'
-
-    Dir.glob('lib/capistrano/tasks/*.rake').each do |r|
-      # `import r` calls Rake.application.add_import(r), which imports the file only
-      # *after* this file has been processed, so the imported tasks would not be
-      # available to the hooks below.
-      Rake.load_rakefile r
-    end
-
-    before 'deploy:updating', 'db:dump'
-    after 'deploy:published', 'deploy:restart'
-    after 'deploy:published', 'db:warn_if_pending_migrations'
-    after 'deploy:published', 'db:show_dump_usage'
-    after 'deploy:finished', 'deploy:cleanup' # https://makandracards.com/makandra/1432
-    """
 
     And the configured Rails version should be listed in the Gemfile.lock
     And the file "Gemfile" should contain "gem 'katapult', path: '../../..'"
@@ -206,63 +168,8 @@ Feature: Katapult in general
       rerun: -r features --format pretty --strict <%= rerun_failures %> <%= log_failures %>
       """
 
+    And Capistrano should be configured
     And Capistrano should be locked to the installed version
-    And the file "config/deploy.rb" should contain:
-    """
-    # Default value for :format is :pretty
-    # set :format, :pretty
-
-    set :log_level, :info # %i(debug info error), default: :debug
-
-    # Default value for :pty is false
-    # set :pty, true
-
-    # Default value for :linked_files is []
-    # set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
-    set :linked_files, %w(config/database.yml config/secrets.yml)
-
-    # Default value for linked_dirs is []
-    # set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
-    set :linked_dirs, %w(log public/system tmp/pids)
-
-    # Default value for default_env is {}
-    # set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-    set :application, 'katapult_test_app'
-    set :keep_releases, 10
-    set :ssh_options, {
-      forward_agent: true
-    }
-    set :scm, :git
-    set :repo_url, 'git@code.makandra.de:makandra/katapult_test_app.git'
-
-    # set :whenever_roles, :cron
-    # set :whenever_environment, defer { stage }
-    # set :whenever_command, 'bundle exec whenever'
-
-    set :maintenance_template_path, 'public/maintenance.html.erb'
-    """
-    And the file "config/deploy/staging.rb" should contain:
-    """
-    set :stage, :staging
-
-    set :deploy_to, '/var/www/katapult_test_app-staging'
-    set :rails_env, 'staging'
-    set :branch, ENV['DEPLOY_BRANCH'] || 'master'
-
-    # server 'example.com', user: 'deploy-user', roles: %w(app web cron db)
-    """
-    And the file "config/deploy/production.rb" should contain exactly:
-    """
-    set :stage, :production
-
-    set :deploy_to, '/var/www/katapult_test_app'
-    set :rails_env, 'production'
-    set :branch, 'production'
-
-    # server 'one.example.com', user: 'deploy-user', roles: %w(app web cron db)
-    # server 'two.example.com', user: 'deploy-user', roles: %w(app web)
-    """
     And the file "config/initializers/ext.rb" should contain exactly:
     """
     Dir.glob(Rails.root.join('lib/ext/**/*.rb')).each do |filename|
@@ -286,66 +193,6 @@ Feature: Katapult in general
 
 
     # Lib
-    And the file "lib/capistrano/tasks/db.rake" should contain:
-    """
-    namespace :db do
-      desc 'Warn about pending migrations'
-      task :warn_if_pending_migrations do
-        on primary :db do
-          within current_path do
-            with rails_env: fetch(:rails_env, 'production') do
-              rake 'db:warn_if_pending_migrations'
-            end
-          end
-        end
-      end
-
-      desc 'Do a dump of the DB on the remote machine using dumple'
-      task :dump do
-        on primary :db do
-          within current_path do
-            execute :dumple, '--fail-gently', fetch(:rails_env, 'production')
-          end
-        end
-      end
-
-      desc 'Show usage of ~/dumps/ on remote host'
-      task :show_dump_usage do
-        on primary :db do
-          info capture :dumple, '-i'
-        end
-      end
-    end
-    """
-    And the file "lib/capistrano/tasks/deploy.rake" should contain:
-    """
-    namespace :deploy do
-      desc 'Restart application'
-      task :restart do
-        invoke 'passenger:restart'
-      end
-
-      desc 'Show deployed revision'
-      task :revision do
-        on roles :app do
-          within current_path do
-            info "Revision: #{ capture :cat, 'REVISION' }"
-          end
-        end
-      end
-    end
-    """
-    And the file "lib/capistrano/tasks/passenger.rake" should contain:
-    """
-    namespace :passenger do
-      desc 'Restart Application'
-      task :restart do
-        on roles :app do
-          execute "sudo passenger-config restart-app --ignore-app-not-running #{ fetch(:deploy_to) }"
-        end
-      end
-    end
-    """
     And the file "lib/ext/active_record/find_by_anything.rb" should contain:
     """
     ActiveRecord::Base.class_eval do
