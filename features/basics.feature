@@ -1,12 +1,14 @@
 #@announce-output
+@announce-stderr
 Feature: Katapult in general
 
   Background:
     Given a pristine Rails application
 
 
-  Scenario: Install katapult
+  Scenario: Demo application model
     When I install katapult
+    And I generate the application model
     Then the file "lib/katapult/application_model.rb" should contain exactly:
       """
       # Here you define the fundamentals of your application.
@@ -24,7 +26,7 @@ Feature: Katapult in general
       #   wui.action :lock, scope: :member, method: :post
       # end
       #
-      # Add navigation
+      # Add main menu
       # navigation :main
       #
       # Add authentication

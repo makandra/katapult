@@ -115,7 +115,7 @@ Feature: Katapult binary `katapult`
     And I install katapult
     And I generate katapult basics
 
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'failing example' do |ex|
         ex.attr :fail, type: :nonexistent

@@ -1,3 +1,4 @@
+@announce-stderr
 Feature: Navigation
 
   Background:
@@ -11,7 +12,7 @@ Feature: Navigation
     The navigation is rendered from all WUIs in the application model. It
     consists of links to their index pages.
 
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Customer' do |customer|
         customer.attr :name
@@ -60,7 +61,7 @@ Feature: Navigation
 
     The first WUI with an index action is set as home page
 
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Customer'
       model 'Elephant'

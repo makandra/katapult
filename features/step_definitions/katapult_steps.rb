@@ -1,7 +1,10 @@
 # Note: Aruba adds the project's bin/ directory to the path
 
-When /^I install katapult$/ do
+When 'I install katapult' do
   append_to_file 'Gemfile', "gem 'katapult', path: '../../..'"
+end
+
+When 'I generate the application model' do
   run_simple 'rails generate katapult:install'
 end
 

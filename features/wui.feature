@@ -8,7 +8,7 @@ Feature: Web User Interface
 
 
   Scenario: Generate a Web User Interface
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'customer' do |customer|
         customer.attr :name
@@ -358,7 +358,7 @@ Feature: Web User Interface
 
 
   Scenario: A WUI also generates the application layout file
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Car'
       wui 'Car'

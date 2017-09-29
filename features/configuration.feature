@@ -8,7 +8,7 @@ Feature: Configure katapult
 
 
   Scenario: Custom model template
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Car'
       """

@@ -8,7 +8,7 @@ Feature: Add authentication to an application
 
 
   Scenario: Authenticate with the User model
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'user'
       wui('user') { |w| w.crud }

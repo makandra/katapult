@@ -8,7 +8,7 @@ Feature: Generate Models
 
 
   Scenario: Generate ActiveRecord Model
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Car'
       """
@@ -52,7 +52,7 @@ Feature: Generate Models
 
 
   Scenario: Generate ActiveRecord Model with attributes
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Person' do |person|
 
@@ -140,7 +140,7 @@ Feature: Generate Models
 
 
   Scenario: Get a helpful error message when an attribute has an unknown option
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Person' do |person|
         person.attr :x, invalid_option: 'here'
@@ -151,7 +151,7 @@ Feature: Generate Models
 
 
   Scenario: Specify assignable values
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Person' do |person|
         person.attr :age, type: :integer, assignable_values: 9..99
@@ -212,7 +212,7 @@ Feature: Generate Models
 
     Do not add routes twice.
 
-    When I overwrite "lib/katapult/application_model.rb" with:
+    When I write to "lib/katapult/application_model.rb" with:
       """
       model 'Car'
       wui 'Car' do |wui|
