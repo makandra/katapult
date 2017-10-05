@@ -1,12 +1,12 @@
 #@announce-output
-@announce-stderr
+#@announce-stderr
 Feature: Katapult in general
 
   Background:
     Given a pristine Rails application
 
 
-  Scenario: Demo application model
+  Scenario: Generating the application model file
     When I install katapult
     And I generate the application model
     Then the file "lib/katapult/application_model.rb" should contain exactly:

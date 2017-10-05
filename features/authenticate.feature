@@ -1,14 +1,12 @@
 #@announce-output
-@announce-stderr
+#@announce-stderr
 Feature: Add authentication to an application
 
   Background:
-    Given a pristine Rails application
-    And I install katapult
-    And I generate katapult basics
+    Given a new Rails application with Katapult basics installed
 
 
-  Scenario: Authenticate with the User model
+  Scenario: Authenticate with the user model
     When I write to "lib/katapult/application_model.rb" with:
       """
       model 'user'

@@ -2,9 +2,7 @@
 Feature: Generate Models
 
   Background:
-    Given a pristine Rails application
-    And I install katapult
-    And I generate katapult basics
+    Given a new Rails application with Katapult basics installed
 
 
   Scenario: Generate ActiveRecord Model

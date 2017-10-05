@@ -1,4 +1,5 @@
 #@announce-output
+#@announce-stderr
 Feature: Katapult binary `katapult`
 
   Scenario: Run without arguments
@@ -73,9 +74,7 @@ Feature: Katapult binary `katapult`
 
 
   Scenario: Transform the application model
-    Given a pristine Rails application
-    And I install katapult
-    And I generate katapult basics
+    Given a new Rails application with Katapult basics installed
 
     When I run `katapult fire`
     Then the output should contain "Loading katapult"
@@ -96,9 +95,7 @@ Feature: Katapult binary `katapult`
 
 
   Scenario: Transform a custom application model
-    Given a pristine Rails application
-    And I install katapult
-    And I generate katapult basics
+    Given a new Rails application with Katapult basics installed
 
     When I write to "lib/katapult/custom_model.rb" with:
     """
@@ -111,9 +108,7 @@ Feature: Katapult binary `katapult`
 
 
   Scenario: When the transformation fails, an error message is printed
-    Given a pristine Rails application
-    And I install katapult
-    And I generate katapult basics
+    Given a new Rails application with Katapult basics installed
 
     When I write to "lib/katapult/application_model.rb" with:
       """

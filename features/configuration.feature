@@ -1,10 +1,9 @@
 #@announce-output
+#@announce-stderr
 Feature: Configure katapult
 
   Background:
-    Given a pristine Rails application
-    And I install katapult
-    And I generate katapult basics
+    Given a new Rails application with Katapult basics installed
 
 
   Scenario: Custom model template
