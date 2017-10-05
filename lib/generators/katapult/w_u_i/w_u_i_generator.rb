@@ -55,10 +55,6 @@ MESSAGE
         def model_name(kind = nil)
           wui.model_name(kind)
         end
-
-        def navigation
-          wui.application_model.navigation
-        end
       end
 
       private

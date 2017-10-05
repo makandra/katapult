@@ -21,7 +21,6 @@ gem 'modularity'
 # Views
 gem 'haml-rails'
 gem 'will_paginate'
-gem 'makandra-navy', require: 'navy'
 
 # Jobs
 gem 'whenever'

@@ -113,19 +113,19 @@ CONTENT
 
 end
 
-Then 'turbolinks should be removed' do
+Then 'Turbolinks should be removed' do
   step 'the file "Gemfile" should not contain "turbolinks"'
   step 'the file "app/views/layouts/application.html.haml" should not contain "turbolinks"'
 end
 
-Then 'the asset pipeline should be removed' do
+Then 'the Asset Pipeline should be removed' do
   step 'the directory "app/assets" should not exist'
 
   step 'the file "Gemfile" should not contain "sass-rails"'
   step 'the file "Gemfile" should not contain "therubyracer"'
 end
 
-Then 'webpacker should be employed' do
+Then 'Webpacker should be employed' do
   step 'the file "app/webpack/packs/application.js" should contain "window.$ = jQuery"'
   step %(the file "app/webpack/assets/index.js" should contain "import './stylesheets/theme'")
 
@@ -145,10 +145,29 @@ end
 Then 'the application layout should be set up' do
   step 'the file "app/views/layouts/application.html.haml" should contain "= query_diet_widget"'
   step %(the file "app/views/layouts/application.html.haml" should contain "= render 'layouts/flashes'")
+  step %(the file "app/views/layouts/application.html.haml" should match /%body.+data.+env.+Rails\.env/)
 
   step 'the file "app/views/layouts/_flashes.html.haml" should contain:', <<~CONTENT
   - flash.each do |_level, message|
     .flash.alert.alert-info
       = message
   CONTENT
+end
+
+Then 'Unpoly should be installed' do
+  step 'the file "package.json" should contain "unpoly"'
+  step 'a file named "config/webpack/loaders/unpoly.js" should exist'
+
+  step %(the file "app/webpack/packs/application.js" should contain "import 'unpoly/dist/unpoly'")
+  step %(the file "app/webpack/packs/application.js" should contain "import 'unpoly/dist/unpoly-bootstrap3'")
+  step %(the file "app/webpack/assets/index.js" should contain "import './stylesheets/unpoly'")
+  step 'the file "app/webpack/assets/javascripts/unpoly.js" should contain "up.motion.config.enabled = false"'
+  step 'the file "app/webpack/assets/stylesheets/unpoly.sass" should contain "@import ~unpoly/dist/unpoly"'
+  step 'the file "app/webpack/assets/stylesheets/unpoly.sass" should contain "@import ~unpoly/dist/unpoly-bootstrap3"'
+
+  step 'the file "app/helpers/unpoly_helper.rb" should contain "def content_link_to"'
+  step 'the file "app/helpers/unpoly_helper.rb" should contain "def modal_link_to"'
+  step 'a file named "app/webpack/assets/javascripts/macros/content_link.js" should exist'
+  step 'a file named "app/webpack/assets/javascripts/macros/modal_link.js" should exist'
+  step 'a directory named "app/webpack/assets/javascripts/compilers" should exist'
 end

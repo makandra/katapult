@@ -47,7 +47,6 @@ Feature: Katapult in general
       """
       guard 'livereload' do
         watch %r{app/views/.+\.(erb|haml)$}
-        watch 'app/models/navigation.rb' # Navy
         watch 'app/models/power.rb' # Consul
         watch %r{app/helpers/.+\.rb}
         watch %r{config/locales/.+\.yml}
@@ -70,15 +69,16 @@ Feature: Katapult in general
       end
     """
 
-    And turbolinks should be removed
-    And the asset pipeline should be removed
-    But webpacker should be employed
+    And Turbolinks should be removed
+    And the Asset Pipeline should be removed
+    But Webpacker should be employed
     And the file "app/webpack/assets/stylesheets/theme.sass" should contain "body"
     And the file "app/webpack/assets/stylesheets/custom_bootstrap.sass" should contain "@import ~bootstrap-sass"
     And a file named "app/webpack/assets/stylesheets/blocks/layout.sass" should exist
-    And a file named "app/webpack/assets/stylesheets/blocks/navigation.sass" should exist
     And a file named "app/webpack/assets/stylesheets/blocks/items.sass" should exist
     And a file named "app/webpack/assets/stylesheets/blocks/tools.sass" should exist
+
+    And Unpoly should be installed
 
     And the application layout should be set up
 

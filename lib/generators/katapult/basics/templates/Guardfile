@@ -25,7 +25,6 @@
 
 guard 'livereload' do
   watch %r{app/views/.+\.(erb|haml)$}
-  watch 'app/models/navigation.rb' # Navy
   watch 'app/models/power.rb' # Consul
   watch %r{app/helpers/.+\.rb}
   watch %r{config/locales/.+\.yml}

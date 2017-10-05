@@ -9,7 +9,7 @@ Feature: Navigation
 
   Scenario: Generate navigation
 
-    The navigation is rendered from all WUIs in the application model. It
+    A navigation is rendered from all WUIs in the application model. It
     consists of links to their index pages.
 
     When I write to "lib/katapult/application_model.rb" with:
@@ -29,37 +29,22 @@ Feature: Navigation
       navigation 'main'
       """
     And I successfully transform the application model
-    Then the file "app/models/navigation.rb" should contain exactly:
-      """
-      class Navigation
-        include Navy::Description
-
-        navigation :main do
-          section :customers, "Customers", customers_path
-        end
-
-      end
-
-      """
-    And the file "app/views/layouts/application.html.haml" should contain:
-      """
-      = render_navigation Navigation.main
-      """
-    And the file "app/controllers/customers_controller.rb" should contain:
-      """
-      before_filter :set_section
-      """
-    And the file "app/controllers/customers_controller.rb" should contain:
-      """
-        def set_section
-          in_sections :customers
-        end
-      """
+    Then the file "app/views/layouts/application.html.haml" should contain:
+    """
+    = render 'layouts/navigation
+    """
+    And the file "app/views/layouts/_navigation.html.haml" should contain:
+    """
+    %ul.main-menu.nav.nav-pills
+      %li(up-expand)
+        = link_to "Customers", customers_path
+    """
 
 
   Scenario: Homepage (aka root route) is set automatically
 
-    The first WUI with an index action is set as home page
+    The first WUI with an index action is set as home page. This does not
+    require a navigation.
 
     When I write to "lib/katapult/application_model.rb" with:
       """

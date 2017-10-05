@@ -9,7 +9,7 @@
     = javascript_pack_tag 'application'
     = stylesheet_pack_tag 'application'
 
-  %body
+  %body{ data: {env: Rails.env} }
     = query_diet_widget(bad_count: 15) if Rails.env.development?
 
     .layout
@@ -19,7 +19,8 @@
 
       .layout__main
         = render 'layouts/flashes'
-        = yield
+        .unpoly-content
+          = yield
 
       .layout__tail
         powered by makandra

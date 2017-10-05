@@ -1,0 +1,5 @@
+%ul.main-menu.nav.nav-pills
+<% links.each do |label, path| -%>
+  %li(up-expand)
+    = link_to <%= label.titlecase.inspect %>, <%= path %>
+<% end %>

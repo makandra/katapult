@@ -7,6 +7,16 @@ module Katapult
     class BasicsGenerator < Rails::Generators::Base
       include Katapult::GeneratorGoodies
 
+      WEBPACK_DIR = 'app/webpack'
+      YARN_PACKAGES = %w[
+        autoprefixer
+        autosize
+        bootstrap-sass
+        jquery
+        jquery-ujs
+        unpoly
+      ]
+
       desc 'Generate basics like test directories and gems'
       source_root File.expand_path('../templates', __FILE__)
 
@@ -163,6 +173,10 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         template 'app/views/layouts/_flashes.html.haml'
       end
 
+      def install_helpers
+        template 'app/helpers/unpoly_helper.rb'
+      end
+
       def install_cucumber
         generate 'cucumber:install'
         directory 'features/support'
@@ -211,11 +225,11 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       end
 
       def setup_webpacker
-        webpack_dir = 'app/webpack'
         remove_dir 'app/javascript'
-        directory webpack_dir
+        directory WEBPACK_DIR
+        directory 'config/webpack'
 
-        gsub_file 'config/webpacker.yml', /^(  source_path:).*$/, '\1 ' + webpack_dir
+        gsub_file 'config/webpacker.yml', /^(  source_path:).*$/, '\1 ' + WEBPACK_DIR
         inject_into_file 'config/webpack/environment.js', <<~JQUERY, after: /\A.*\n/ # 1st line
         const webpack = require('webpack')
 
@@ -226,14 +240,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         )
         JQUERY
 
-        webpack_libs = %w[
-          autoprefixer
-          autosize
-          bootstrap-sass
-          jquery
-          jquery-ujs
-        ]
-        run "bin/yarn add #{webpack_libs.join ' '}"
+        yarn :add, *YARN_PACKAGES
       end
 
     end

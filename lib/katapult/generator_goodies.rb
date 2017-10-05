@@ -1,5 +1,10 @@
 module Katapult::GeneratorGoodies
 
+  def yarn(*args)
+    command =  'bin/yarn ' + args.join(' ')
+    run command
+  end
+
   private
 
   def app_name

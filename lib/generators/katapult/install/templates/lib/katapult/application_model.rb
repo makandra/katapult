@@ -13,7 +13,7 @@
 #   wui.action :lock, scope: :member, method: :post
 # end
 #
-# Add navigation
+# Add main menu
 # navigation :main
 #
 # Add authentication
