@@ -167,7 +167,7 @@ Feature: Katapult in general
     And Capistrano should be locked to the installed version
     And the file "config/initializers/ext.rb" should contain exactly:
     """
-    Dir.glob(Rails.root.join('lib/ext/**/*.rb')).each do |filename|
+    Dir.glob(Rails.root.join('lib/ext/**/*.rb')).sort.each do |filename|
       require filename
     end
     """
