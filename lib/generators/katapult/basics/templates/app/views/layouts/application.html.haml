@@ -16,15 +16,6 @@
 
       .layout__head
         %h2 <%= app_name.titlecase %>
-      <%- if navigation -%>
-        = render_navigation Navigation.<%= navigation.name(:variable) %>
-      <%- end -%>
-      <%- if authentication -%>
-        - if signed_in?
-          .current-user
-            = link_to current_user.email, edit_user_path(current_user)
-            = link_to 'Sign out', sign_out_path, method: :delete
-      <%- end -%>
 
       .layout__main
         = render 'layouts/flashes'

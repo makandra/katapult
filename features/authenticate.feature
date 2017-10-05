@@ -1,4 +1,5 @@
 #@announce-output
+@announce-stderr
 Feature: Add authentication to an application
 
   Background:
@@ -42,6 +43,15 @@ Feature: Add authentication to an application
       end
       """
     And the file "app/controllers/users_controller.rb" should match /permit.*email.*password/
+    And the file "app/views/layouts/application.html.haml" should contain:
+      """
+              - if signed_in?
+                .current-user
+                  = link_to current_user.email, edit_user_path(current_user)
+                  = link_to 'Sign out', sign_out_path, method: :delete
+
+            .layout__main
+      """
     And the file "app/views/users/_form.html.haml" should contain:
       """
           %dt

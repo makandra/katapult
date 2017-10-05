@@ -157,6 +157,12 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         LOAD_PATHS
       end
 
+      def install_application_layout
+        remove_file 'app/views/layouts/application.html.erb'
+        template 'app/views/layouts/application.html.haml'
+        template 'app/views/layouts/_flashes.html.haml'
+      end
+
       def install_cucumber
         generate 'cucumber:install'
         directory 'features/support'

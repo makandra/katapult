@@ -74,6 +74,17 @@ resources :users do
         ROUTES
       end
 
+      def add_current_user_to_layout
+        layout = 'app/views/layouts/application.html.haml'
+        inject_into_file layout, <<-CONTENT, before: /^\s+.layout__main/
+
+        - if signed_in?
+          .current-user
+            = link_to current_user.email, edit_user_path(current_user)
+            = link_to 'Sign out', sign_out_path, method: :delete
+        CONTENT
+      end
+
       def add_sign_in_background_to_all_features
         Dir['features/*.feature'].each do |file|
           inject_into_file file, <<-CONTENT, after: /^Feature: .*$/

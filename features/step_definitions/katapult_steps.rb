@@ -114,11 +114,8 @@ CONTENT
 end
 
 Then 'turbolinks should be removed' do
-  step 'the file "app/views/layouts/application.html.erb" should not contain "turbolinks"'
-  step 'the file "app/views/layouts/application.html.erb" should contain:', <<-CONTENT
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
-  CONTENT
+  step 'the file "Gemfile" should not contain "turbolinks"'
+  step 'the file "app/views/layouts/application.html.haml" should not contain "turbolinks"'
 end
 
 Then 'the asset pipeline should be removed' do
@@ -143,4 +140,15 @@ environment.plugins.set('Provide', new webpack.ProvidePlugin({
   step 'the file "package.json" should contain "bootstrap-sass"'
 
   step 'the file ".gitignore" should contain "node_modules"'
+end
+
+Then 'the application layout should be set up' do
+  step 'the file "app/views/layouts/application.html.haml" should contain "= query_diet_widget"'
+  step %(the file "app/views/layouts/application.html.haml" should contain "= render 'layouts/flashes'")
+
+  step 'the file "app/views/layouts/_flashes.html.haml" should contain:', <<~CONTENT
+  - flash.each do |_level, message|
+    .flash.alert.alert-info
+      = message
+  CONTENT
 end

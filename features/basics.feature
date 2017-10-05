@@ -80,6 +80,8 @@ Feature: Katapult in general
     And a file named "app/webpack/assets/stylesheets/blocks/items.sass" should exist
     And a file named "app/webpack/assets/stylesheets/blocks/tools.sass" should exist
 
+    And the application layout should be set up
+
     # Spring
     And the file "config/spring.rb" should contain:
     """

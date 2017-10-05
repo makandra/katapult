@@ -11,12 +11,6 @@ module Katapult
       source_root File.expand_path('../templates', __FILE__)
 
 
-      def install_application_layout
-        remove_file 'app/views/layouts/application.html.erb'
-        template 'app/views/layouts/application.html.haml'
-        template 'app/views/layouts/_flashes.html.haml'
-      end
-
       def create_views_directory
         FileUtils.mkdir_p views_path
       end
@@ -59,14 +53,6 @@ module Katapult
 
         def views_path
           File.join('app', 'views', model_name(:variables))
-        end
-
-        def navigation
-          wui.application_model.navigation
-        end
-
-        def authentication
-          wui.application_model.authentication
         end
       end
 

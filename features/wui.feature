@@ -355,26 +355,3 @@ Feature: Web User Interface
 
     When I run cucumber
     Then the features should pass
-
-
-  Scenario: A WUI also generates the application layout file
-    When I write to "lib/katapult/application_model.rb" with:
-      """
-      model 'Car'
-      wui 'Car'
-      """
-    And I successfully transform the application model
-    Then the file "app/views/layouts/application.html.haml" should contain:
-      """
-      = query_diet_widget(bad_count: 15) if Rails.env.development?
-      """
-    And the file "app/views/layouts/application.html.haml" should contain:
-      """
-      = render 'layouts/flashes'
-      """
-    And the file "app/views/layouts/_flashes.html.haml" should contain:
-      """
-      - flash.each do |level, message|
-        .flash.alert.alert-info
-          = message
-      """
