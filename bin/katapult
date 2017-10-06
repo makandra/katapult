@@ -21,12 +21,16 @@ OptionParser.new do |opts|
   opts.on '-r', '--ruby-version VERSION', 'Ruby version' do |version|
     options[:rubyversion] = version
   end
+  opts.on '-v', '--verbose', 'Verbose output' do |verbose|
+    options[:verbose] = verbose
+  end
 end.parse!
 
 case ARGV.shift
 when 'new'
   app_name = ARGV.shift || util.ask('Please enter the application name:')
   app_name = util.snake_case(app_name)
+  puts "Normalized application name: #{app_name}" if options[:verbose]
 
   # Any options that haven't be passed via command line should be asked for
   options[:dbuser] ||= util.ask 'Please enter the database user:'

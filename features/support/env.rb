@@ -5,7 +5,7 @@ require 'pry'
 ENV['KATAPULT_GEMFILE_OPTIONS'] = ", path: '../../..'"
 
 Aruba.configure do |config|
-  config.exit_timeout = 30 # Todo: decrease to ~5
+  config.exit_timeout = 5
 end
 
 Before do

@@ -69,7 +69,7 @@ Feature: Generate Models
         person.attr :plain_json, type: :plain_json
       end
       """
-    And I successfully transform the application model
+    And I successfully transform the application model including migrations
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base
@@ -156,7 +156,7 @@ Feature: Generate Models
         person.attr :hobby, assignable_values: %w[soccer baseball], default: 'soccer', allow_blank: true
       end
       """
-    And I successfully transform the application model
+    And I successfully transform the application model including migrations
     Then the file "app/models/person.rb" should contain exactly:
       """
       class Person < ActiveRecord::Base

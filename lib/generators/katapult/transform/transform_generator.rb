@@ -33,6 +33,8 @@ module Katapult
     end
 
     def remigrate_all_databases
+      return if ENV['SKIP_MIGRATIONS'] # Used to speed up tests
+
       run 'rake db:drop db:create db:migrate'
 
       # Need to unset RAILS_ENV variable for this sub command because

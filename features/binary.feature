@@ -8,41 +8,38 @@ Feature: Katapult binary `katapult`
 
 
   Scenario: Missing options are asked for
-    When I run `katapult new`
-    Then the output should contain "Please enter the application name"
-
-    When I run `katapult new binary_test`
-    Then the output should contain "Please enter the database user"
-
-    When I run `katapult new binary_test -u user`
-    Then the output should contain "Please enter the database password"
-
-    When I run `katapult new binary_test -u user -p pass`
-    Then the output should contain "Please enter the Ruby version for the new project"
-
-    # Note: Rails will refuse to create an application named "test". Calling it
-    # "test" here will cancel application creation and speed up this test ;)
-    When I run `katapult new test -u user -p pass -r 2.4.1`
-    Then the output should contain "Creating new Rails application"
-
-
-  Scenario: App name gets normalized
-    When I run `katapult new TestApp -u user -p pass -r2.4.1`
-    Then the output should contain "Creating new Rails application in test_app ..."
-
-
-  Scenario: Start new Rails application
-    Given the default aruba exit timeout is 120 seconds
-
-    When I run `katapult new binary_test` interactively
+    When I run `katapult new` interactively
+      And I type "test_app"
       And I type "katapult"
       And I type "secret"
       And I type the current Ruby version
     Then the output should contain "Creating new Rails application"
-    And the output should contain "Installing katapult"
-    And the output should contain "Generating katapult basics"
-    And the output should contain the configured Rails version
-    And the output should contain:
+
+    # Aruba seemingly cannot test output interleaved with input, so the output
+    # is tested after exiting the script
+    When I stop the command above
+    Then the output should contain "Please enter the database user"
+    Then the output should contain "Please enter the application name"
+    Then the output should contain "Please enter the database password"
+    Then the output should contain "Please enter the Ruby version for the new project"
+
+
+  Scenario: App name gets normalized
+    When I run `katapult new TestApp --verbose`
+    Then the output should contain "Normalized application name: test_app"
+
+
+#  @announce-output
+  Scenario: Start new Rails application
+    # Rails new including yarn install + installing basics takes quite some time
+    Given the aruba exit timeout is 90 seconds
+
+    When I successfully run `katapult new binary_test -u katapult -p secret -r 2.4.1`
+    Then the output should contain "Creating new Rails application"
+      And the output should contain "Installing katapult"
+      And the output should contain "Generating katapult basics"
+      And the output should contain the configured Rails version
+      And the output should contain:
     """
     Application initialization done.
 
@@ -51,32 +48,30 @@ Feature: Katapult binary `katapult`
     """
 
     When I cd to "binary_test"
-
-    # test whether katapult is installed
     Then the file "Gemfile" should contain "gem 'katapult'"
-    And a file named "lib/katapult/application_model.rb" should exist
+      And a file named "lib/katapult/application_model.rb" should exist
 
-    # test correct insertion of database credentials
-    And the file "config/database.yml" should contain "username: katapult"
-    And the file "config/database.yml" should contain "password: secret"
+      And the file "config/database.yml" should contain "username: katapult"
+      And the file "config/database.yml" should contain "password: secret"
+      And the file ".ruby-version" should contain "2.4.1"
 
 #    Not working, probably because Bundler sees an empty BUNDLER_GEMFILE var
-#    # test whether the application is already bundled
 #    When I run `bundle check`
 #    Then the output should contain "The Gemfile's dependencies are satisfied"
 
-    # test whether katapult made git commits
     When I run `git log`
     Then the output should contain "rails new binary_test"
-    And the output should contain "rails generate katapult:install"
-    And the output should contain "rails generate katapult:basics"
-    And the output should contain "Author: katapult <katapult@makandra.com>"
+      And the output should contain "rails generate katapult:install"
+      And the output should contain "rails generate katapult:basics"
+      And the output should contain "Author: katapult <katapult@makandra.com>"
 
 
   Scenario: Transform the application model
     Given a new Rails application with Katapult basics installed
+      And the default aruba exit timeout is 45 seconds
 
-    When I run `katapult fire`
+    When I generate the application model
+      And I run `katapult fire`
     Then the output should contain "Loading katapult"
     And the output should contain "parse  lib/katapult/application_model"
     And the output should contain "render  into katapult_test_app"

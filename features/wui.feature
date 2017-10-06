@@ -1,3 +1,4 @@
+#@announce-output
 #@announce-stderr
 Feature: Web User Interface
 
@@ -27,7 +28,7 @@ Feature: Web User Interface
         wui.crud
       end
       """
-    And I successfully transform the application model
+    And I successfully transform the application model including migrations
     Then the file "app/controllers/customers_controller.rb" should contain exactly:
       """
       class CustomersController < ApplicationController

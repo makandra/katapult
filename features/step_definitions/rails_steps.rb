@@ -18,11 +18,8 @@ module RailsHelper
   end
 
   def create_app(name)
-    job = 'Cached Rails app generation'
-
-    puts "#{job} started (in #{Dir.pwd})"
     Katapult::BinaryUtil.create_rails_app(name)
-    puts "#{job} done."
+    puts 'Done generating rails app.'
   end
 
   def test_app_path
@@ -39,7 +36,8 @@ module RailsHelper
 
   def recreate_databases(path)
     Dir.chdir(path) do
-      Katapult::BinaryUtil.run 'bundle exec rake db:drop db:create parallel:drop parallel:create'
+      # Katapult doesn't run test app tests in parallel
+      Katapult::BinaryUtil.run 'bundle exec rake db:drop db:create > /dev/null'
     end
   end
 
@@ -78,6 +76,7 @@ Given 'a new Rails application with Katapult basics installed' do
           # :path will be correct when copied to the TEST_APP path
           Katapult::BinaryUtil.run %(echo "gem 'katapult', path: '../../..'" >> Gemfile)
           Katapult::BinaryUtil.run 'bin/rails generate katapult:basics --db-user katapult --db-password secret'
+          # Spring running in the cache dir is of no further use
           Katapult::BinaryUtil.run 'spring stop'
         end
       end

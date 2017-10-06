@@ -229,6 +229,15 @@ you've fixed it, the diff will show you what you need to port back to katapult.
 - Spring running inside the test application encumbers parallel_tests
 - An outdated Rails application in `tmp/cached_test_app`
 
+### Fast tests
+Generating basics and transforming the application model take quite some time
+(about 20s), because they need to boot the application and just do a lot of
+things. To speed up basics generation, `katapult` tests cache a prepared Rails
+application with basics installed.
+
+When debugging test suite speed, `bundle exec cucumber --format usage` is your
+friend.
+
 
 ## Credits
 

@@ -13,7 +13,7 @@ Feature: Add authentication to an application
       wui('user') { |w| w.crud }
       authenticate 'user', system_email: 'system@example.com'
       """
-    And I successfully transform the application model
+    And I successfully transform the application model including migrations
     Then the file "Gemfile" should contain "gem 'clearance'"
     And the file "app/controllers/application_controller.rb" should contain:
       """

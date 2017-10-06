@@ -8,18 +8,26 @@ When 'I generate the application model' do
   run_simple 'rails generate katapult:install'
 end
 
-# This step is required for any feature because it generates config/database.yml
 When /^I generate katapult basics$/ do
-  with_aruba_timeout 60 do
+  with_aruba_timeout 45 do
     run_simple 'rails generate katapult:basics --db-user katapult --db-password secret'
   end
 end
 
-When /^I( successfully)? transform the application model$/ do |require_success|
+# By default, transforming the application model will not recreate and migrate
+# the test app database (massive test suite speedup).
+# If a scenario relies on the database being set up (e.g. running Cucumber), be
+# sure to use this step with trailing "including migrations".
+When /^I( successfully)? transform the application model( including migrations)?$/ do |require_success, run_migrations|
+  ENV['SKIP_MIGRATIONS'] = 'true' unless run_migrations # Speedup
+
   with_aruba_timeout 45 do
     # The second argument of #run_simple defaults to `true`
     run_simple 'rails generate katapult:transform lib/katapult/application_model.rb', !!require_success
   end
+end
+After do
+  ENV.delete 'SKIP_MIGRATIONS'
 end
 
 Then 'Capistrano should be configured' do

@@ -178,6 +178,8 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       end
 
       def install_cucumber
+        run 'spring stop' # Spring constantly causes trouble here
+
         generate 'cucumber:install'
         directory 'features/support'
         template 'config/cucumber.yml', force: true
