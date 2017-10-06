@@ -25,10 +25,6 @@ Feature: Web User Interface
 
       wui 'customer', model: 'customer' do |wui|
         wui.crud
-        wui.action :get_member, method: :get, scope: :member
-        wui.action :post_member, method: :post, scope: :member
-        wui.action :get_collection, method: :get, scope: :collection
-        wui.action :put_collection, method: :put, scope: :collection
       end
       """
     And I successfully transform the application model
@@ -70,24 +66,6 @@ Feature: Web User Interface
           redirect_to customers_path
         end
 
-        def get_member
-          load_customer
-        end
-
-        def post_member
-          load_customer
-          redirect_to @customer
-        end
-
-        def get_collection
-          load_customers
-        end
-
-        def put_collection
-          load_customers
-          redirect_to customers_path
-        end
-
         private
 
         def load_customers
@@ -123,16 +101,7 @@ Feature: Web User Interface
       """
     And the file "config/routes.rb" should contain:
       """
-        resources :customers, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-          member do
-            get 'get_member'
-            post 'post_member'
-          end
-          collection do
-            get 'get_collection'
-            put 'put_collection'
-          end
-        end
+        resources :customers
       """
     And the file "app/views/customers/index.html.haml" should contain exactly:
       """
@@ -141,8 +110,6 @@ Feature: Web User Interface
 
       .tools
         = link_to 'Add customer', new_customer_path, class: 'tools__button is_primary'
-        = link_to 'Get Collection', get_collection_customers_path, class: 'tools__button'
-        = link_to 'Put Collection', put_collection_customers_path, class: 'tools__button'
 
       - if @customers.any?
         %table.items
@@ -154,8 +121,6 @@ Feature: Web User Interface
                 .items__actions
                   = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
                   = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', data: { confirm: 'Really destroy?' }, title: "Destroy #{customer.to_s}"
-                  = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
-                  = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
 
       - else
         %p.help-block
@@ -171,8 +136,6 @@ Feature: Web User Interface
         = link_to 'All customers', customers_path, class: 'tools__button'
         = link_to 'Edit', edit_customer_path(@customer), class: 'tools__button is_primary'
         = link_to 'Destroy', customer_path(@customer), method: :delete, class: 'tools__button', confirm: 'Really destroy?'
-        = link_to 'Get Member', get_member_customer_path(@customer), class: 'tools__button'
-        = link_to 'Post Member', post_member_customer_path(@customer), class: 'tools__button', method: :post
 
       %dl.values
         %dt
@@ -210,8 +173,8 @@ Feature: Web User Interface
           = l(@customer.first_visit.to_date) if @customer.first_visit
 
       """
-    # Note that no views are generated for JSON fields, as they are mainly data
-    # storage fields
+    # Note that no form fields are generated for JSON fields, as they are mainly
+    # data storage fields
 
     And the file "app/views/customers/new.html.haml" should contain exactly:
       """
@@ -278,26 +241,6 @@ Feature: Web User Interface
           = link_to 'Cancel', cancel_path, class: 'tools__button'
 
       """
-    And the file "app/views/customers/get_member.html.haml" should contain exactly:
-      """
-      %h1
-        Get Member
-
-      .tools
-        = link_to 'All customers', customers_path, class: 'tools__button'
-
-      """
-    But a file named "app/views/customers/post_member.html.haml" should not exist
-    And the file "app/views/customers/get_collection.html.haml" should contain exactly:
-      """
-      %h1
-        Get Collection
-
-      .tools
-        = link_to 'All customers', customers_path, class: 'tools__button'
-
-      """
-    But a file named "app/views/customers/put_collection.html.haml" should not exist
     And the file "features/customers.feature" should contain exactly:
       """
       Feature: Customers
@@ -353,3 +296,99 @@ Feature: Web User Interface
 
     When I run cucumber
     Then the features should pass
+
+
+  Scenario: Generate a Web User Interface with custom actions
+    When I write to "lib/katapult/application_model.rb" with:
+      """
+      model 'customer' do |customer|
+        customer.attr :name
+      end
+
+      wui 'customer', model: 'customer' do |wui|
+        wui.crud
+        wui.action :get_member, method: :get, scope: :member
+        wui.action :post_member, method: :post, scope: :member
+        wui.action :get_collection, method: :get, scope: :collection
+        wui.action :put_collection, method: :put, scope: :collection
+      end
+      """
+    And I successfully transform the application model
+    Then the file "app/controllers/customers_controller.rb" should contain:
+      """
+
+        def get_member
+          load_customer
+        end
+
+        def post_member
+          load_customer
+          redirect_to @customer
+        end
+
+        def get_collection
+          load_customers
+        end
+
+        def put_collection
+          load_customers
+          redirect_to customers_path
+        end
+
+      """
+    And the file "config/routes.rb" should contain:
+      """
+        resources :customers, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+          member do
+            get 'get_member'
+            post 'post_member'
+          end
+          collection do
+            get 'get_collection'
+            put 'put_collection'
+          end
+        end
+      """
+    And the file "app/views/customers/index.html.haml" should contain:
+      """
+        = link_to 'Get Collection', get_collection_customers_path, class: 'tools__button'
+        = link_to 'Put Collection', put_collection_customers_path, class: 'tools__button'
+
+      - if @customers.any?
+        %table.items
+          - @customers.each do |customer|
+            %tr
+              %td
+                = link_to customer.to_s, customer, class: 'hyperlink'
+              %td
+                .items__actions
+                  = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
+                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', data: { confirm: 'Really destroy?' }, title: "Destroy #{customer.to_s}"
+                  = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
+                  = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
+      """
+    And the file "app/views/customers/show.html.haml" should contain:
+      """
+        = link_to 'Get Member', get_member_customer_path(@customer), class: 'tools__button'
+        = link_to 'Post Member', post_member_customer_path(@customer), class: 'tools__button', method: :post
+      """
+    And the file "app/views/customers/get_member.html.haml" should contain exactly:
+      """
+      %h1
+        Get Member
+
+      .tools
+        = link_to 'All customers', customers_path, class: 'tools__button'
+
+      """
+    But a file named "app/views/customers/post_member.html.haml" should not exist
+    And the file "app/views/customers/get_collection.html.haml" should contain exactly:
+      """
+      %h1
+        Get Collection
+
+      .tools
+        = link_to 'All customers', customers_path, class: 'tools__button'
+
+      """
+    But a file named "app/views/customers/put_collection.html.haml" should not exist
