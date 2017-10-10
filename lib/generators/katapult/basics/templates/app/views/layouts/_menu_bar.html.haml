@@ -1,0 +1,14 @@
+%nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      -# Mobile menu button
+      %button.navbar-toggle.collapsed{ data: { target: '#navbar', toggle: 'collapse' } }
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+
+      = link_to '<%= app_name.titleize %>', root_path, class: 'navbar-brand'
+
+    #navbar.navbar-collapse.collapse
+      = render 'layouts/navigation'
+      = render 'layouts/current_user'

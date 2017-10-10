@@ -55,7 +55,11 @@ Given /^a pristine Rails application$/ do
   with_aruba_timeout(80) do
     # Change Ruby cwd
     Dir.chdir('tmp') do
-      File.directory?(RailsHelper::PRISTINE_APP) || create_app(RailsHelper::PRISTINE_APP)
+      if File.directory?(RailsHelper::PRISTINE_APP)
+        puts "Using a cached Rails app from tmp/#{RailsHelper::PRISTINE_APP}"
+      else
+        create_app(RailsHelper::PRISTINE_APP)
+      end
 
       ensure_bundled(RailsHelper::PRISTINE_APP)
       FileUtils.cp_r RailsHelper::PRISTINE_APP, test_app_path
@@ -69,7 +73,13 @@ Given 'a new Rails application with Katapult basics installed' do
   with_aruba_timeout(120) do
     # Change Ruby cwd
     Dir.chdir('tmp') do
-      File.directory?(RailsHelper::APP_WITH_BASICS) || begin
+      if File.directory?(RailsHelper::APP_WITH_BASICS)
+        puts <<-NOTE
+Using a cached Rails app with basics installed. Remember to
+  rm -rf tmp/#{RailsHelper::APP_WITH_BASICS}
+when modifying the basics generator.
+      NOTE
+      else
         create_app(RailsHelper::APP_WITH_BASICS)
 
         Dir.chdir(RailsHelper::APP_WITH_BASICS) do
