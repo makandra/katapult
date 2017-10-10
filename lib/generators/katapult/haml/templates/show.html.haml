@@ -1,19 +1,21 @@
-%h1
-  = <%= model_name(:ivar) %>.to_s
-
-.tools
-  = link_to 'All <%= model_name(:humans) %>', <%= wui.path(:index) %>, class: 'tools__button'
-  = link_to 'Edit', <%= wui.path(:edit, model_name(:ivar)) %>, class: 'tools__button is_primary'
-  = link_to 'Destroy', <%= wui.path(:destroy, model_name(:ivar)) %>, method: :delete, class: 'tools__button', confirm: 'Really destroy?'
+<%- object = model_name(:ivar) -%>
+.action-bar.-main.btn-group
+  = link_to 'All <%= model_name(:humans) %>', <%= wui.path(:index) %>, class: 'btn btn-default'
+  = link_to 'Edit', <%= wui.path(:edit, object) %>, class: 'btn btn-default'
+  = link_to 'Destroy', <%= wui.path(:destroy, object) %>, method: :delete,
+    class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
 <% wui.custom_actions.select(&:member?).each do |action| -%>
-  = link_to '<%= action.name(:human).titleize %>', <%= wui.path(action, model_name(:ivar)) %>, class: 'tools__button'<%=
-      ", method: :#{action.method}" unless action.get?
+  = link_to '<%= action.name(:human).titleize %>', <%= wui.path(action, object) %>, class: 'btn btn-default'<%=
+    ", method: :#{action.method}" unless action.get?
     %>
 <% end -%>
 
-%dl.values
+%h1.page--title
+  = <%= model_name(:ivar) %>
+
+%dl
 <% wui.model.renderable_attrs.each do |attribute| -%>
-  <%- model_attribute = "#{model_name(:ivar)}.#{attribute.name}" -%>
+  <%- model_attribute = "#{object}.#{attribute.name}" -%>
   %dt
     = <%= model_name(:class) %>.human_attribute_name(:<%= attribute.name %>)
   %dd
@@ -21,9 +23,9 @@
   <%- when :string -%>
     = <%= model_attribute %>
   <%- when :email -%>
-    = mail_to <%= model_attribute %>, nil, class: 'hyperlink'
+    = mail_to <%= model_attribute %>, nil
   <%- when :url -%>
-    = link_to <%= model_attribute %>, <%= model_attribute %>, class: 'hyperlink'
+    = link_to <%= model_attribute %>, <%= model_attribute %>
   <%- when :integer -%>
     = <%= model_attribute %>
   <%- when :money -%>

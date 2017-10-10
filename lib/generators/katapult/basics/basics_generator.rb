@@ -174,7 +174,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       end
 
       def install_helpers
-        template 'app/helpers/unpoly_helper.rb'
+        directory 'app/helpers'
       end
 
       def install_cucumber

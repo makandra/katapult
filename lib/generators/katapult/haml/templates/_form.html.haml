@@ -1,6 +1,7 @@
-= form_for <%= model_name(:ivar) %> do |form|
+<%- object = model_name(:ivar) -%>
+= form_for <%= object %> do |form|
 
-  %dl.controls
+  %dl
 <% wui.model.editable_attrs.each do |attribute| -%>
     %dt
       = form.label <%= attribute.name(:symbol) %>
@@ -32,7 +33,13 @@
   <%- end -%>
 <% end -%>
 
-  .tools
-    = form.submit 'Save', class: 'tools__button is_primary'
-    - cancel_path = <%= model_name(:ivar) %>.new_record? ? <%= wui.path(:index) %> : <%= wui.path(:show, model_name(:ivar)) %>
-    = link_to 'Cancel', cancel_path, class: 'tools__button'
+  .action-bar
+    - cancel_path = <%= object %>.new_record? ? <%= wui.path(:index) %> : <%= wui.path(:show, object) %>
+
+    .pull-right
+      - if <%= object %>.persisted?
+        = link_to "Destroy <%= model_name(:human) %>", <%= wui.path(:destroy, object) %>, method: :delete,
+          class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
+
+    = form.submit 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', cancel_path, class: 'btn btn-link'

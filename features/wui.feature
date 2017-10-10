@@ -106,39 +106,41 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/index.html.haml" should contain exactly:
       """
-      %h1
+      .action-bar.-main.btn-group
+        = link_to 'Add customer', new_customer_path, class: 'btn btn-default'
+
+      %h1.page--title.-above-table
         Customers
 
-      .tools
-        = link_to 'Add customer', new_customer_path, class: 'tools__button is_primary'
-
       - if @customers.any?
-        %table.items
+
+        = table 'Name' do
           - @customers.each do |customer|
-            %tr
+            %tr(up-expand)
+              %td(width='40%')
+                = link_to customer, customer
               %td
-                = link_to customer.to_s, customer, class: 'hyperlink'
-              %td
-                .items__actions
-                  = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
-                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', data: { confirm: 'Really destroy?' }, title: "Destroy #{customer.to_s}"
+                = link_to 'Edit', edit_customer_path(customer)
+                = link_to 'Destroy', customer_path(customer), method: :delete,
+                  data: { confirm: 'Really destroy?' }, title: "Destroy #{customer}"
 
       - else
         %p.help-block
-          There are no customers yet.
+          No customers found.
 
       """
     And the file "app/views/customers/show.html.haml" should contain exactly:
       """
-      %h1
-        = @customer.to_s
+      .action-bar.-main.btn-group
+        = link_to 'All customers', customers_path, class: 'btn btn-default'
+        = link_to 'Edit', edit_customer_path(@customer), class: 'btn btn-default'
+        = link_to 'Destroy', customer_path(@customer), method: :delete,
+          class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
 
-      .tools
-        = link_to 'All customers', customers_path, class: 'tools__button'
-        = link_to 'Edit', edit_customer_path(@customer), class: 'tools__button is_primary'
-        = link_to 'Destroy', customer_path(@customer), method: :delete, class: 'tools__button', confirm: 'Really destroy?'
+      %h1.page--title
+        = @customer
 
-      %dl.values
+      %dl
         %dt
           = Customer.human_attribute_name(:name)
         %dd
@@ -150,7 +152,7 @@ Feature: Web User Interface
         %dt
           = Customer.human_attribute_name(:email)
         %dd
-          = mail_to @customer.email, nil, class: 'hyperlink'
+          = mail_to @customer.email, nil
         %dt
           = Customer.human_attribute_name(:revenue)
         %dd
@@ -159,7 +161,7 @@ Feature: Web User Interface
         %dt
           = Customer.human_attribute_name(:homepage)
         %dd
-          = link_to @customer.homepage, @customer.homepage, class: 'hyperlink'
+          = link_to @customer.homepage, @customer.homepage
         %dt
           = Customer.human_attribute_name(:locked)
         %dd
@@ -174,12 +176,9 @@ Feature: Web User Interface
           = l(@customer.first_visit.to_date) if @customer.first_visit
 
       """
-    # Note that no form fields are generated for JSON fields, as they are mainly
-    # data storage fields
-
     And the file "app/views/customers/new.html.haml" should contain exactly:
       """
-      %h1
+      %h1.page--title
         Add customer
 
       = render 'form'
@@ -187,8 +186,8 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/edit.html.haml" should contain exactly:
       """
-      %h1
-        = @customer.to_s
+      %h1.page--title
+        = @customer
 
       = render 'form'
 
@@ -197,7 +196,7 @@ Feature: Web User Interface
       """
       = form_for @customer do |form|
 
-        %dl.controls
+        %dl
           %dt
             = form.label :name
           %dd
@@ -236,12 +235,21 @@ Feature: Web User Interface
           %dd
             = form.date_field :first_visit
 
-        .tools
-          = form.submit 'Save', class: 'tools__button is_primary'
+        .action-bar
           - cancel_path = @customer.new_record? ? customers_path : customer_path(@customer)
-          = link_to 'Cancel', cancel_path, class: 'tools__button'
+
+          .pull-right
+            - if @customer.persisted?
+              = link_to "Destroy customer", customer_path(@customer), method: :delete,
+                class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
+
+          = form.submit 'Save', class: 'btn btn-primary'
+          = link_to 'Cancel', cancel_path, class: 'btn btn-link'
 
       """
+    # Note that no form fields are generated for JSON fields, as they are mainly
+    # data storage fields
+
     And the file "features/customers.feature" should contain exactly:
       """
       Feature: Customers
@@ -352,44 +360,31 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/index.html.haml" should contain:
       """
-        = link_to 'Get Collection', get_collection_customers_path, class: 'tools__button'
-        = link_to 'Put Collection', put_collection_customers_path, class: 'tools__button'
-
-      - if @customers.any?
-        %table.items
-          - @customers.each do |customer|
-            %tr
-              %td
-                = link_to customer.to_s, customer, class: 'hyperlink'
-              %td
-                .items__actions
-                  = link_to 'Edit', edit_customer_path(customer), class: 'items__action'
-                  = link_to 'Destroy', customer_path(customer), method: :delete, class: 'items__action', data: { confirm: 'Really destroy?' }, title: "Destroy #{customer.to_s}"
-                  = link_to 'Get Member', get_member_customer_path(customer), class: 'items__action'
-                  = link_to 'Post Member', post_member_customer_path(customer), class: 'items__action', method: :post
+        = link_to 'Get Collection', get_collection_customers_path, class: 'btn btn-default'
+        = link_to 'Put Collection', put_collection_customers_path, class: 'btn btn-default'
       """
     And the file "app/views/customers/show.html.haml" should contain:
       """
-        = link_to 'Get Member', get_member_customer_path(@customer), class: 'tools__button'
-        = link_to 'Post Member', post_member_customer_path(@customer), class: 'tools__button', method: :post
+        = link_to 'Get Member', get_member_customer_path(@customer), class: 'btn btn-default'
+        = link_to 'Post Member', post_member_customer_path(@customer), class: 'btn btn-default', method: :post
       """
     And the file "app/views/customers/get_member.html.haml" should contain exactly:
       """
-      %h1
-        Get Member
+      .action-bar
+        = link_to 'All customers', customers_path, class: 'btn btn-default'
 
-      .tools
-        = link_to 'All customers', customers_path, class: 'tools__button'
+      %h1.page--title
+        Get Member
 
       """
     But a file named "app/views/customers/post_member.html.haml" should not exist
     And the file "app/views/customers/get_collection.html.haml" should contain exactly:
       """
-      %h1
-        Get Collection
+      .action-bar
+        = link_to 'All customers', customers_path, class: 'btn btn-default'
 
-      .tools
-        = link_to 'All customers', customers_path, class: 'tools__button'
+      %h1.page--title
+        Get Collection
 
       """
     But a file named "app/views/customers/put_collection.html.haml" should not exist
