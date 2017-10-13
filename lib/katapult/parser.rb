@@ -28,7 +28,7 @@ module Katapult
       application_model.add_wui WUI.new(name, options, &block)
     end
 
-    def navigation(name)
+    def navigation(name = :main)
       application_model.set_navigation Navigation.new(name)
     end
 

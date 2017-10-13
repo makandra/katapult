@@ -17,7 +17,7 @@ Feature: Navigation
       end
       wui 'Customer', &:crud
 
-      navigation 'main'
+      navigation
       """
     And I successfully transform the application model
     And the file "app/views/layouts/_menu_bar.html.haml" should contain:
