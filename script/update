@@ -51,6 +51,10 @@ u.job "update Rails version (current: #{Katapult::RAILS_VERSION})", "#{version_p
   end
 end
 
+u.job 'update README' do
+  system 'rake update_readme'
+end
+
 u.job 'update installed gems' do
   system 'bundle update'
 end

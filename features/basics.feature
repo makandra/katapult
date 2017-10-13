@@ -2,41 +2,9 @@
 #@announce-stderr
 Feature: Katapult in general
 
-  Background:
-    Given a pristine Rails application
-
-
-  Scenario: Generating the application model file
-    When I install katapult
-    And I generate the application model
-    Then the file "lib/katapult/application_model.rb" should contain exactly:
-      """
-      # Here you define the fundamentals of your application.
-      #
-      # Add a model:
-      # model 'user' do |user|
-      #   user.attr :name
-      #   user.attr :birth, type: :datetime
-      #   user.attr :email
-      # end
-      #
-      # Add a web user interface:
-      # wui 'user' do |wui|
-      #   wui.crud # Creates all CRUD actions: index, new, show, etc.
-      #   wui.action :lock, scope: :member, method: :post
-      # end
-      #
-      # Add main menu
-      # navigation :main
-      #
-      # Add authentication
-      # authenticate 'user', system_email: 'system@example.com'
-
-      """
-
-
   Scenario: Generate basic files and settings
-    Given I install katapult
+    Given a pristine Rails application
+      And I install katapult
 
     When I generate katapult basics
     Then the ruby-version file should be up-to-date

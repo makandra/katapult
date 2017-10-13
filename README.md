@@ -5,15 +5,15 @@
 
 `Katapult` is a kickstart generator for Rails applications. It creates new Rails
 applications with [lots of pre-configuration](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb)
-and offers ([makandra-flavored](https://leanpub.com/growing-rails)) code
-generation from an application model.
-These two features significally speed up the initial phase of a Rails project by
-doing in minutes what took you weeks. After modeling your application, which
-typically takes about an hour, you can instantly start implementing the meat of
-your application.
+and offers [makandra-flavored](https://leanpub.com/growing-rails) code
+generation from an application model. These two features significally speed up
+the initial phase of a Rails project by doing in minutes what otherwise would
+cost you weeks.
+After modeling your application, which typically takes about an hour, you can
+instantly start implementing the meat of your application.
 
-`Katapult` will only support current versions of Ruby and Rails, currently
-Rails 4.2 and Ruby 2.3.
+`Katapult` only supports a single Ruby and Rails version, currently it's Rails
+5.1.4 and Ruby 2.4.1.
 
 
 ## Installation
@@ -28,14 +28,14 @@ in your Gemfile.
 
 ## Usage
 
-`Katapult` does two separate things:
+`katapult` does two distinct things for you:
 
 1. It creates a new Rails application, set up with many standard gems, snippets,
-   useful configuration, databases, testing libraries etc. See the [BasicsGenerator](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb) for details.
-2. It generates code from an application model, i.e. creates files for models,
-   views, controllers, routes, stylesheets; see the
+   useful configuration, databases, testing libraries etc.
+2. It generates code from an application model, i.e. it creates models and
+   views, controllers, styles etc. 
 
-You may use both or only one of them.
+You may use both or only one of them. Read on for details.
 
 
 ## 1) Creating a new Rails application
@@ -44,54 +44,40 @@ Run the following command:
 
     katapult new $APPLICATION_NAME
 
-This will:
- 
-- create a new Rails application
-- install common Gems
-- set up a `database.yml` file (for PostgreSQL)
-- create basic styles
-- install RSpec and Cucumber to the application
-- install Capistrano
-- create `lib/katapult/application_model.rb` (needed for step 2)
+This will create a new Rails application and prepare it in more than 20 steps.
+Read the [BasicsGenerator](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb)
+for details: Its methods are executed one-by-one, while the method names are a
+description of what they do.
 
-See the [BasicsGenerator](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb)
-for details: Its methods are executed one-by-one and their names are a
-description of what it does.
-
-### Alternative: Using Katapult in existing Rails applications
-`katapult` expects a clean application (that it would usually generate itself).
+### Alternative: Using Katapult in an existing Rails application
+`katapult` expects a fresh application (which it would usually generate itself).
 If you have an existing Rails application, you *may* use `katapult`, but be
 warned: it is not designed to respect existing files, although it will usually
-ask before overwriting anything.
+ask before overwriting something.
 
-After adding it to the Gemfile (see above), run any of the following generators:
+After adding it to the Gemfile, run the basics generator manually:
 
-    rails generate katapult:basics # Prepare the app with useful defaults
-    rails generate katapult:install # Create application model file
-    rails generate katapult:transform lib/katapult/application_model.rb
+    bin/rails generate katapult:basics
 
 
 ## 2) Generating code from an application model
 
-> If you only want to use the code generation feature of `katapult`, but did not
-> run `katapult new ...`, you need to add `katapult` to your Gemfile now and
-> install it with `rails generate katapult:install`. See above.
+After running `katapult new`, you will find a default application model in
+ `lib/katapult/application_model.rb`. It contains a full example of `katapult`'s
+features that you should replace with _your_ application model.
 
-After installation, you will find a file `lib/katapult/application_model.rb`
-where you will define the properties of your application. You're free to create
-more than one application model, however, you'll need to specify their location
-when running the transform.
-
-Inside the application model, use `katapult`'s simple DSL (domain specific
-language) to express yourself. When you are done developing the model, transform
-it into code with:
+When you are done, transform the model using:
 
     katapult fire [path/to/application_model]
+
+The path is optional and only needs to be specified when you've renamed the
+application model file. Note that you may well use separate model files for
+separate runs.
 
 See an overview of the DSL below. The respective sections hold examples of what
 options are available to each element. For details, dive into
 `lib/generators/katapult` where all generators are stored. The method names
-inside a generator tell what it does.
+of a generator tell what it does.
 
 ### Generic DSL syntax example
 The DSL consists of _elements_, e.g. `Model` or `WUI` (Web User Interface). Each
@@ -144,20 +130,17 @@ Defined on Model. Takes a name and options:
 Takes a name, options and a block:
 
     wui 'Customer', model: 'User' do |wui|
-      # wui.crud, see Action element
+      wui.crud # Create all the standard rails actions
+
+      # wui.action :custom etc, see Action element
     end
 
-    # Inferred model name: 'Customer'
-    wui 'Customer' do |wui|
-      # wui.crud, see Action element
-    end
+    # Short syntax with inferred model name 'User'
+    wui 'User', &:crud
 
 
 #### Action
 Defined on WUI. Takes a name and options:
-
-    # Create all the standard rails actions
-    wui.crud
 
     # Select single Rails actions
     wui.action :index
@@ -172,15 +155,15 @@ Defined on WUI. Takes a name and options:
     
 
 ### Navigation
-Takes a name, will generate a navigation with links to the index pages of all
+No arguments, will generate a main menu with links to the index pages of all
 WUIs.
 
-    navigation :main
+    navigation
 
 
 ### Authenticate
-Takes the name of the user model (currently only `User` (case-insensitive) is
-supported) and an email address. Generates authentication with [Clearance](https://github.com/thoughtbot/clearance).
+Takes the name of the user model (currently only `User` is supported) and an
+email address. Generates authentication with [Clearance](https://github.com/thoughtbot/clearance).
 
     authenticate 'User', system_email: 'system@example.com'
 
@@ -190,45 +173,39 @@ requests.
 
 ## Development
 
-### Basic information
+### Getting started
 `Katapult` is tested with [RSpec](http://rspec.info/) and
 [Cucumber](https://cucumber.io/) + [Aruba](https://github.com/cucumber/aruba)
 ([API-Doc](http://www.rubydoc.info/github/cucumber/aruba/master/)).
 
-It caches a pristine Rails application inside its `tmp/` directory to
-speed up test runs. Keep this in mind, as it may lead to caching issues when
-switching Ruby versions or installing a new version of the Rails gem.
+For its full-stack integration tests, `katapult` requires a PostgreSQL account.
+Create a dedicated account on your local PostgreSQL server:
 
-Since `katapult` has full-stack integration tests, it requires a PostgreSQL
-account. Create a dedicated account on your local PostgreSQL server:
-
-    $> sudo -iu postgres
-    postgres $> psql
+    $> sudo -u postgres psql
     postgres=# CREATE ROLE katapult WITH createdb LOGIN;
 
-### Continuing development
-When you continue development on `katapult`, you first need to update a couple
-of things. `script/update` will guide you through the process.
+Whenever you start working on `katapult`, you should run `script/update`, which
+will guide you through a quick update process.
 
 ### Suggested workflow
-When adding a feature to `katapult`, it will take you some time to figure out
-how exactly the generated code should look like. You'll be switching between
-`katapult`'s tests, its generators and the generated code.
+When adding a feature to `katapult`, it will usually take you some time to
+figure out how exactly the generated code should look like. You'll be switching
+between `katapult`'s tests, its generators and the generated code.
 
 Here's a the suggested process:
 
 1) Run a scenario (create one if needed)
 2) Tag that scenario with @no-clobber. This will keep tests from modifying the
    generated test app.
-3) Go to tmp/aruba/katapult_test_app and commit all changes, so you'll have a
-   clean working directory.
-4) Modify the test app as needed. Remember you can boot a development server
-   with `script/kta rails s`.
+3) Make a commit inside the generated test application, so you'll have a clean
+   working directory: `script/kta git add --all && script/kta git commit -m 'x'`
+4) Modify the test app as needed. Boot a development server with
+   `script/kta rails s` if you like.
 5) Re-run the @no-clobber scenario (modify it as needed) until test and test app
    meet the expectations.
 6) Now look at the git diff in the test app and model everything with katapult's
    generators.
-7) Remove the @no-clobber tag and run the scenario normally to see if it's
+7) Remove the @no-clobber tag and run the scenario normally to see if it's still
    green. Remember to stop the development server first.
 
 ### Debugging
@@ -243,18 +220,19 @@ after each test.
 When fixing issues in the generated app, make a commit in the app first. When
 you've fixed it, the diff will show you what you need to port back to katapult.
 
-### Typical errors
+### Typical issues
 - Timeout error because of a script waiting for user input
+- Spring running inside the test application encumbers parallel_tests and
+  following scenarios
+- An outdated Rails application in `tmp/cached_test_app`
 - Executing (bash) commands in the test application without resetting the
   katapult gem's Bundler settings. Wrap into `Bundler.with_clean_env { }`.
-- Spring running inside the test application encumbers parallel_tests
-- An outdated Rails application in `tmp/cached_test_app`
 
 ### Fast tests
 Generating basics and transforming the application model take quite some time
-(about 20s), because they need to boot the application and just do a lot of
-things. To speed up basics generation, `katapult` tests cache a prepared Rails
-application with basics installed.
+(about 20s), because it boots the Rails application, resolves Yarn dependencies
+and migrates databases. To speed that up, `katapult` tests cache prepared Rails
+applications in tmp/.
 
 When debugging test suite speed, `bundle exec cucumber --format usage` is your
 friend.

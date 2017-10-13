@@ -9,7 +9,10 @@
 irb_options = [
   '-Ilib',      # add lib/ to load_path
   '-d',         # set $DEBUG = true
-  '-rkatapult', # require katapult
+  # Requires
+  '-rkatapult/version',
+  '-rrails',
+  '-rrails/generators',
   '-f'          # don't read ~/.irbrc
 ]
 
