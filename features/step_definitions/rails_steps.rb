@@ -52,50 +52,54 @@ World(RailsHelper)
 # - Aruba is scoped to its test directory "tmp/aruba"
 
 Given /^a pristine Rails application$/ do
-  with_aruba_timeout(80) do
-    # Change Ruby cwd
-    Dir.chdir('tmp') do
-      if File.directory?(RailsHelper::PRISTINE_APP)
-        puts "Using a cached Rails app from tmp/#{RailsHelper::PRISTINE_APP}"
-      else
-        create_app(RailsHelper::PRISTINE_APP)
+  unless @no_clobber
+    with_aruba_timeout(80) do
+      # Change Ruby cwd
+      Dir.chdir('tmp') do
+        if File.directory?(RailsHelper::PRISTINE_APP)
+          puts "Using a cached Rails app from tmp/#{RailsHelper::PRISTINE_APP}"
+        else
+          create_app(RailsHelper::PRISTINE_APP)
+        end
+
+        ensure_bundled(RailsHelper::PRISTINE_APP)
+        FileUtils.cp_r RailsHelper::PRISTINE_APP, test_app_path
       end
-
-      ensure_bundled(RailsHelper::PRISTINE_APP)
-      FileUtils.cp_r RailsHelper::PRISTINE_APP, test_app_path
     end
-
-    cd RailsHelper::TEST_APP # Change Aruba cwd
   end
+
+  cd RailsHelper::TEST_APP # Change Aruba cwd
 end
 
 Given 'a new Rails application with Katapult basics installed' do
-  with_aruba_timeout(120) do
-    # Change Ruby cwd
-    Dir.chdir('tmp') do
-      if File.directory?(RailsHelper::APP_WITH_BASICS)
-        puts <<-NOTE
-Using a cached Rails app with basics installed. Remember to
-  rm -rf tmp/#{RailsHelper::APP_WITH_BASICS}
-when modifying the basics generator.
-      NOTE
-      else
-        create_app(RailsHelper::APP_WITH_BASICS)
+  unless @no_clobber
+    with_aruba_timeout(120) do
+      # Change Ruby cwd
+      Dir.chdir('tmp') do
+        if File.directory?(RailsHelper::APP_WITH_BASICS)
+          puts <<-NOTE
+  Using a cached Rails app with basics installed. Remember to
+    rm -rf tmp/#{RailsHelper::APP_WITH_BASICS}
+  when modifying the basics generator.
+        NOTE
+        else
+          create_app(RailsHelper::APP_WITH_BASICS)
 
-        Dir.chdir(RailsHelper::APP_WITH_BASICS) do
-          # :path will be correct when copied to the TEST_APP path
-          Katapult::BinaryUtil.run %(echo "gem 'katapult', path: '../../..'" >> Gemfile)
-          Katapult::BinaryUtil.run 'bin/rails generate katapult:basics --db-user katapult --db-password secret'
-          # Spring running in the cache dir is of no further use
-          Katapult::BinaryUtil.run 'spring stop'
+          Dir.chdir(RailsHelper::APP_WITH_BASICS) do
+            # :path will be correct when copied to the TEST_APP path
+            Katapult::BinaryUtil.run %(echo "gem 'katapult', path: '../../..'" >> Gemfile)
+            Katapult::BinaryUtil.run 'bin/rails generate katapult:basics --db-user katapult --db-password secret'
+            # Spring running in the cache dir is of no further use
+            Katapult::BinaryUtil.run 'spring stop'
+          end
         end
+
+        recreate_databases(RailsHelper::APP_WITH_BASICS)
+        ensure_bundled(RailsHelper::APP_WITH_BASICS)
+        FileUtils.cp_r RailsHelper::APP_WITH_BASICS, test_app_path
       end
-
-      recreate_databases(RailsHelper::APP_WITH_BASICS)
-      ensure_bundled(RailsHelper::APP_WITH_BASICS)
-      FileUtils.cp_r RailsHelper::APP_WITH_BASICS, test_app_path
     end
-
-    cd RailsHelper::TEST_APP # Change Aruba cwd
   end
+
+  cd RailsHelper::TEST_APP # Change Aruba cwd
 end

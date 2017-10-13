@@ -1,14 +1,18 @@
 # Note: Aruba adds the project's bin/ directory to the path
 
 When 'I install katapult' do
+  next if @no_clobber
   append_to_file 'Gemfile', "gem 'katapult', path: '../../..'"
 end
 
 When 'I generate the application model' do
+  next if @no_clobber
   run_simple 'rails generate katapult:install'
 end
 
 When /^I generate katapult basics$/ do
+  next if @no_clobber
+
   with_aruba_timeout 45 do
     run_simple 'rails generate katapult:basics --db-user katapult --db-password secret'
   end
@@ -19,6 +23,8 @@ end
 # If a scenario relies on the database being set up (e.g. running Cucumber), be
 # sure to use this step with trailing "including migrations".
 When /^I( successfully)? transform the application model( including migrations)?$/ do |require_success, run_migrations|
+  next if @no_clobber
+
   ENV['SKIP_MIGRATIONS'] = 'true' unless run_migrations # Speedup
 
   with_aruba_timeout 45 do
@@ -26,9 +32,7 @@ When /^I( successfully)? transform the application model( including migrations)?
     run_simple 'rails generate katapult:transform lib/katapult/application_model.rb', !!require_success
   end
 end
-After do
-  ENV.delete 'SKIP_MIGRATIONS'
-end
+After { ENV.delete 'SKIP_MIGRATIONS' }
 
 Then 'Capistrano should be configured' do
   step 'the file "Capfile" should contain:', <<-CONTENT

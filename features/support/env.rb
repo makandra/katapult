@@ -8,9 +8,12 @@ Aruba.configure do |config|
   config.exit_timeout = 5
 end
 
-Before do
+Before do |scenario|
   unset_bundler_env_vars # Don't use katapult's Bundler environment inside tests
   run_simple 'spring stop # Ensure Spring is not running'
+
+  scenario_tags = scenario.source_tag_names
+  @no_clobber = scenario_tags.include? '@no-clobber'
 end
 
 After do

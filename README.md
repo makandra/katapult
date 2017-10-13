@@ -210,6 +210,27 @@ account. Create a dedicated account on your local PostgreSQL server:
 When you continue development on `katapult`, you first need to update a couple
 of things. `script/update` will guide you through the process.
 
+### Suggested workflow
+When adding a feature to `katapult`, it will take you some time to figure out
+how exactly the generated code should look like. You'll be switching between
+`katapult`'s tests, its generators and the generated code.
+
+Here's a the suggested process:
+
+1) Run a scenario (create one if needed)
+2) Tag that scenario with @no-clobber. This will keep tests from modifying the
+   generated test app.
+3) Go to tmp/aruba/katapult_test_app and commit all changes, so you'll have a
+   clean working directory.
+4) Modify the test app as needed. Remember you can boot a development server
+   with `script/kta rails s`.
+5) Re-run the @no-clobber scenario (modify it as needed) until test and test app
+   meet the expectations.
+6) Now look at the git diff in the test app and model everything with katapult's
+   generators.
+7) Remove the @no-clobber tag and run the scenario normally to see if it's
+   green. Remember to stop the development server first.
+
 ### Debugging
 Add the `@announce-output` tag to `katapult` features in order to have any output
 logged to your terminal.
