@@ -1,34 +1,37 @@
 <%- object = model_name(:ivar) -%>
 = form_for <%= object %> do |form|
 
-  %dl
 <% wui.model.editable_attrs.each do |attribute| -%>
-    %dt
-      = form.label <%= attribute.name(:symbol) %>
-    %dd
+  .form-group
+    = form.label <%= attribute.name(:symbol) %>
   <%- if attribute.assignable_values -%>
-      = form.select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables) %>
+    = form.select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables) %>
   <%- else -%>
     <%- case attribute.type -%>
     <%- when :string -%>
-      = form.text_field <%= attribute.name(:symbol) %>
+    = form.text_field <%= attribute.name(:symbol) %>, class: 'form-control'
     <%- when :email -%>
-      = form.email_field <%= attribute.name(:symbol) %>
+    = form.email_field <%= attribute.name(:symbol) %>, class: 'form-control'
     <%- when :password -%>
-      = form.password_field <%= attribute.name(:symbol) %>
+    = form.password_field <%= attribute.name(:symbol) %>, class: 'form-control',
+      autocomplete: 'new-password'
     <%- when :url -%>
-      = form.url_field <%= attribute.name(:symbol) %>
+    = form.url_field <%= attribute.name(:symbol) %>, class: 'form-control'
     <%- when :integer -%>
-      = form.number_field <%= attribute.name(:symbol) %>
+    = form.number_field <%= attribute.name(:symbol) %>, class: 'form-control'
     <%- when :money -%>
-      = form.number_field <%= attribute.name(:symbol) %>
-      €
+    .input-group
+      = form.number_field <%= attribute.name(:symbol) %>, class: 'form-control'
+      .input-group-addon
+        €
     <%- when :text -%>
-      = form.text_area <%= attribute.name(:symbol) %>, rows: 5
+    = form.text_area <%= attribute.name(:symbol) %>, rows: 5, class: 'form-control'
     <%- when :flag -%>
-      = form.check_box <%= attribute.name(:symbol) %>
+    .checkbox
+      = form.label <%= attribute.name(:symbol) %> do
+        = form.check_box <%= attribute.name(:symbol) %>
     <%- when :datetime -%>
-      = form.date_field <%= attribute.name(:symbol) %>
+    = form.date_field <%= attribute.name(:symbol) %>, class: 'form-control'
     <%- end -%>
   <%- end -%>
 <% end -%>

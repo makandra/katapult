@@ -6,8 +6,9 @@ module Katapult
   module Generators
     class ClearanceGenerator < Katapult::Generator
 
-      desc 'Generate authentication with Clearance'
+      MENU_BAR = 'app/views/layouts/_menu_bar.html.haml'
 
+      desc 'Generate authentication with Clearance'
       check_class_collision
       source_root File.expand_path('../templates', __FILE__)
 
@@ -75,14 +76,14 @@ resources :users do
       end
 
       def add_current_user_to_layout
-        layout = 'app/views/layouts/application.html.haml'
-        inject_into_file layout, <<-CONTENT, before: /^\s+.layout__main/
-
-        - if signed_in?
-          .current-user
-            = link_to current_user.email, edit_user_path(current_user)
-            = link_to 'Sign out', sign_out_path, method: :delete
+        template 'app/views/layouts/_current_user.html.haml'
+        inject_into_file MENU_BAR, <<-CONTENT, after: /^\s+#navbar.*\n/
+      = render 'layouts/current_user' if signed_in?
         CONTENT
+      end
+
+      def hide_navigation_unless_signed_in
+        gsub_file MENU_BAR, /(render.*navigation')/, '\1 if signed_in?'
       end
 
       def add_sign_in_background_to_all_features

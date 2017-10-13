@@ -12,15 +12,9 @@
   %body{ data: {env: Rails.env} }
     = query_diet_widget(bad_count: 15) if Rails.env.development?
 
-    .layout
+    .container
+      = render 'layouts/menu_bar'
+      = render 'layouts/flashes'
 
-      .layout__head
-        %h2 <%= app_name.titlecase %>
-
-      .layout__main
-        = render 'layouts/flashes'
-        .unpoly-content
-          = yield
-
-      .layout__tail
-        powered by makandra
+      .content
+        = yield

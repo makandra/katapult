@@ -15,27 +15,30 @@ Feature: Navigation
       model 'Customer' do |customer|
         customer.attr :name
       end
-
-      wui 'Customer', model: 'Customer' do |wui|
-        wui.action :index
-        wui.action :show
-        wui.action :create
-        wui.action :update
-        wui.action :destroy
-      end
+      wui 'Customer', &:crud
 
       navigation 'main'
       """
     And I successfully transform the application model
-    Then the file "app/views/layouts/application.html.haml" should contain:
+    And the file "app/views/layouts/_menu_bar.html.haml" should contain:
     """
-    = render 'layouts/navigation
+    = render 'layouts/navigation'
     """
     And the file "app/views/layouts/_navigation.html.haml" should contain:
     """
-    %ul.main-menu.nav.nav-pills
+    %ul.nav.navbar-nav
       %li(up-expand)
-        = link_to "Customers", customers_path
+        = content_link_to "Customers", customers_path
+
+      %li.dropdown
+        = link_to '#', data: { toggle: 'dropdown' } do
+          Dropdown example
+          %span.caret
+
+        %ul.dropdown-menu
+          %li= link_to 'One', '#'
+          %li.divider
+          %li= link_to 'Two', '#'
     """
 
 
@@ -46,8 +49,8 @@ Feature: Navigation
 
     When I write to "lib/katapult/application_model.rb" with:
       """
-      model 'Customer'
-      model 'Elephant'
+      model('Customer') { |c| c.attr :name }
+      model('Elephant') { |e| e.attr :name }
 
       wui 'Elephant' do |wui|
         wui.action :trumpet, scope: :member, method: :post

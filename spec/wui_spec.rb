@@ -65,4 +65,17 @@ describe Katapult::WUI do
     end
   end
 
+  describe '#render' do
+    it 'raises an error when its model does not have a label attribute' do
+      subject = described_class.new('user')
+      model = Katapult::Model.new('user')
+
+      application_model.add_wui(subject)
+      application_model.add_model(model)
+
+      expect{ subject.render }.to raise_error Katapult::WUI::MissingLabelAttrError,
+        'Cannot render a WUI without a model with a label attribute'
+    end
+  end
+
 end

@@ -10,5 +10,3 @@
       = link_to '<%= app_name.titleize %>', root_path, class: 'navbar-brand'
 
     #navbar.navbar-collapse.collapse
-      = render 'layouts/navigation'
-      = render 'layouts/current_user'

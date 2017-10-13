@@ -10,7 +10,7 @@ Feature: Add authentication to an application
     When I write to "lib/katapult/application_model.rb" with:
       """
       model 'user'
-      wui('user') { |w| w.crud }
+      wui('user', &:crud)
       authenticate 'user', system_email: 'system@example.com'
       """
     And I successfully transform the application model including migrations
@@ -41,28 +41,35 @@ Feature: Add authentication to an application
       end
       """
     And the file "app/controllers/users_controller.rb" should match /permit.*email.*password/
-    And the file "app/views/layouts/application.html.haml" should contain:
+    And the file "app/views/layouts/_menu_bar.html.haml" should contain:
       """
-              - if signed_in?
-                .current-user
-                  = link_to current_user.email, edit_user_path(current_user)
-                  = link_to 'Sign out', sign_out_path, method: :delete
+            = render 'layouts/current_user' if signed_in?
+      """
+    And the file "app/views/layouts/_current_user.html.haml" should contain:
+    """
+    %ul.nav.navbar-nav.navbar-right
+      %li.dropdown
+        = link_to edit_user_path(current_user), data: { toggle: 'dropdown' } do
+          Hello,
+          = current_user
+          %span.caret
 
-            .layout__main
+        %ul.dropdown-menu
+          %li= link_to 'Edit profile', edit_user_path(current_user)
+          %li.divider
+          %li= link_to 'Sign out', sign_out_path, method: :delete, class: 'navbar-logout'
       """
     And the file "app/views/users/_form.html.haml" should contain:
       """
-          %dt
-            = form.label :email
-          %dd
-            = form.email_field :email
+        .form-group
+          = form.label :email
+          = form.email_field :email
       """
     And the file "app/views/users/_form.html.haml" should contain:
       """
-          %dt
-            = form.label :password
-          %dd
-            = form.password_field :password
+        .form-group
+          = form.label :password
+          = form.password_field :password
       """
     And the file "app/views/clearance_mailer/change_password.html.haml" should contain exactly:
       """
@@ -82,69 +89,80 @@ Feature: Add authentication to an application
       """
     And the file "app/views/passwords/create.html.haml" should contain exactly:
       """
-      %h1
-        Password Reset Instructions Sent
+      .row
+        .col-md-4.col-md-offset-4
 
-      %p
-        We've sent you an email with instructions on how to reset your password.
+          %h1
+            Password Reset Instructions Sent
+
+          %p
+            We've sent you an email with instructions on how to reset your password.
+
+          %p
+            = link_to 'Back to sign-in form', sign_in_path, class: 'btn btn-primary'
       """
     And the file "app/views/passwords/edit.html.haml" should contain exactly:
       """
-      %h1
-        Reset Password
+      .row
+        .col-md-4.col-md-offset-4
 
-      %p
-        Choose your new password:
+          %h1
+            Reset Password
 
-      = form_for :password_reset,
-        url: user_password_path(@user, token: @user.confirmation_token),
-        html: { method: :put } do |form|
+          = form_for :password_reset,
+            url: user_password_path(@user, token: @user.confirmation_token),
+            html: { method: :put } do |form|
 
-        .form-group
-          = form.label :password
-          = form.password_field :password, class: 'form-control',
-            placeholder: 'New Password'
+            .form-group
+              = form.label :password
+              = form.password_field :password, class: 'form-control',
+                placeholder: 'New password'
 
-        = form.submit 'Update Password', class: 'btn btn-primary'
+            = form.submit 'Update password', class: 'btn btn-primary'
       """
     And the file "app/views/passwords/new.html.haml" should contain exactly:
       """
-      %h1
-        Password Reset
+      .row
+        .col-md-4.col-md-offset-4
 
-      %p
-        Please enter your email address. We will send you instructions on how
-        to reset your password.
+          %h1
+            Password Reset
 
-      = form_for :password, url: passwords_path do |form|
-        .form-group
-          = form.label :email
-          = form.email_field :email, class: 'form-control',
-            placeholder: 'Email Address'
+          %p
+            Please enter your email address. We will send you instructions on how
+            to reset your password.
 
-        = form.submit 'Request Instructions', class: 'btn btn-primary'
+          = form_for :password, url: passwords_path do |form|
+            .form-group
+              = form.label :email
+              = form.email_field :email, class: 'form-control',
+                placeholder: 'Email address'
+
+            = form.submit 'Request instructions', class: 'btn btn-primary'
       """
     And the file "app/views/sessions/new.html.haml" should contain exactly:
       """
-      %h1
-        Please sign in
+      .row
+        .col-md-4.col-md-offset-4
 
-      = form_for :session, url: session_path do |form|
-        .form-group
-          = form.label :email
-          = form.email_field :email, class: 'form-control',
-            placeholder: 'Email Address', required: true, autofocus: true
+          %h1
+            Please sign in
 
-        .form-group
-          = form.label :password
-          = form.password_field :password, class: 'form-control', required: true,
-            placeholder: 'Password'
+          = form_for :session, url: session_path do |form|
+            .form-group
+              = form.label :email
+              = form.email_field :email, class: 'form-control',
+                placeholder: 'Email Address', required: true, autofocus: true
 
-        %p
-          = form.submit 'Sign in', class: 'btn btn-primary'
+            .form-group
+              = form.label :password
+              = form.password_field :password, class: 'form-control', required: true,
+                placeholder: 'Password'
 
-        %p
-          = link_to 'Forgot password', new_password_path, class: 'text-muted'
+            %p
+              = form.submit 'Sign in', class: 'btn btn-primary'
+              = link_to 'Forgot password', new_password_path, class: 'btn btn-link'
+
       """
     And the file "config/environments/test.rb" should contain:
       """
@@ -270,7 +288,7 @@ Feature: Add authentication to an application
             And I sign in as the user above
 
           When I go to the homepage
-            And I follow "henry@example.com" within the current user
+            And I follow "henry@example.com" within the navbar
           Then I should be on the form for the user above
 
           When I fill in "Password" with "new-password"
@@ -293,7 +311,7 @@ Feature: Add authentication to an application
             And I should see "Password Reset"
 
           When I fill in "Email" with "henry@example.com"
-            And I press "Request Instructions"
+            And I press "Request instructions"
           Then an email should have been sent with:
             \"\"\"
             From: system@example.com
@@ -308,7 +326,7 @@ Feature: Add authentication to an application
             And I should see "Reset Password"
 
           When I fill in "Choose password" with "new-password"
-            And I press "Update Password"
+            And I press "Update password"
           Then I should see "Password successfully changed" within the flash
             And I should be on the homepage
       """
@@ -350,4 +368,3 @@ Feature: Add authentication to an application
 
     When I run cucumber
     Then the features should pass
-

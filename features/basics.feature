@@ -71,13 +71,9 @@ Feature: Katapult in general
 
     And Turbolinks should be removed
     And the Asset Pipeline should be removed
-    But Webpacker should be employed
-    And the file "app/webpack/assets/stylesheets/theme.sass" should contain "body"
-    And the file "app/webpack/assets/stylesheets/custom_bootstrap.sass" should contain "@import ~bootstrap-sass"
-    And a file named "app/webpack/assets/stylesheets/blocks/layout.sass" should exist
-    And a file named "app/webpack/assets/stylesheets/blocks/items.sass" should exist
-    And a file named "app/webpack/assets/stylesheets/blocks/tools.sass" should exist
 
+    But Webpacker should be employed
+    And styles should be prepared
     And Unpoly should be installed
 
     And the application layout should be set up

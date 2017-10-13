@@ -169,8 +169,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
       def install_application_layout
         remove_file 'app/views/layouts/application.html.erb'
-        template 'app/views/layouts/application.html.haml'
-        template 'app/views/layouts/_flashes.html.haml'
+        directory 'app/views/layouts'
       end
 
       def install_helpers

@@ -15,6 +15,14 @@ module Katapult
         FileUtils.mkdir_p views_path
       end
 
+      def install_helpers
+        directory 'app/helpers'
+      end
+
+      def install_styles
+        directory 'app/webpack/assets/stylesheets/blocks'
+      end
+
       def create_rails_standard_action_views
         actions.select{ |a| a.get? && WUI::RAILS_ACTIONS.include?(a.name) }.each do |action|
           file_name = "#{action.name}.html.haml"

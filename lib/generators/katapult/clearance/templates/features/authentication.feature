@@ -51,7 +51,7 @@ Feature: Everything about user authentication
       And I sign in as the user above
 
     When I go to the homepage
-      And I follow "henry@example.com" within the current user
+      And I follow "henry@example.com" within the navbar
     Then I should be on the form for the user above
 
     When I fill in "Password" with "new-password"
@@ -74,7 +74,7 @@ Feature: Everything about user authentication
       And I should see "Password Reset"
 
     When I fill in "Email" with "henry@example.com"
-      And I press "Request Instructions"
+      And I press "Request instructions"
     Then an email should have been sent with:
       """
       From: system@example.com
@@ -89,6 +89,6 @@ Feature: Everything about user authentication
       And I should see "Reset Password"
 
     When I fill in "Choose password" with "new-password"
-      And I press "Update Password"
+      And I press "Update password"
     Then I should see "Password successfully changed" within the flash
       And I should be on the homepage

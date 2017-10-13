@@ -24,7 +24,6 @@ module Katapult
         if routes =~ /^\s+resources #{ route }/
           say_status :warn, <<MESSAGE, :red
 Routes for #{ route } already exist! Not updated.
-
 In order to keep existing routes created by the user, the config/routes.rb file
 is not wiped on model transformation. To have Katapult update the #{ route }
 route for you, delete it before transforming the application model.

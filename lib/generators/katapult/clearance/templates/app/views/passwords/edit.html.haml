@@ -1,16 +1,16 @@
-%h1
-  Reset Password
+.row
+  .col-md-4.col-md-offset-4
 
-%p
-  Choose your new password:
+    %h1
+      Reset Password
 
-= form_for :password_reset,
-  url: user_password_path(@user, token: @user.confirmation_token),
-  html: { method: :put } do |form|
+    = form_for :password_reset,
+      url: user_password_path(@user, token: @user.confirmation_token),
+      html: { method: :put } do |form|
 
-  .form-group
-    = form.label :password
-    = form.password_field :password, class: 'form-control',
-      placeholder: 'New Password'
+      .form-group
+        = form.label :password
+        = form.password_field :password, class: 'form-control',
+          placeholder: 'New password'
 
-  = form.submit 'Update Password', class: 'btn btn-primary'
+      = form.submit 'Update password', class: 'btn btn-primary'

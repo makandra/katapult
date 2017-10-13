@@ -2,15 +2,13 @@
 .action-bar.-main.btn-group
   = link_to 'All <%= model_name(:humans) %>', <%= wui.path(:index) %>, class: 'btn btn-default'
   = link_to 'Edit', <%= wui.path(:edit, object) %>, class: 'btn btn-default'
-  = link_to 'Destroy', <%= wui.path(:destroy, object) %>, method: :delete,
-    class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
 <% wui.custom_actions.select(&:member?).each do |action| -%>
   = link_to '<%= action.name(:human).titleize %>', <%= wui.path(action, object) %>, class: 'btn btn-default'<%=
     ", method: :#{action.method}" unless action.get?
     %>
 <% end -%>
 
-%h1.page--title
+%h1.title
   = <%= model_name(:ivar) %>
 
 %dl

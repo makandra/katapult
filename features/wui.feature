@@ -104,17 +104,22 @@ Feature: Web User Interface
       """
         resources :customers
       """
+    And the file "app/helpers/table_helper.rb" should contain "def table(*headers, &block)"
+
+    And a file named "app/webpack/assets/stylesheets/blocks/action_bar.sass" should exist
+    And a file named "app/webpack/assets/stylesheets/blocks/title.sass" should exist
+
     And the file "app/views/customers/index.html.haml" should contain exactly:
       """
       .action-bar.-main.btn-group
         = link_to 'Add customer', new_customer_path, class: 'btn btn-default'
 
-      %h1.page--title.-above-table
+      %h1.title
         Customers
 
       - if @customers.any?
 
-        = table 'Name' do
+        = table 'Name', 'Actions' do
           - @customers.each do |customer|
             %tr(up-expand)
               %td(width='40%')
@@ -122,6 +127,7 @@ Feature: Web User Interface
               %td
                 = link_to 'Edit', edit_customer_path(customer)
                 = link_to 'Destroy', customer_path(customer), method: :delete,
+                  class: 'text-danger',
                   data: { confirm: 'Really destroy?' }, title: "Destroy #{customer}"
 
       - else
@@ -134,10 +140,8 @@ Feature: Web User Interface
       .action-bar.-main.btn-group
         = link_to 'All customers', customers_path, class: 'btn btn-default'
         = link_to 'Edit', edit_customer_path(@customer), class: 'btn btn-default'
-        = link_to 'Destroy', customer_path(@customer), method: :delete,
-          class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
 
-      %h1.page--title
+      %h1.title
         = @customer
 
       %dl
@@ -178,7 +182,7 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/new.html.haml" should contain exactly:
       """
-      %h1.page--title
+      %h1.title
         Add customer
 
       = render 'form'
@@ -186,7 +190,7 @@ Feature: Web User Interface
       """
     And the file "app/views/customers/edit.html.haml" should contain exactly:
       """
-      %h1.page--title
+      %h1.title
         = @customer
 
       = render 'form'
@@ -196,44 +200,39 @@ Feature: Web User Interface
       """
       = form_for @customer do |form|
 
-        %dl
-          %dt
-            = form.label :name
-          %dd
-            = form.text_field :name
-          %dt
-            = form.label :age
-          %dd
-            = form.number_field :age
-          %dt
-            = form.label :email
-          %dd
-            = form.email_field :email
-          %dt
-            = form.label :password
-          %dd
-            = form.password_field :password
-          %dt
-            = form.label :revenue
-          %dd
-            = form.number_field :revenue
-            €
-          %dt
-            = form.label :homepage
-          %dd
-            = form.url_field :homepage
-          %dt
-            = form.label :locked
-          %dd
-            = form.check_box :locked
-          %dt
-            = form.label :notes
-          %dd
-            = form.text_area :notes, rows: 5
-          %dt
-            = form.label :first_visit
-          %dd
-            = form.date_field :first_visit
+        .form-group
+          = form.label :name
+          = form.text_field :name, class: 'form-control'
+        .form-group
+          = form.label :age
+          = form.number_field :age, class: 'form-control'
+        .form-group
+          = form.label :email
+          = form.email_field :email, class: 'form-control'
+        .form-group
+          = form.label :password
+          = form.password_field :password, class: 'form-control',
+            autocomplete: 'new-password'
+        .form-group
+          = form.label :revenue
+          .input-group
+            = form.number_field :revenue, class: 'form-control'
+            .input-group-addon
+              €
+        .form-group
+          = form.label :homepage
+          = form.url_field :homepage, class: 'form-control'
+        .form-group
+          = form.label :locked
+          .checkbox
+            = form.label :locked do
+              = form.check_box :locked
+        .form-group
+          = form.label :notes
+          = form.text_area :notes, rows: 5, class: 'form-control'
+        .form-group
+          = form.label :first_visit
+          = form.date_field :first_visit, class: 'form-control'
 
         .action-bar
           - cancel_path = @customer.new_record? ? customers_path : customer_path(@customer)
@@ -373,7 +372,7 @@ Feature: Web User Interface
       .action-bar
         = link_to 'All customers', customers_path, class: 'btn btn-default'
 
-      %h1.page--title
+      %h1.title
         Get Member
 
       """
@@ -383,7 +382,7 @@ Feature: Web User Interface
       .action-bar
         = link_to 'All customers', customers_path, class: 'btn btn-default'
 
-      %h1.page--title
+      %h1.title
         Get Collection
 
       """

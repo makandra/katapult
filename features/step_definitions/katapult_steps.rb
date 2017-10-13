@@ -156,8 +156,9 @@ end
 
 Then 'the application layout should be set up' do
   step 'the file "app/views/layouts/application.html.haml" should contain "= query_diet_widget"'
-  step %(the file "app/views/layouts/application.html.haml" should contain "= render 'layouts/flashes'")
-  step %(the file "app/views/layouts/application.html.haml" should match /%body.+data.+env.+Rails\.env/)
+  step %(the file "app/views/layouts/application.html.haml" should contain "render 'layouts/menu_bar'")
+  step %(the file "app/views/layouts/application.html.haml" should contain "render 'layouts/flashes'")
+  step %(the file "app/views/layouts/application.html.haml" should contain "%body{ data: {env: Rails.env} }")
 
   step 'the file "app/views/layouts/_flashes.html.haml" should contain:', <<~CONTENT
   - flash.each do |_level, message|
@@ -182,4 +183,22 @@ Then 'Unpoly should be installed' do
   step 'a file named "app/webpack/assets/javascripts/macros/content_link.js" should exist'
   step 'a file named "app/webpack/assets/javascripts/macros/modal_link.js" should exist'
   step 'a directory named "app/webpack/assets/javascripts/compilers" should exist'
+end
+
+Then 'styles should be prepared' do
+  step 'the file "app/webpack/assets/stylesheets/theme.sass" should contain "body"'
+  step 'the file "app/webpack/assets/stylesheets/custom_bootstrap.sass" should contain "@import ~bootstrap-sass/assets/stylesheets/bootstrap/normalize"'
+  step 'the file "app/webpack/assets/stylesheets/_environment.sass" should contain:', <<-CONTENT
+@import definitions
+@import mixins
+
+  CONTENT
+  step 'a file named "app/webpack/assets/stylesheets/_mixins.sass" should exist'
+  step 'a file named "app/webpack/assets/stylesheets/_definitions.sass" should exist'
+
+  step 'a directory named "app/webpack/assets/stylesheets/blocks" should exist'
+  step 'a directory named "app/webpack/assets/stylesheets/ext" should exist'
+
+  # JS support for Bootstrap dropdowns
+  step %(the file "app/webpack/assets/javascripts/bootstrap.js" should contain "import 'bootstrap-sass/assets/javascripts/bootstrap/dropdown'")
 end

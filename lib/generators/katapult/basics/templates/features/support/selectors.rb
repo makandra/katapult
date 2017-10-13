@@ -13,12 +13,12 @@ module HtmlSelectorsHelpers
     # Usage examples:
     #   the main menu -> '.main-menu'
     #   the item box's header -> '.item-box--header'
-    #   the slider's item that is current -> '.slider--item.is-current'
-    when /^the (.+?)(?:'s (.+?))?(?: that (.+))?$/
+    #   the slider's item (current) -> '.slider--item.-current'
+    when /^the (.+?)(?:'s (.+?))?(?: \((.+)\))?$/
       selector = '.'
       selector << selectorify($1)
       selector << '--' << selectorify($2) if $2
-      selector << '.' << selectorify($3) if $3
+      selector << '.-' << selectorify($3) if $3
       selector
 
     # Add more mappings here.

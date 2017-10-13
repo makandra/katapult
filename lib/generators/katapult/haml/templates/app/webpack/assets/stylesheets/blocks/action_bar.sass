@@ -1,0 +1,22 @@
+@import ../environment
+
+.action-bar
+  margin-top: $space-md
+  border-top: 1px solid $panel-default-border
+  padding-top: $space-xs
+
+  &.-main
+    float: right
+
+    margin-top: 3px
+    border: none
+    padding: 0
+
+  +within-modal
+    margin: 30px -40px -30px
+    padding: 15px 40px
+
+    background: $panel-footer-bg
+    border-bottom-left-radius: $border-radius-base
+    border-bottom-right-radius: $border-radius-base
+

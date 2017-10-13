@@ -14,6 +14,7 @@ module Katapult
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     UnknownActionError = Class.new(StandardError)
     UnknownModelError = Class.new(StandardError)
+    MissingLabelAttrError = Class.new(StandardError)
 
     def initialize(*args)
       self.actions = []
@@ -41,7 +42,7 @@ module Katapult
     def model
       model_name = @model || self.name
       application_model.get_model(model_name) or raise UnknownModelError,
-        "Could not find a model named #{model_name}"
+        "Cannot find a model named #{model_name}"
     end
 
     def custom_actions
@@ -74,7 +75,15 @@ module Katapult
     end
 
     def render
+      validate!
       Generators::WUIGenerator.new(self).invoke_all
+    end
+
+    private
+
+    def validate!
+      model.label_attr.present? or raise MissingLabelAttrError,
+        'Cannot render a WUI without a model with a label attribute'
     end
 
   end
