@@ -42,6 +42,10 @@ require 'capistrano/setup'
 # Include default deployment tasks
 require 'capistrano/deploy'
 
+# Use Git
+require 'capistrano/scm/git'
+install_plugin Capistrano::SCM::Git
+
 # Include tasks from other gems included in your Gemfile
 require 'capistrano/bundler'
 require 'capistrano/maintenance'
@@ -88,7 +92,6 @@ set :keep_releases, 10
 set :ssh_options, {
   forward_agent: true
 }
-set :scm, :git
 set :repo_url, 'git@code.makandra.de:makandra/katapult_test_app.git'
 
 # set :whenever_roles, :cron
@@ -201,4 +204,19 @@ Then 'styles should be prepared' do
 
   # JS support for Bootstrap dropdowns
   step %(the file "app/webpack/assets/javascripts/bootstrap.js" should contain "import 'bootstrap-sass/assets/javascripts/bootstrap/dropdown'")
+end
+
+Then 'binstubs should be set up' do
+  binaries = %w[rails rake rspec cucumber]
+
+  binaries.each do |binary|
+    step %(the file "bin/#{binary}" should contain:), <<-CONTENT
+#!/usr/bin/env ruby
+running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =~ /^parallel:/ }
+
+begin
+  load File.expand_path('../spring', __FILE__) unless running_in_parallel
+rescue LoadError => e
+    CONTENT
+  end
 end

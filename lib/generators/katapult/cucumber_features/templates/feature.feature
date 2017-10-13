@@ -59,5 +59,5 @@ Feature: <%= model.name(:humans).titleize %>
 
     When I follow "Destroy <%= model.label_attr.test_value %>"
     Then I should be on the list of <%= model.name(:variables) %>
-      But I should not see "<%= model.label_attr.test_value %>"
+    But I should not see "<%= model.label_attr.test_value %>"
 <% end -%>

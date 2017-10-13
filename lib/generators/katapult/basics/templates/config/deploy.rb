@@ -27,7 +27,6 @@ set :keep_releases, 10
 set :ssh_options, {
   forward_agent: true
 }
-set :scm, :git
 set :repo_url, 'git@code.makandra.de:makandra/<%= app_name %>.git'
 
 # set :whenever_roles, :cron

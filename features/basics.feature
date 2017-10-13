@@ -55,18 +55,7 @@ Feature: Katapult in general
     %w(
       lib/templates
     """
-    And the file "bin/rails" should contain:
-    """
-    #!/usr/bin/env ruby
-    running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =~ /^parallel:/ }
-
-    begin
-      load File.expand_path('../spring', __FILE__) unless running_in_parallel
-    rescue LoadError => e
-    """
-    And the file "bin/rake" should contain "running_in_parallel ="
-    And the file "bin/rspec" should contain "running_in_parallel ="
-    And the file "bin/cucumber" should contain "running_in_parallel ="
+    And binstubs should be set up
 
 
     # Config
@@ -177,8 +166,6 @@ Feature: Katapult in general
       def self.these(arg)
         where(id: arg.collect_ids)
       end
-
-    end
     """
     And the file "lib/ext/array/xss_aware_join.rb" should contain:
     """
@@ -245,9 +232,21 @@ Feature: Katapult in general
 
 
     # Tests
-    And the file "features/support/env-custom.rb" should contain:
+    And the file "features/support/spreewald.rb" should contain:
       """
       require 'spreewald/all_steps'
+      """
+    And the file "features/support/selenium.rb" should contain "--mute-audio"
+    And the file "features/support/selenium.rb" should contain "--disable-infobars"
+    And the file "features/support/selenium.rb" should contain:
+      """
+      Capybara.register_driver :selenium do |app|
+        Capybara::Selenium::Driver.new(app,
+          browser: :chrome,
+          args: chrome_args,
+          prefs: no_password_bubble
+        )
+      end
       """
     And the file "features/support/cucumber_factory.rb" should contain:
       """

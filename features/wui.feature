@@ -298,7 +298,7 @@ Feature: Web User Interface
 
           When I follow "Destroy name-string"
           Then I should be on the list of customers
-            But I should not see "name-string"
+          But I should not see "name-string"
 
       """
 
