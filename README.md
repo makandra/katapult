@@ -25,6 +25,7 @@ Install the `katapult` gem with
 If you intend to extend an existing application, add it to the development group
 in your Gemfile.
 
+You need `node`,  `yarn` and `postgres` installed on your system.
 
 ## Usage
 
@@ -186,6 +187,15 @@ Create a dedicated account on your local PostgreSQL server:
 
 Whenever you start working on `katapult`, you should run `script/update`, which
 will guide you through a quick update process.
+
+### Install current master of katapult locally
+
+1.  `git clone git@github.com:makandra/katapult.git`
+2. `cd katapult` and `rake build`
+3. `cd pkg` and select ruby version you want to use to run katapult, e.g. `rvm use 2.4.2` or `rbenv use 2.4.2`
+4. `gem install --local katapult`
+
+If you now run e.g. `katapult new test` this will use the master of katapult. Check your ruby version before executing (should be e.g. 2.4.2 and might have changed with directory change).
 
 ### Suggested workflow
 When adding a feature to `katapult`, it will usually take you some time to

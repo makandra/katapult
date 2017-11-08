@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'rails', Katapult::RAILS_VERSION
   spec.add_runtime_dependency 'spring' # speed-up
+  spec.add_runtime_dependency 'webpacker'
 end
