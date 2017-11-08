@@ -25,6 +25,7 @@ Install the `katapult` gem with
 If you intend to extend an existing application, add it to the development group
 in your Gemfile.
 
+You need `node`,  `yarn` and `postgres` installed on your system.
 
 ## Usage
 
