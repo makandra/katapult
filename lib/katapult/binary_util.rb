@@ -22,7 +22,6 @@ module Katapult
 
         --skip-test
         --skip-system-test
-        --skip-bundle
         --skip-turbolinks
       ]
 
