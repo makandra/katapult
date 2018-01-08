@@ -43,6 +43,7 @@ Feature: Katapult in general
     But Webpacker should be employed
     And styles should be prepared
     And Unpoly should be installed
+    And the file ".browserslistrc" should contain "> 1%"
 
     And the application layout should be set up
 

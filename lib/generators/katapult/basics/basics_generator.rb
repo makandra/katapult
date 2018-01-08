@@ -244,6 +244,10 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         yarn :add, *YARN_PACKAGES
       end
 
+      def configure_autoprefixer
+        template '.browserslistrc'
+      end
+
     end
   end
 end
