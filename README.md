@@ -173,7 +173,7 @@ requests.
 
 ## Development
 
-### Getting started
+### Getting started + continuing development
 `Katapult` is tested with [RSpec](http://rspec.info/) and
 [Cucumber](https://cucumber.io/) + [Aruba](https://github.com/cucumber/aruba)
 ([API-Doc](http://www.rubydoc.info/github/cucumber/aruba/master/)).
@@ -195,8 +195,8 @@ between `katapult`'s tests, its generators and the generated code.
 Here's a the suggested process:
 
 1) Run a scenario (create one if needed)
-2) Tag that scenario with @no-clobber. This will keep tests from modifying the
-   generated test app.
+2) Tag that scenario with @no-clobber. This will leave the generated test app
+   untouched in subsequent test runs.
 3) Make a commit inside the generated test application, so you'll have a clean
    working directory: `script/kta git add --all && script/kta git commit -m 'x'`
 4) Modify the test app as needed. Boot a development server with
@@ -210,7 +210,8 @@ Here's a the suggested process:
 
 ### Debugging
 Add the `@announce-output` tag to `katapult` features in order to have any output
-logged to your terminal.
+logged to your terminal. Note that each step will print all output to date, so
+you will see things multiple times.
 
 To precisely debug errors occurring _inside_ the generated application, use
 `script/kta`. You could also just cd to the test app directory, but since it is
@@ -224,6 +225,9 @@ you've fixed it, the diff will show you what you need to port back to katapult.
 - Timeout error because of a script waiting for user input
 - Spring running inside the test application encumbers parallel_tests and
   following scenarios
+- Spring was running in a directory that does not exist any more. This will
+  screw subsequent spring invocations. Run `ps aux | grep spring` and `kill`
+  suspective processes.
 - An outdated Rails application in `tmp/cached_test_app`
 - Executing (bash) commands in the test application without resetting the
   katapult gem's Bundler settings. Wrap into `Bundler.with_clean_env { }`.
