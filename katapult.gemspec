@@ -9,7 +9,12 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dominik Schöler']
   spec.email         = ['dominik.schoeler@makandra.de']
   spec.summary       = %q{Kickstart Rails development}
-  spec.description   = %q{Katapult is a framework for generating base code}
+  spec.description   = %q{
+    Katapult is a framework for generating base code for Rails applications in
+    two leaps. Basics Generation prepares a new Rails application with lots of
+    best practices, Model Transformation generates application code from a model
+    of the application.
+  }
   spec.homepage      = 'https://github.com/makandra/katapult'
   spec.license       = 'MIT'
 
