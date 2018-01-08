@@ -248,6 +248,11 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         template '.browserslistrc'
       end
 
+      # Bundler prefers installed gems, but we want the newest versions possible
+      def update_gems
+        run 'bundle install'
+      end
+
     end
   end
 end
