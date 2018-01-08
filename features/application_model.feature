@@ -1,3 +1,4 @@
+#@announce-output
 Feature: The application model prepared by Katapult
 
   Scenario: Generating the application model template

@@ -7,7 +7,9 @@ end
 
 When 'I generate the application model' do
   next if @no_clobber
-  run_simple 'rails generate katapult:install'
+  with_aruba_timeout 10 do
+    run_simple 'rails generate katapult:install'
+  end
 end
 
 When /^I generate katapult basics$/ do
@@ -27,7 +29,7 @@ When /^I( successfully)? transform the application model( including migrations)?
 
   ENV['SKIP_MIGRATIONS'] = 'true' unless run_migrations # Speedup
 
-  with_aruba_timeout 45 do
+  with_aruba_timeout 60 do
     # The second argument of #run_simple defaults to `true`
     run_simple 'rails generate katapult:transform lib/katapult/application_model.rb', !!require_success
   end
