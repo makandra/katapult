@@ -200,7 +200,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
         uncomment_lines 'spec/rails_helper.rb', /Dir.Rails.root.join.+spec.support/
         template 'spec/support/shoulda_matchers.rb'
-        template 'spec/support/factory_girl.rb'
+        template 'spec/support/factory_bot.rb'
         directory 'spec/factories'
       end
 
