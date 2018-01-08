@@ -94,8 +94,8 @@ Given 'a new Rails application with Katapult basics installed' do
           end
         end
 
-        recreate_databases(RailsHelper::APP_WITH_BASICS)
         ensure_bundled(RailsHelper::APP_WITH_BASICS)
+        recreate_databases(RailsHelper::APP_WITH_BASICS)
         FileUtils.cp_r RailsHelper::APP_WITH_BASICS, test_app_path
       end
     end
