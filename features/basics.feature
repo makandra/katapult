@@ -36,6 +36,7 @@ Feature: Preparation of a new Rails app (basics generator)
         ActionMailer::Base.default_url_options[:host] = request.host_with_port
       end
     """
+    And the file "app/mailers/application_mailer.rb" should contain "default from: Rails.configuration.system_email"
 
     And a file named "public/robots.txt" should exist
     And Turbolinks should be removed

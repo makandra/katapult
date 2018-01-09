@@ -130,6 +130,9 @@ module Katapult
     ActionMailer::Base.default_url_options[:host] = request.host_with_port
   end
         CONFIG
+
+        gsub_file 'app/mailers/application_mailer.rb',
+          /(^\s+default from:).*$/, '\1 Rails.configuration.system_email'
       end
 
       def set_timezone
