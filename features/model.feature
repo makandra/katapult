@@ -40,7 +40,7 @@ Feature: Generate Models
         describe '#to_s' do
           it 'returns its class name with its id' do
             subject.id = 17
-            expect(subject.to_s).to eql("Car#17")
+            expect(subject.to_s).to eq("Car#17")
           end
         end
 
@@ -111,21 +111,21 @@ Feature: Generate Models
         describe '#to_s' do
           it 'returns the #age attribute' do
             subject.age = 778
-            expect(subject.to_s).to eql("778")
+            expect(subject.to_s).to eq("778")
           end
         end
 
         describe '#homepage' do
 
           it 'has a default' do
-            expect( subject.homepage ).to eql("http://www.makandra.de")
+            expect(subject.homepage).to eq("http://www.makandra.de")
           end
         end
 
         describe '#locked' do
 
           it 'has a default' do
-            expect( subject.locked ).to eql(false)
+            expect(subject.locked).to eq(false)
           end
         end
 
@@ -180,7 +180,7 @@ Feature: Generate Models
         describe '#to_s' do
           it 'returns the #age attribute' do
             subject.age = 9
-            expect(subject.to_s).to eql("9")
+            expect(subject.to_s).to eq("9")
           end
         end
 
@@ -194,7 +194,7 @@ Feature: Generate Models
           it { is_expected.to_not allow_value("baseball-unassignable").for(:hobby) }
 
           it 'has a default' do
-            expect( subject.hobby ).to eql("soccer")
+            expect(subject.hobby).to eq("soccer")
           end
         end
 

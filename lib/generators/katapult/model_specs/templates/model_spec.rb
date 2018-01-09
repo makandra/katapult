@@ -4,12 +4,12 @@ describe <%= model.name :class %> do
   <%- if model.label_attr -%>
     it 'returns the #<%= model.label_attr.name %> attribute' do
       subject.<%= model.label_attr.name %> = <%= model.label_attr.test_value.inspect %>
-      expect(subject.to_s).to eql(<%= model.label_attr.test_value.to_s.inspect %>)
+      expect(subject.to_s).to eq(<%= model.label_attr.test_value.to_s.inspect %>)
     end
   <%- else -%>
     it 'returns its class name with its id' do
       subject.id = 17
-      expect(subject.to_s).to eql("<%= model.name %>#17")
+      expect(subject.to_s).to eq("<%= model.name %>#17")
     end
   <%- end -%>
   end
@@ -23,7 +23,7 @@ describe <%= model.name :class %> do
   <%- unless attr.default.nil? -%>
 
     it 'has a default' do
-      expect( subject.<%= attr.name %> ).to eql(<%= attr.default.inspect %>)
+      expect(subject.<%= attr.name %>).to eq(<%= attr.default.inspect %>)
     end
   <%- end -%>
   end
