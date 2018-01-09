@@ -47,7 +47,7 @@ Feature: Web User Interface
 
         def create
           build_customer
-          save_customer or render :new
+          save_customer
         end
 
         def edit
@@ -58,7 +58,7 @@ Feature: Web User Interface
         def update
           load_customer
           build_customer
-          save_customer or render :edit
+          save_customer
         end
 
         def destroy
@@ -78,19 +78,36 @@ Feature: Web User Interface
         end
 
         def build_customer
-          @customer ||= customer_scope.build
+          @customer ||= customer_scope.new
           @customer.attributes = customer_params
         end
 
         def save_customer
           if @customer.save
             redirect_to @customer
+          else
+            action = @customer.new_record? ? 'new' : 'edit'
+            render action, status: :unprocessable_entity
           end
         end
 
         def customer_params
           customer_params = params[:customer]
-          customer_params ? customer_params.permit(%i[name age email password revenue homepage locked notes first_visit indexable_data plain_data]) : {}
+          return {} if customer_params.blank?
+
+          customer_params.permit(
+            :name,
+            :age,
+            :email,
+            :password,
+            :revenue,
+            :homepage,
+            :locked,
+            :notes,
+            :first_visit,
+            :indexable_data,
+            :plain_data,
+          )
         end
 
         def customer_scope

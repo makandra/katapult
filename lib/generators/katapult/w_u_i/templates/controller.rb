@@ -21,7 +21,7 @@ class <%= model_name(:classes) %>Controller < ApplicationController
 
   def create
     <%= method_name(:build) %>
-    <%= method_name(:save) %> or render :new
+    <%= method_name(:save) %>
   end
 <% end -%>
 <% if wui.find_action :edit -%>
@@ -36,7 +36,7 @@ class <%= model_name(:classes) %>Controller < ApplicationController
   def update
     <%= method_name(:load_object) %>
     <%= method_name(:build) %>
-    <%= method_name(:save) %> or render :edit
+    <%= method_name(:save) %>
   end
 <% end -%>
 <% if wui.find_action :destroy -%>
@@ -75,19 +75,26 @@ class <%= model_name(:classes) %>Controller < ApplicationController
   end
 
   def <%= method_name(:build) %>
-    <%= model_name(:ivar) %> ||= <%= method_name(:scope) %>.build
+    <%= model_name(:ivar) %> ||= <%= method_name(:scope) %>.new
     <%= model_name(:ivar) %>.attributes = <%= method_name(:params) %>
   end
 
   def <%= method_name(:save) %>
     if <%= model_name(:ivar) %>.save
       redirect_to <%= model_name(:ivar) %>
+    else
+      action = <%= model_name(:ivar) %>.new_record? ? 'new' : 'edit'
+      render action, status: :unprocessable_entity
     end
   end
 
   def <%= method_name(:params) %>
     <%= method_name(:params) %> = params[:<%= model_name(:variable) %>]
-    <%= method_name(:params) %> ? <%= method_name(:params) %>.permit(%i[<%= wui.model.attrs.map(&:name).join(' ') %>]) : {}
+    return {} if <%= method_name(:params) %>.blank?
+
+    <%= method_name(:params) %>.permit(
+      <%= wui.params.join(",\n      ") %>,
+    )
   end
 
   def <%= method_name(:scope) %>

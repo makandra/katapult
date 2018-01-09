@@ -45,6 +45,12 @@ module Katapult
         "Cannot find a model named #{model_name}"
     end
 
+    def params
+      model.attrs.map do |attr|
+        attr.name :symbol
+      end
+    end
+
     def custom_actions
       actions.reject { |a| RAILS_ACTIONS.include? a.name }
     end
