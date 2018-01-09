@@ -233,3 +233,68 @@ Then 'the test environment should be configured' do
   # Default is "true"
   step 'the file "config/environments/test.rb" should not contain "config.action_controller.allow_forgery_protection"'
 end
+
+Then 'features/support should be prepared' do
+  step 'the file "features/support/cucumber_factory.rb" should contain "Cucumber::Factory.add_steps(self)"'
+  step 'the file "features/support/factory_bot.rb" should contain "World(FactoryBot::Syntax::Methods)"'
+  step %(the file "features/support/rspec_doubles.rb" should contain "require 'cucumber/rspec/doubles'")
+  step %(the file "features/support/spreewald.rb" should contain "require 'spreewald/all_steps'")
+
+  step 'a file named "features/support/paths.rb" should exist'
+  step 'a file named "features/support/selectors.rb" should exist'
+  step 'the file "spec/rails_helper.rb" should match /^Dir.Rails.root.join.+spec.support/'
+  step 'the file ".rspec" should contain "--require rails_helper"'
+  step 'the file ".rspec_parallel" should contain "--require rails_helper"'
+
+  step 'the file "features/support/selenium.rb" should contain "--mute-audio"'
+  step 'the file "features/support/selenium.rb" should contain "--disable-infobars"'
+  step 'the file "features/support/selenium.rb" should contain:', <<-CONTENT
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app,
+    browser: :chrome,
+    args: chrome_args,
+    prefs: no_password_bubble
+  )
+end
+  CONTENT
+
+  step 'the file "features/support/capybara_screenshot.rb" should contain:', <<-CONTENT
+require 'capybara-screenshot/cucumber'
+
+# Keep up to the number of screenshots specified in the hash
+Capybara::Screenshot.prune_strategy = { keep: 10 }
+  CONTENT
+
+  step 'the file "features/support/database_cleaner.rb" should contain:', <<-CONTENT
+DatabaseCleaner.clean_with(:deletion) # clean once, now
+DatabaseCleaner.strategy = :transaction
+Cucumber::Rails::Database.javascript_strategy = :deletion
+  CONTENT
+end
+
+Then 'spec/support should be prepared' do
+  step 'a file named "spec/support/postgresql_sequences.rb" should exist'
+
+  step 'the file "spec/support/shoulda_matchers.rb" should contain:', <<-CONTENT
+require 'shoulda/matchers'
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+  CONTENT
+
+  step 'the file "spec/support/factory_bot.rb" should contain:', <<-CONTENT
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+  CONTENT
+
+  step 'the file "spec/support/timecop.rb" should contain:', <<-CONTENT
+RSpec.configure do |config|
+  config.after { Timecop.return }
+end
+  CONTENT
+end

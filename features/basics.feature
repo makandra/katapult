@@ -235,74 +235,17 @@ Feature: Katapult in general
 
 
     # Tests
-    And the file "features/support/spreewald.rb" should contain:
-      """
-      require 'spreewald/all_steps'
-      """
-    And the file "features/support/selenium.rb" should contain "--mute-audio"
-    And the file "features/support/selenium.rb" should contain "--disable-infobars"
-    And the file "features/support/selenium.rb" should contain:
-      """
-      Capybara.register_driver :selenium do |app|
-        Capybara::Selenium::Driver.new(app,
-          browser: :chrome,
-          args: chrome_args,
-          prefs: no_password_bubble
-        )
-      end
-      """
-    And the file "features/support/cucumber_factory.rb" should contain:
-      """
-      Cucumber::Factory.add_steps(self)
-      """
-    And the file "features/support/capybara_screenshot.rb" should contain:
-      """
-      require 'capybara-screenshot/cucumber'
+    And features/support should be prepared
 
-      # Keep up to the number of screenshots specified in the hash
-      Capybara::Screenshot.prune_strategy = { keep: 10 }
-      """
-    And the file "features/support/database_cleaner.rb" should contain:
-      """
-      DatabaseCleaner.clean_with(:deletion) # clean once, now
-      DatabaseCleaner.strategy = :transaction
-      Cucumber::Rails::Database.javascript_strategy = :deletion
-      """
-    And the file "features/support/factory_bot.rb" should contain:
-      """
-      World(FactoryBot::Syntax::Methods)
-      """
-      And a file named "features/support/paths.rb" should exist
-      And a file named "features/support/selectors.rb" should exist
-      And the file "spec/rails_helper.rb" should match /^Dir.Rails.root.join.+spec.support/
-      And the file ".rspec" should contain "--require rails_helper"
-      And the file ".rspec_parallel" should contain "--require rails_helper"
-      And the file "spec/support/shoulda_matchers.rb" should contain:
-      """
-      require 'shoulda/matchers'
+    And the file "spec/factories/factories.rb" should contain:
+    """
+    FactoryBot.define do
 
-      Shoulda::Matchers.configure do |config|
-        config.integrate do |with|
-          with.test_framework :rspec
-          with.library :rails
-        end
+      factory :EXAMPLE do
+        status 'pending'
+        uuid { SecureRandom.uuid }
+        sequence(:title) { |i| "Titel #{ i }"}
       end
-      """
-      And the file "spec/support/factory_bot.rb" should contain:
-      """
-      RSpec.configure do |config|
-        config.include FactoryBot::Syntax::Methods
-      end
-      """
-      And the file "spec/factories/factories.rb" should contain:
-      """
-      FactoryBot.define do
 
-        factory :EXAMPLE do
-          status 'pending'
-          uuid { SecureRandom.uuid }
-          sequence(:title) { |i| "Titel #{ i }"}
-        end
-
-      end
-      """
+    end
+    """
