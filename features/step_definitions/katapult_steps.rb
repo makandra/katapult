@@ -164,6 +164,9 @@ Then 'the application layout should be set up' do
   step %(the file "app/views/layouts/application.html.haml" should contain "render 'layouts/menu_bar'")
   step %(the file "app/views/layouts/application.html.haml" should contain "render 'layouts/flashes'")
   step %(the file "app/views/layouts/application.html.haml" should contain "%body{ data: {env: Rails.env} }")
+  step %(the file "app/views/layouts/application.html.haml" should contain "%html{ lang: I18n.locale }")
+  step %(the file "app/views/layouts/application.html.haml" should contain "width=device-width, initial-scale=1")
+  step %(the file "app/views/layouts/application.html.haml" should contain "charset=UTF-8")
 
   step 'the file "app/views/layouts/_flashes.html.haml" should contain:', <<~CONTENT
   - flash.each do |_level, message|
