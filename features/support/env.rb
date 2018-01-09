@@ -9,7 +9,10 @@ Aruba.configure do |config|
 end
 
 Before do |scenario|
-  unset_bundler_env_vars # Don't use katapult's Bundler environment inside tests
+  # Don't reuse the Bundler environment of *katapult* during tests
+  bundler_env_keys = aruba.environment.keys.grep /^BUNDLE/
+  bundler_env_keys.each &method(:delete_environment_variable)
+
   run_simple 'spring stop # Ensure Spring is not running'
 
   scenario_tags = scenario.source_tag_names

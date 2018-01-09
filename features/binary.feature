@@ -55,9 +55,8 @@ Feature: Katapult binary `katapult`
       And the file "config/database.yml" should contain "password: secret"
       And the file ".ruby-version" should contain "2.4.1"
 
-#    Not working, probably because Bundler sees an empty BUNDLER_GEMFILE var
-#    When I run `bundle check`
-#    Then the output should contain "The Gemfile's dependencies are satisfied"
+    When I run `bundle check`
+    Then the output should contain "The Gemfile's dependencies are satisfied"
 
     When I run `git log`
     Then the output should contain "rails new binary_test"
