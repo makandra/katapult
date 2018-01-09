@@ -1,0 +1,5 @@
+# This empty file allows all robots, see http://www.robotstxt.org/robotstxt.html
+#
+# To exclude all robots from the entire domain, uncomment this:
+# User-agent: *
+# Disallow: /

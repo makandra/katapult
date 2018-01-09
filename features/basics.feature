@@ -37,6 +37,7 @@ Feature: Katapult in general
       end
     """
 
+    And a file named "public/robots.txt" should exist
     And Turbolinks should be removed
     And the Asset Pipeline should be removed
 

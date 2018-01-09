@@ -30,6 +30,9 @@ module Katapult
         template '.gitignore', force: true
       end
 
+      def add_robots_txt
+        template 'public/robots.txt', force: true
+      end
 
       # Gems ###################################################################
 
