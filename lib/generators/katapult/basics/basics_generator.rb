@@ -30,13 +30,8 @@ module Katapult
         template '.gitignore', force: true
       end
 
-      def write_database_ymls
-        @db_user = options.db_user
-        @db_password = options.db_password
 
-        template 'config/database.yml', force: true
-        template 'config/database.sample.yml'
-      end
+      # Gems ###################################################################
 
       def enhance_gemfile
         # Need to transfer the katapult line, because in tests, katapult is
@@ -54,42 +49,37 @@ module Katapult
         run 'bundle config --local build.nokogiri --use-system-libraries'
       end
 
-      def remove_turbolinks_js
-        gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", ''
-        gsub_file 'app/views/layouts/application.html.erb', ", 'data-turbolinks-track': 'reload'", ''
+
+      # Database ###############################################################
+
+      def write_database_ymls
+        @db_user = options.db_user
+        @db_password = options.db_password
+
+        template 'config/database.yml', force: true
+        template 'config/database.sample.yml'
       end
 
-      def setup_spring
-        run 'spring binstub --all'
-
-        # Enhance Spring config
-        config = 'config/spring.rb'
-        inject_into_file config, <<-DIR, after: /\A%w\(\n/
-  lib/templates
-        DIR
-        prepend_to_file config, <<-MKDIR
-# Custom generator templates are put into lib/templates
-FileUtils.mkdir_p 'lib/templates'
-
-        MKDIR
-
-        # Parallel-fix binstubs
-        Dir['bin/*'].each do |binstub|
-          if File.read(binstub) =~ /load.*spring/
-            inject_into_file binstub, <<-PARALLEL, after: /\A.*\n/
-running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =~ /^parallel:/ }
-
-            PARALLEL
-
-            gsub_file binstub, /^(\s*load .*spring.*)$/, '\1 unless running_in_parallel'
-          end
-        end
+      def create_databases
+        # Need to unset RAILS_ENV variable for this sub command because
+        # parallel_tests defaults to "test" only if the variable is not set (<->
+        # empty string value). However, because this is run from a Rails
+        # generator, the variable is already set to "development". Cannot set to
+        # "test" either because parallel_tests is only loaded in development.
+        run 'unset RAILS_ENV; bundle exec rake db:drop db:create parallel:drop parallel:create'
       end
 
-      def setup_guard
-        template 'Guardfile'
-        environment "config.middleware.use Rack::LiveReload\n", env: :development
-        environment "config.assets.digest = false # For Guard::Livereload\n", env: :development
+
+      # Configure Rails ########################################################
+
+      def install_application_layout
+        remove_file 'app/views/layouts/application.html.erb'
+        directory 'app/views/layouts'
+      end
+
+      # We're using Webpacker
+      def remove_asset_pipeline_traces
+        remove_dir 'app/assets'
       end
 
       def disable_migration_errors
@@ -107,15 +97,6 @@ running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =
 
         staging:
         SECRET
-      end
-
-      def create_databases
-        # Need to unset RAILS_ENV variable for this sub command because
-        # parallel_tests defaults to "test" only if the variable is not set (<->
-        # empty string value). However, because this is run from a Rails
-        # generator, the variable is already set to "development". Cannot set to
-        # "test" either because parallel_tests is only loaded in development.
-        run 'unset RAILS_ENV; bundle exec rake db:drop db:create parallel:drop parallel:create'
       end
 
       def configure_action_mailer
@@ -154,12 +135,52 @@ config.time_zone = 'Berlin'
           'config.assets.debug = false'
       end
 
+      def install_helpers
+        directory 'app/helpers'
+      end
+
       def install_initializers
         directory 'config/initializers'
       end
 
       def install_ext
         directory 'lib/ext'
+      end
+
+
+      # Configure 3rd party ####################################################
+
+      def setup_spring
+        run 'spring binstub --all'
+
+        # Enhance Spring config
+        config = 'config/spring.rb'
+        inject_into_file config, <<-DIR, after: /\A%w\(\n/
+  lib/templates
+        DIR
+        prepend_to_file config, <<-MKDIR
+# Custom generator templates are put into lib/templates
+FileUtils.mkdir_p 'lib/templates'
+
+        MKDIR
+
+        # Parallel-fix binstubs
+        Dir['bin/*'].each do |binstub|
+          if File.read(binstub) =~ /load.*spring/
+            inject_into_file binstub, <<-PARALLEL, after: /\A.*\n/
+running_in_parallel = ENV.has_key?('TEST_ENV_NUMBER') || ARGV.any? { |arg| arg =~ /^parallel:/ }
+
+            PARALLEL
+
+            gsub_file binstub, /^(\s*load .*spring.*)$/, '\1 unless running_in_parallel'
+          end
+        end
+      end
+
+      def setup_guard
+        template 'Guardfile'
+        environment "config.middleware.use Rack::LiveReload\n", env: :development
+        environment "config.assets.digest = false # For Guard::Livereload\n", env: :development
       end
 
       def add_modularity_load_paths
@@ -170,15 +191,6 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
     config.autoload_paths << "#{Rails.root}/app/util"
     config.autoload_paths << "#{Rails.root}/app/util/shared"
         LOAD_PATHS
-      end
-
-      def install_application_layout
-        remove_file 'app/views/layouts/application.html.erb'
-        directory 'app/views/layouts'
-      end
-
-      def install_helpers
-        directory 'app/helpers'
       end
 
       def install_cucumber
@@ -223,11 +235,6 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
         directory 'lib/capistrano/tasks'
         template 'lib/tasks/pending_migrations.rake'
-      end
-
-      # We're using Webpacker
-      def remove_asset_pipeline_traces
-        remove_dir 'app/assets'
       end
 
       def setup_webpacker
