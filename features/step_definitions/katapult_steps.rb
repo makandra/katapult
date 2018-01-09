@@ -298,3 +298,15 @@ RSpec.configure do |config|
 end
   CONTENT
 end
+
+Then 'initializers should be installed' do
+  step 'the file "config/initializers/better_errors.rb" should contain "BetterErrors::ErrorPage.prepend(BetterErrorsHugeInspectWarning)"'
+
+  step 'the file "config/initializers/exception_notification.rb" should contain:', <<-CONTENT
+ExceptionNotification.configure do |config|
+
+  config.add_notifier :email, {
+    email_prefix: '[katapult_test_app] ',
+    exception_recipients: %w[fail@makandra.de],
+  CONTENT
+end

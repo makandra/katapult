@@ -1,6 +1,6 @@
 #@announce-output
 #@announce-stderr
-Feature: Katapult in general
+Feature: Preparation of a new Rails app (basics generator)
 
   Scenario: Generate basic files and settings
     Given a pristine Rails application
@@ -121,20 +121,14 @@ Feature: Katapult in general
 
     And Capistrano should be configured
     And Capistrano should be locked to the installed version
+
+    And initializers should be installed
     And the file "config/initializers/ext.rb" should contain exactly:
     """
     Dir.glob(Rails.root.join('lib/ext/**/*.rb')).sort.each do |filename|
       require filename
     end
     """
-    And the file "config/initializers/exception_notification.rb" should contain:
-      """
-      ExceptionNotification.configure do |config|
-
-        config.add_notifier :email, {
-          email_prefix: '[katapult_test_app] ',
-          exception_recipients: %w[fail@makandra.de],
-      """
     And the file "config/secrets.yml" should contain:
     """
     staging:
