@@ -152,9 +152,10 @@ Feature: Preparation of a new Rails app (basics generator)
     """
     And the file "lib/ext/action_view/form_for_with_development_errors.rb" should contain:
     """
-    if Rails.env == 'development'
-      ActionView::Helpers::FormHelper.prepend FormForWithErrors
-    end
+    if Rails.env.development?
+
+      ActionView::Helpers::FormHelper.module_eval do
+        def form_for_with_development_errors
     """
     And the file "lib/ext/active_record/these.rb" should contain:
     """
