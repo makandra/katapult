@@ -14,8 +14,8 @@ module NavigationHelpers
     when /^the (page|form) for the (.*?) above$/
       action_prose, model_prose = $1, $2
       route = "#{action_prose == 'form' ? 'edit_' : ''}#{model_prose_to_route_segment(model_prose)}_path"
-      model = model_prose.classify.constantize
-      send(route, model.reorder(:id).last!)
+      model = model_prose_to_class(model_prose)
+      send(route, model.last)
 
     when /^the (page|form) for the (.*?) "(.*?)"$/
       action_prose, model_prose, identifier = $1, $2, $3
@@ -39,12 +39,17 @@ module NavigationHelpers
   private
 
   def path_to_show_or_edit(action_prose, model_prose, identifier)
-    model = model_prose.classify.constantize
+    model = model_prose_to_class(model_prose)
     route = "#{action_prose == 'form' ? 'edit_' : ''}#{model_prose_to_route_segment(model_prose)}_path"
     send(route, model.find_by_anything!(identifier))
   end
 
+  def model_prose_to_class(model_prose)
+    model_prose.gsub(' ', '_').classify.constantize
+  end
+
   def model_prose_to_route_segment(model_prose)
+    model_prose = model_prose.downcase
     model_prose.gsub(/[\ \/]/, '_')
   end
 
