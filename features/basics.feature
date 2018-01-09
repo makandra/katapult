@@ -73,6 +73,7 @@ Feature: Katapult in general
       config.active_record.migration_error = false
     """
       And the file "config/environments/staging.rb" should contain "require_relative 'production'"
+      And the test environment should be configured
       And the file "config/database.yml" should contain exactly:
       """
       common: &common

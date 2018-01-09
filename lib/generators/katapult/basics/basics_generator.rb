@@ -99,6 +99,22 @@ module Katapult
         SECRET
       end
 
+      def configure_test_environment
+        test_env = 'config/environments/test.rb'
+
+        gsub_file test_env,
+          /# Do not eager load code on boot.*config\.eager_load = false/m,
+          'config.eager_load = true'
+        gsub_file test_env,
+          /  # Show full error.*\n  config\.consider_all_requests_local\s.*$/,
+          '  config.consider_all_requests_local = false'
+        gsub_file test_env,
+          /  # Disable request forgery protection.*\n  config\.action_controller\.allow_forgery_protection\s.*$\n/,
+          ''
+        gsub_file test_env, /config\.action_controller\.perform_caching\s.*$/,
+          'config.action_controller.perform_caching = true'
+      end
+
       def configure_action_mailer
         app_con = 'app/controllers/application_controller.rb'
         inject_into_file app_con, <<-CONFIG, before: /end\n\z/

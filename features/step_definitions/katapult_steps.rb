@@ -222,3 +222,11 @@ rescue LoadError => e
     CONTENT
   end
 end
+
+Then 'the test environment should be configured' do
+  step 'the file "config/environments/test.rb" should contain "config.eager_load = true"'
+  step 'the file "config/environments/test.rb" should contain "config.consider_all_requests_local = false"'
+  step 'the file "config/environments/test.rb" should contain "config.action_controller.perform_caching = true"'
+  # Default is "true"
+  step 'the file "config/environments/test.rb" should not contain "config.action_controller.allow_forgery_protection"'
+end
