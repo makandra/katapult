@@ -24,8 +24,8 @@ Feature: Web User Interface
         customer.attr :plain_data, type: :plain_json
       end
 
-      wui 'customer', model: 'customer' do |wui|
-        wui.crud
+      web_ui 'customer', model: 'customer' do |web_ui|
+        web_ui.crud
       end
       """
     And I successfully transform the application model including migrations
@@ -330,12 +330,12 @@ Feature: Web User Interface
         customer.attr :name
       end
 
-      wui 'customer', model: 'customer' do |wui|
-        wui.crud
-        wui.action :get_member, method: :get, scope: :member
-        wui.action :post_member, method: :post, scope: :member
-        wui.action :get_collection, method: :get, scope: :collection
-        wui.action :put_collection, method: :put, scope: :collection
+      web_ui 'customer', model: 'customer' do |web_ui|
+        web_ui.crud
+        web_ui.action :get_member, method: :get, scope: :member
+        web_ui.action :post_member, method: :post, scope: :member
+        web_ui.action :get_collection, method: :get, scope: :collection
+        web_ui.action :put_collection, method: :put, scope: :collection
       end
       """
     And I successfully transform the application model

@@ -7,7 +7,7 @@ Feature: Navigation
 
   Scenario: Generate navigation
 
-    A navigation is rendered from all WUIs in the application model. It
+    A navigation is rendered from all WebUIs in the application model. It
     consists of links to their index pages.
 
     When I write to "lib/katapult/application_model.rb" with:
@@ -15,7 +15,7 @@ Feature: Navigation
       model 'Customer' do |customer|
         customer.attr :name
       end
-      wui 'Customer', &:crud
+      web_ui 'Customer', &:crud
 
       navigation
       """
@@ -44,7 +44,7 @@ Feature: Navigation
 
   Scenario: Homepage (aka root route) is set automatically
 
-    The first WUI with an index action is set as home page. This does not
+    The first WebUI with an index action is set as home page. This does not
     require a navigation.
 
     When I write to "lib/katapult/application_model.rb" with:
@@ -52,12 +52,12 @@ Feature: Navigation
       model('Customer') { |c| c.attr :name }
       model('Elephant') { |e| e.attr :name }
 
-      wui 'Elephant' do |wui|
-        wui.action :trumpet, scope: :member, method: :post
+      web_ui 'Elephant' do |web_ui|
+        web_ui.action :trumpet, scope: :member, method: :post
       end
 
-      wui 'Customer' do |wui|
-        wui.crud
+      web_ui 'Customer' do |web_ui|
+        web_ui.crud
       end
       """
     And I successfully transform the application model

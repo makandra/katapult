@@ -4,7 +4,7 @@
 # Run `script/console` from the gem root to start an IRB with the gem loaded.
 
 # Remember to require classes before using them,
-# i.e. run `require 'katapult/wui'` before `Katapult::WUI.new :example_name`.
+# i.e. `require 'katapult/model'` before `Katapult::Model.new :example_name`
 
 irb_options = [
   '-Ilib',      # add lib/ to load_path

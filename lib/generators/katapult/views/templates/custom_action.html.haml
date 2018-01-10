@@ -1,5 +1,5 @@
 .action-bar
-  = link_to 'All <%= model_name(:humans) %>', <%= wui.path(:index) %>, class: 'btn btn-default'
+  = link_to 'All <%= model_name(:humans) %>', <%= web_ui.path(:index) %>, class: 'btn btn-default'
 
 %h1.title
   <%= @action.name.humanize.titleize %>

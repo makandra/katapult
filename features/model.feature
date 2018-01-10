@@ -213,7 +213,7 @@ Feature: Generate Models
     When I write to "lib/katapult/application_model.rb" with:
       """
       model('Car') { |c| c.attr :model }
-      wui 'Car', &:crud
+      web_ui 'Car', &:crud
       """
       And I successfully transform the application model
     Then the file named "config/routes.rb" should contain:

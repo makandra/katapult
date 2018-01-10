@@ -3,11 +3,11 @@
 module Katapult
   class ApplicationModel
 
-    attr_reader :models, :wuis, :navigation, :authentication
+    attr_reader :models, :web_uis, :navigation, :authentication
 
     def initialize
       @models = []
-      @wuis = []
+      @web_uis = []
     end
 
     def add_model(model)
@@ -19,13 +19,13 @@ module Katapult
       models.find { |m| m.name == name }
     end
 
-    def add_wui(wui)
-      wui.set_application_model(self)
-      @wuis << wui
+    def add_web_ui(web_ui)
+      web_ui.set_application_model(self)
+      @web_uis << web_ui
     end
 
-    def get_wui(name)
-      wuis.find { |w| w.name == name }
+    def get_web_ui(name)
+      web_uis.find { |w| w.name == name }
     end
 
     def set_navigation(navigation)
@@ -43,7 +43,7 @@ module Katapult
 
     def render
       models.each &:render
-      wuis.each &:render
+      web_uis.each &:render
       navigation.render if navigation
       authentication.render if authentication
     end

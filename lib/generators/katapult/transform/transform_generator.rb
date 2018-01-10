@@ -27,8 +27,8 @@ module Katapult
 
     def write_root_route
       unless File.read('config/routes.rb').include? '  root'
-        root_wui = @app_model.wuis.find { |w| w.find_action :index }
-        route "root '#{ root_wui.model_name(:variables) }#index'" if root_wui
+        root_web_ui = @app_model.web_uis.find { |w| w.find_action :index }
+        route "root '#{ root_web_ui.model_name(:variables) }#index'" if root_web_ui
       end
     end
 

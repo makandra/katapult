@@ -1,9 +1,9 @@
 <%- object = model_name(:ivar) -%>
 .action-bar.-main.btn-group
-  = link_to 'All <%= model_name(:humans) %>', <%= wui.path(:index) %>, class: 'btn btn-default'
-  = link_to 'Edit', <%= wui.path(:edit, object) %>, class: 'btn btn-default'
-<% wui.custom_actions.select(&:member?).each do |action| -%>
-  = link_to '<%= action.name(:human).titleize %>', <%= wui.path(action, object) %>, class: 'btn btn-default'<%=
+  = link_to 'All <%= model_name(:humans) %>', <%= web_ui.path(:index) %>, class: 'btn btn-default'
+  = link_to 'Edit', <%= web_ui.path(:edit, object) %>, class: 'btn btn-default'
+<% web_ui.custom_actions.select(&:member?).each do |action| -%>
+  = link_to '<%= action.name(:human).titleize %>', <%= web_ui.path(action, object) %>, class: 'btn btn-default'<%=
     ", method: :#{action.method}" unless action.get?
     %>
 <% end -%>
@@ -12,7 +12,7 @@
   = <%= model_name(:ivar) %>
 
 %dl
-<% wui.model.renderable_attrs.each do |attribute| -%>
+<% web_ui.model.renderable_attrs.each do |attribute| -%>
   <%- model_attribute = "#{object}.#{attribute.name}" -%>
   %dt
     = <%= model_name(:class) %>.human_attribute_name(:<%= attribute.name %>)

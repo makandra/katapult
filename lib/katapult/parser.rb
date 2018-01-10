@@ -3,7 +3,7 @@
 
 require_relative 'application_model'
 require 'katapult/model'
-require 'katapult/wui'
+require 'katapult/web_ui'
 require 'katapult/navigation'
 require 'katapult/authentication'
 
@@ -24,8 +24,8 @@ module Katapult
       application_model.add_model Model.new(name, options, &block)
     end
 
-    def wui(name, options = {}, &block)
-      application_model.add_wui WUI.new(name, options, &block)
+    def web_ui(name, options = {}, &block)
+      application_model.add_web_ui WebUI.new(name, options, &block)
     end
 
     def navigation(name = :main)

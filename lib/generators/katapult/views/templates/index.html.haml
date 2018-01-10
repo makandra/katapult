@@ -1,7 +1,7 @@
 .action-bar.-main.btn-group
-  = link_to 'Add <%= model_name(:human) %>', <%= wui.path(:new) %>, class: 'btn btn-default'
-<% wui.custom_actions.select(&:collection?).each do |action| -%>
-  = link_to '<%= action.name.humanize.titleize %>', <%= wui.path(action) %>, class: 'btn btn-default'
+  = link_to 'Add <%= model_name(:human) %>', <%= web_ui.path(:new) %>, class: 'btn btn-default'
+<% web_ui.custom_actions.select(&:collection?).each do |action| -%>
+  = link_to '<%= action.name.humanize.titleize %>', <%= web_ui.path(action) %>, class: 'btn btn-default'
 <% end -%>
 
 %h1.title
@@ -10,14 +10,14 @@
 - if <%= model_name(:ivars) %>.any?
   <%- object = model_name(:variable) -%>
 
-  = table '<%= wui.model.label_attr.name(:human).titleize %>', 'Actions' do
+  = table '<%= web_ui.model.label_attr.name(:human).titleize %>', 'Actions' do
     - <%= model_name(:ivars) %>.each do |<%= object %>|
       %tr(up-expand)
         %td(width='40%')
           = link_to <%= object %>, <%= object %>
         %td
-          = link_to 'Edit', <%= wui.path(:edit, object) %>
-          = link_to 'Destroy', <%= wui.path(:destroy, object) %>, method: :delete,
+          = link_to 'Edit', <%= web_ui.path(:edit, object) %>
+          = link_to 'Destroy', <%= web_ui.path(:destroy, object) %>, method: :delete,
             class: 'text-danger',
             data: { confirm: 'Really destroy?' }, title: "Destroy #{<%= object %>}"
 

@@ -18,12 +18,12 @@ model 'product' do |product|
 end
 
 # Add web user interfaces
-wui 'user' do |wui|
-  wui.crud # Creates all CRUD actions: index, new, show, etc.
-  wui.action :lock, scope: :member, method: :post
+web_ui 'user' do |web_ui|
+  web_ui.crud # Creates all CRUD actions: index, new, show, etc.
+  web_ui.action :lock, scope: :member, method: :post
 end
 
-wui 'product', &:crud
+web_ui 'product', &:crud
 
 # Have a main menu
 navigation

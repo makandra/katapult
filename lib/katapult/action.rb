@@ -1,4 +1,4 @@
-# Models a controller action. To be used within the block of a WUI.
+# Models a controller action. To be used within the block of a WebUI.
 
 require 'katapult/element'
 require 'active_support/core_ext/module/delegation'

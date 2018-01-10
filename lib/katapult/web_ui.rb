@@ -3,10 +3,10 @@
 
 require 'katapult/element'
 require 'katapult/action'
-require 'generators/katapult/w_u_i/w_u_i_generator'
+require 'generators/katapult/web_ui/web_ui_generator'
 
 module Katapult
-  class WUI < Element
+  class WebUI < Element
 
     options :model
     attr_accessor :actions
@@ -82,14 +82,14 @@ module Katapult
 
     def render
       validate!
-      Generators::WUIGenerator.new(self).invoke_all
+      Generators::WebUIGenerator.new(self).invoke_all
     end
 
     private
 
     def validate!
       model.label_attr.present? or raise MissingLabelAttrError,
-        'Cannot render a WUI without a model with a label attribute'
+        'Cannot render a WebUI without a model with a label attribute'
     end
 
   end

@@ -80,8 +80,8 @@ options are available to each element. For details, dive into
 of a generator tell what it does.
 
 ### Generic DSL syntax example
-The DSL consists of _elements_, e.g. `Model` or `WUI` (Web User Interface). Each
-`katapult` element has the same syntax, taking a name, options, and a block:
+The DSL consists of _elements_, e.g. `Model` or `WebUI`. Each `katapult` element
+has the following syntax, taking a name, options, and a block:
 
     element_type 'name', options: 'example' do |element|
       element.some_method
@@ -126,37 +126,37 @@ Defined on Model. Takes a name and options:
     model.attr :avoid, type: :plain_json # PostgreSQL "json"
 
 
-### WUI (Web User Interface)
+### WebUI
 Takes a name, options and a block:
 
-    wui 'Customer', model: 'User' do |wui|
-      wui.crud # Create all the standard rails actions
+    web_ui 'Customer', model: 'User' do |web_ui|
+      web_ui.crud # Create all the standard rails actions
 
-      # wui.action :custom etc, see Action element
+      # web_ui.action :custom etc, see Action element
     end
 
     # Short syntax with inferred model name 'User'
-    wui 'User', &:crud
+    web_ui 'User', &:crud
 
 
 #### Action
-Defined on WUI. Takes a name and options:
+Defined on WebUI. Takes a name and options:
 
     # Select single Rails actions
-    wui.action :index
-    wui.action :show
-    wui.action :create # also creates :new
-    wui.action :update # also creates :edit
-    wui.action :destroy
+    web_ui.action :index
+    web_ui.action :show
+    web_ui.action :create # also creates :new
+    web_ui.action :update # also creates :edit
+    web_ui.action :destroy
     
     # Add custom actions
-    wui.action :custom_action, method: :post, scope: :member
-    wui.action :other_action, method: :get, scope: :collection
+    web_ui.action :custom_action, method: :post, scope: :member
+    web_ui.action :other_action, method: :get, scope: :collection
     
 
 ### Navigation
 No arguments, will generate a main menu with links to the index pages of all
-WUIs.
+WebUIs.
 
     navigation
 

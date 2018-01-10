@@ -10,7 +10,7 @@ Feature: Add authentication to an application
     When I write to "lib/katapult/application_model.rb" with:
       """
       model 'user'
-      wui('user', &:crud)
+      web_ui('user', &:crud)
       authenticate 'user', system_email: 'system@example.com'
       """
     And I successfully transform the application model including migrations

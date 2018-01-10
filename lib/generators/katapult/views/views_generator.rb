@@ -1,4 +1,4 @@
-# Generate views for a WUI.
+# Generate views for a WebUI
 
 require 'katapult/generator'
 require 'generators/katapult/cucumber_features/cucumber_features_generator'
@@ -24,7 +24,7 @@ module Katapult
       end
 
       def create_rails_standard_action_views
-        actions.select{ |a| a.get? && WUI::RAILS_ACTIONS.include?(a.name) }.each do |action|
+        actions.select{ |a| a.get? && WebUI::RAILS_ACTIONS.include?(a.name) }.each do |action|
           file_name = "#{action.name}.html.haml"
 
           create_view file_name, File.join(views_path, file_name)
@@ -42,21 +42,21 @@ module Katapult
       end
 
       def create_views_for_custom_actions
-        wui.custom_actions.select(&:get?).each do |action|
+        web_ui.custom_actions.select(&:get?).each do |action|
           @action = action # Make the action object accessible in templates
           create_view 'custom_action.html.haml', File.join(views_path, "#{action.name}.html.haml")
         end
       end
 
       def generate_integration_tests
-        if wui.model.present?
-          Generators::CucumberFeaturesGenerator.new(wui.model).invoke_all
+        if web_ui.model.present?
+          Generators::CucumberFeaturesGenerator.new(web_ui.model).invoke_all
         end
       end
 
       no_tasks do
         def model_name(kind = nil)
-          wui.model_name(kind)
+          web_ui.model_name(kind)
         end
 
         def views_path
@@ -66,22 +66,22 @@ module Katapult
 
       private
 
-      # Rails views depend heavily on models. If the WUI has no model, do not
+      # Rails views depend heavily on models. If the WebUI has no model, do not
       # use the templates but create empty files instead.
       def create_view(template, destination)
-        if wui.model
+        if web_ui.model
           template template, destination
         else
           create_file destination
         end
       end
 
-      def wui
+      def web_ui
         @element
       end
 
       def actions
-        wui.actions
+        web_ui.actions
       end
 
     end

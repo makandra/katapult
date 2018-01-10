@@ -1,7 +1,7 @@
 <%- object = model_name(:ivar) -%>
 = form_for <%= object %> do |form|
 
-<% wui.model.editable_attrs.each do |attribute| -%>
+<% web_ui.model.editable_attrs.each do |attribute| -%>
   .form-group
     = form.label <%= attribute.name(:symbol) %>
   <%- if attribute.assignable_values -%>
@@ -37,11 +37,11 @@
 <% end -%>
 
   .action-bar
-    - cancel_path = <%= object %>.new_record? ? <%= wui.path(:index) %> : <%= wui.path(:show, object) %>
+    - cancel_path = <%= object %>.new_record? ? <%= web_ui.path(:index) %> : <%= web_ui.path(:show, object) %>
 
     .pull-right
       - if <%= object %>.persisted?
-        = link_to "Destroy <%= model_name(:human) %>", <%= wui.path(:destroy, object) %>, method: :delete,
+        = link_to "Destroy <%= model_name(:human) %>", <%= web_ui.path(:destroy, object) %>, method: :delete,
           class: 'btn btn-danger', data: { confirm: 'Really destroy?' }
 
     = form.submit 'Save', class: 'btn btn-primary'

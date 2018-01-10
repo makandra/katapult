@@ -1,37 +1,37 @@
 class <%= model_name(:classes) %>Controller < ApplicationController
-<% if wui.find_action :index -%>
+<% if web_ui.find_action :index -%>
 
   def index
     <%= method_name(:load_collection) %>
   end
 <% end -%>
-<% if wui.find_action :show -%>
+<% if web_ui.find_action :show -%>
 
   def show
     <%= method_name(:load_object) %>
   end
 <% end -%>
-<% if wui.find_action :new -%>
+<% if web_ui.find_action :new -%>
 
   def new
     <%= method_name(:build) %>
   end
 <% end -%>
-<% if wui.find_action :create -%>
+<% if web_ui.find_action :create -%>
 
   def create
     <%= method_name(:build) %>
     <%= method_name(:save) %>
   end
 <% end -%>
-<% if wui.find_action :edit -%>
+<% if web_ui.find_action :edit -%>
 
   def edit
     <%= method_name(:load_object) %>
     <%= method_name(:build) %>
   end
 <% end -%>
-<% if wui.find_action :update -%>
+<% if web_ui.find_action :update -%>
 
   def update
     <%= method_name(:load_object) %>
@@ -39,15 +39,15 @@ class <%= model_name(:classes) %>Controller < ApplicationController
     <%= method_name(:save) %>
   end
 <% end -%>
-<% if wui.find_action :destroy -%>
+<% if web_ui.find_action :destroy -%>
 
   def destroy
     <%= method_name(:load_object) %>
     <%= model_name(:ivar) %>.destroy
-    redirect_to <%= wui.path(:index) %>
+    redirect_to <%= web_ui.path(:index) %>
   end
 <% end -%>
-<% wui.custom_actions.each do |action|  -%>
+<% web_ui.custom_actions.each do |action|  -%>
 
   def <%= action.name %>
 <% if action.member? -%>
@@ -58,7 +58,7 @@ class <%= model_name(:classes) %>Controller < ApplicationController
 <% elsif action.collection? -%>
     <%= method_name(:load_collection) %>
   <%- unless action.get? -%>
-    redirect_to <%= wui.path(:index) %>
+    redirect_to <%= web_ui.path(:index) %>
   <%- end -%>
 <% end -%>
   end
@@ -93,7 +93,7 @@ class <%= model_name(:classes) %>Controller < ApplicationController
     return {} if <%= method_name(:params) %>.blank?
 
     <%= method_name(:params) %>.permit(
-      <%= wui.params.join(",\n      ") %>,
+      <%= web_ui.params.join(",\n      ") %>,
     )
   end
 

@@ -1,11 +1,11 @@
-# Generate a controller, routes and view files for a WUI.
+# Generate a controller, routes and view files for a WebUI instance
 
 require 'katapult/generator'
 require 'generators/katapult/views/views_generator'
 
 module Katapult
   module Generators
-    class WUIGenerator < Katapult::Generator
+    class WebUIGenerator < Katapult::Generator
 
       desc 'Generate a Web User Interface'
 
@@ -28,7 +28,7 @@ In order to keep existing routes created by the user, the config/routes.rb file
 is not wiped on model transformation. To have Katapult update the #{ route }
 route for you, delete it before transforming the application model.
 MESSAGE
-        elsif wui.crud_only?
+        elsif web_ui.crud_only?
           route "resources #{ route }"
         else
           route render_partial('_route.rb')
@@ -36,7 +36,7 @@ MESSAGE
       end
 
       def generate_views
-        Generators::ViewsGenerator.new(wui).invoke_all
+        Generators::ViewsGenerator.new(web_ui).invoke_all
       end
 
       no_tasks do
@@ -52,13 +52,13 @@ MESSAGE
         end
 
         def model_name(kind = nil)
-          wui.model_name(kind)
+          web_ui.model_name(kind)
         end
       end
 
       private
 
-      def wui
+      def web_ui
         @element
       end
 

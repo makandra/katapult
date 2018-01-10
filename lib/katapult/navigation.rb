@@ -6,16 +6,16 @@ require 'generators/katapult/navigation/navigation_generator'
 module Katapult
   class Navigation < Element
 
-    def wuis
-      application_model.wuis
+    def web_uis
+      application_model.web_uis
     end
 
     def links
-      wuis.each_with_object({}) do |wui, map|
-        next unless wui.find_action(:index).present?
+      web_uis.each_with_object({}) do |web_ui, map|
+        next unless web_ui.find_action(:index).present?
 
-        label = wui.model_name :humans
-        map[label] = wui.path(:index)
+        label = web_ui.model_name :humans
+        map[label] = web_ui.path(:index)
       end
     end
 
