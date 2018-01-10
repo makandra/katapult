@@ -46,6 +46,9 @@ module Katapult
       def bundle_install
         run 'bundle install'
 
+        # Fix Bundler for parallel_tests
+        run 'bundle config --local disable_exec_load true'
+
         # This is relevant for the server, so it may happen after bundling here.
         # By having Nokogiri use system libraries, it will get automatic updates
         # of the frequently broken libxml (i.e. when the system libxml updates).
