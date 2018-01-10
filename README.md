@@ -153,6 +153,13 @@ Defined on WebUI. Takes a name and options:
     web_ui.action :custom_action, method: :post, scope: :member
     web_ui.action :other_action, method: :get, scope: :collection
     
+### Crud
+This is a shortcut for creating a model together with a WebUI with CRUD actions.
+
+    crud 'Customer' do |customer|
+      customer.attr :name
+    end
+
 
 ### Navigation
 No arguments, will generate a main menu with links to the index pages of all

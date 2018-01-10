@@ -19,7 +19,8 @@ module Katapult
 
     def transform_application_model
       say_status :parse, path
-      @app_model = Katapult::Parser.new.parse(path)
+      application_model = File.read(path)
+      @app_model = Katapult::Parser.new.parse(application_model, path)
 
       say_status :render, "into #{app_name}"
       @app_model.render

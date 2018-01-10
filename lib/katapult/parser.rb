@@ -14,18 +14,25 @@ module Katapult
       self.application_model = Katapult::ApplicationModel.new
     end
 
-    def parse(path_to_app_model_file)
-      instance_eval File.read(path_to_app_model_file), path_to_app_model_file
+    def parse(application_model_string, path_to_model = '')
+      instance_eval application_model_string, path_to_model
 
       application_model
     end
 
-    def model(name, options = {}, &block)
-      application_model.add_model Model.new(name, options, &block)
+    def model(name, &block)
+      application_model.add_model Model.new(name, &block)
     end
 
     def web_ui(name, options = {}, &block)
       application_model.add_web_ui WebUI.new(name, options, &block)
+    end
+
+    # A shortcut to create a #model together with a default #web_ui with CRUD
+    # actions
+    def crud(name, &block)
+      application_model.add_model Model.new(name, &block)
+      application_model.add_web_ui WebUI.new(name, &:crud)
     end
 
     def navigation(name = :main)
