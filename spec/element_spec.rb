@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'katapult/element'
 
 describe Katapult::Element do

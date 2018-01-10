@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'katapult/wui'
 require 'katapult/model'
 require 'katapult/application_model'
