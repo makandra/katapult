@@ -222,15 +222,13 @@ When fixing issues in the generated app, make a commit in the app first. When
 you've fixed it, the diff will show you what you need to port back to katapult.
 
 ### Typical issues
-- Timeout error because of a script waiting for user input
-- Spring running inside the test application encumbers parallel_tests and
-  following scenarios
+Be sure to check this list when you encounter strange issues during development.
+
 - Spring was running in a directory that does not exist any more. This will
   screw subsequent spring invocations. Run `ps aux | grep spring` and `kill`
-  suspective processes.
-- An outdated Rails application in `tmp/cached_test_app`
-- Executing (bash) commands in the test application without resetting the
-  katapult gem's Bundler settings. Wrap into `Bundler.with_clean_env { }`.
+  suspect processes.
+- An outdated Rails application in `tmp/cached_*`
+- Timeout error because of a script waiting for user input
 
 ### Fast tests
 Generating basics and transforming the application model take quite some time
