@@ -5,7 +5,7 @@ require 'generators/katapult/cucumber_features/cucumber_features_generator'
 
 module Katapult
   module Generators
-    class HamlGenerator < Katapult::Generator
+    class ViewsGenerator < Katapult::Generator
 
       desc 'Generate HAML views'
       source_root File.expand_path('../templates', __FILE__)

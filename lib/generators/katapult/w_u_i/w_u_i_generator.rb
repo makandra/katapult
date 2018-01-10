@@ -1,7 +1,7 @@
 # Generate a controller, routes and view files for a WUI.
 
 require 'katapult/generator'
-require 'generators/katapult/haml/haml_generator'
+require 'generators/katapult/views/views_generator'
 
 module Katapult
   module Generators
@@ -36,7 +36,7 @@ MESSAGE
       end
 
       def generate_views
-        Generators::HamlGenerator.new(wui).invoke_all
+        Generators::ViewsGenerator.new(wui).invoke_all
       end
 
       no_tasks do
