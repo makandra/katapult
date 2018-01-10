@@ -2,13 +2,14 @@
 %html{ lang: I18n.locale }
 
   %head
+    %meta(charset='utf-8')
+    %meta(http-equiv='x-ua-compatible' content='ie=edge')
+    %meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+    = csrf_meta_tags
+
     %title
       <%= app_name.titlecase %>
-
-    %meta(content='text/html; charset=UTF-8' http-equiv='Content-Type')
-    %meta(name='viewport' content='width=device-width, initial-scale=1')
-    %meta(http-equiv='X-UA-Compatible' content='IE=Edge')
-    = csrf_meta_tags
 
     = javascript_pack_tag 'application'
     = stylesheet_pack_tag 'application'
