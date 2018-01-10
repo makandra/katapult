@@ -233,8 +233,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       def install_rspec
         generate 'rspec:install'
 
-        directory 'spec/support'
-        directory 'spec/factories'
+        directory 'spec'
 
         gsub_file '.rspec', "--warnings\n", '' # Don't show Ruby warnings
         template '.rspec_parallel'
