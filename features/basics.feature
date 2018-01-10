@@ -48,6 +48,7 @@ Feature: Preparation of a new Rails app (basics generator)
     And the file ".browserslistrc" should contain "> 1%"
 
     And the application layout should be set up
+    And the errors controller should be installed
 
     # Spring
     And the file "config/spring.rb" should contain:

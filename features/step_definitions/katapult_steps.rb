@@ -312,3 +312,8 @@ ExceptionNotification.configure do |config|
     exception_recipients: %w[fail@makandra.de],
   CONTENT
 end
+
+Then 'the errors controller should be installed' do
+  step 'a file named "app/controllers/errors_controller.rb" should exist'
+  step 'the file "config/routes.rb" should contain "resources :errors, only: :new"'
+end
