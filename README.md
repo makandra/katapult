@@ -13,7 +13,7 @@ After modeling your application, which typically takes about an hour, you can
 instantly start implementing the meat of your application.
 
 `Katapult` only supports a single Ruby and Rails version, currently it's Rails
-5.1.4 and Ruby 2.4.1.
+5.1.4 and Ruby 2.5.0.
 
 
 ## Installation

@@ -4,6 +4,7 @@
 # require any gems in order to prevent version conflicts
 require_relative '../katapult/version'
 require 'bundler'
+require 'io/console'
 
 module Katapult
   module BinaryUtil
