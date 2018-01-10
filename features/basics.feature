@@ -232,6 +232,9 @@ Feature: Preparation of a new Rails app (basics generator)
 
     # Tests
     And features/support should be prepared
+    And spec/support should be prepared
+    And the file "spec/spec_helper.rb" should contain "  mocks.verify_partial_doubles = true"
+    But a file named "spec/rails_helper.rb" should not exist
 
     And the file "spec/factories/factories.rb" should contain:
     """

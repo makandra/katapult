@@ -89,7 +89,8 @@ Given 'a new Rails application with Katapult basics installed' do
             # :path will be correct when copied to the TEST_APP path
             Katapult::BinaryUtil.run %(echo "gem 'katapult', path: '../../..'" >> Gemfile)
             Katapult::BinaryUtil.run 'bin/rails generate katapult:basics --db-user katapult --db-password secret'
-            # Spring running in the cache dir is of no further use
+            # Spring running in the cache dir is of no further use, but would
+            # break things when the cache dir is removed
             Katapult::BinaryUtil.run 'spring stop'
           end
         end

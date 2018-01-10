@@ -15,7 +15,7 @@ end
 When /^I generate katapult basics$/ do
   next if @no_clobber
 
-  with_aruba_timeout 45 do
+  with_aruba_timeout 60 do
     run_simple 'rails generate katapult:basics --db-user katapult --db-password secret'
   end
 end
@@ -242,9 +242,9 @@ Then 'features/support should be prepared' do
 
   step 'a file named "features/support/paths.rb" should exist'
   step 'a file named "features/support/selectors.rb" should exist'
-  step 'the file "spec/rails_helper.rb" should match /^Dir.Rails.root.join.+spec.support/'
-  step 'the file ".rspec" should contain "--require rails_helper"'
-  step 'the file ".rspec_parallel" should contain "--require rails_helper"'
+  step 'the file "spec/spec_helper.rb" should match /^Dir.Rails.root.join.+spec.support/'
+  step 'the file ".rspec" should contain "--require spec_helper"'
+  step 'the file ".rspec_parallel" should contain "--require spec_helper"'
 
   step 'the file "features/support/selenium.rb" should contain "--mute-audio"'
   step 'the file "features/support/selenium.rb" should contain "--disable-infobars"'

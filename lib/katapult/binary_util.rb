@@ -25,7 +25,8 @@ module Katapult
         --skip-turbolinks
       ]
 
-      run "rails _#{version}_ new #{name} " + options.join(' ')
+      success = run "rails _#{version}_ new #{name} " + options.join(' ')
+      success or fail 'Failed to create Rails app'
     end
 
     def pink(*args, linefeed: true)

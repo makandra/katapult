@@ -233,13 +233,20 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       def install_rspec
         generate 'rspec:install'
 
-        gsub_file '.rspec', "--warnings\n", '' # Don't show Ruby warnings
-        gsub_file '.rspec', '--require spec_helper', '--require rails_helper'
-        template '.rspec_parallel'
-
-        uncomment_lines 'spec/rails_helper.rb', /Dir.Rails.root.join.+spec.support/
         directory 'spec/support'
         directory 'spec/factories'
+
+        gsub_file '.rspec', "--warnings\n", '' # Don't show Ruby warnings
+        template '.rspec_parallel'
+
+        merge_rails_helper_into_spec_helper
+
+        uncomment_lines 'spec/spec_helper.rb', /Dir.Rails.root.join.+spec.support/
+        gsub_file 'spec/spec_helper.rb',
+          /^  config\.use_transactional_fixtures = true/, <<-CONTENT
+  # RSpec's transaction logic needs to be disabled for DatabaseCleaner to work
+  config.use_transactional_fixtures = false
+        CONTENT
       end
 
       def install_capistrano
@@ -284,6 +291,16 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       # Bundler prefers installed gems, but we want the newest versions possible
       def update_gems
         run 'bundle install'
+      end
+
+      private
+
+      def merge_rails_helper_into_spec_helper
+        spec_helper = File.read 'spec/spec_helper.rb'
+        spec_helper.gsub! /.*^RSpec\.configure.+?$/m, '' # Remove introduction
+        gsub_file 'spec/rails_helper.rb', /end\n\z/, spec_helper
+
+        FileUtils.mv 'spec/rails_helper.rb', 'spec/spec_helper.rb', force: true
       end
 
     end
