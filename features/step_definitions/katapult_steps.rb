@@ -275,6 +275,7 @@ end
 Then 'spec/support should be prepared' do
   step 'a file named "spec/support/postgresql_sequences.rb" should exist'
   step 'the file "spec/support/fixture_file.rb" should contain "def fixture_file"'
+  step 'the file "spec/support/database_cleaner.rb" should contain "DatabaseCleaner.clean_with"'
 
   step 'the file "spec/support/shoulda_matchers.rb" should contain:', <<-CONTENT
 require 'shoulda/matchers'
