@@ -16,6 +16,16 @@ instantly start implementing the meat of your application.
 5.1.4 and Ruby 2.5.0.
 
 
+## Prerequisites
+
+Katapult uses *PostgreSQL* as database, so you'll need to install that upfront.
+Also, it drops the asset pipeline in favor of *Webpacker*, so you'll need Node
+and Yarn (see <https://makandracards.com/makandra/47477>).
+
+Also, it requires the *Bundler* and *Rake* Ruby gems, which are probably already
+installed on your system.
+
+
 ## Installation
 
 Install the `katapult` gem with
