@@ -60,7 +60,7 @@ Feature: Katapult binary `katapult`
 
     When I run `git log`
     Then the output should contain "rails new binary_test"
-      And the output should contain "rails generate katapult:install"
+      And the output should contain "rails generate katapult:app_model"
       And the output should contain "rails generate katapult:basics"
       And the output should contain "Author: katapult <katapult@makandra.com>"
 

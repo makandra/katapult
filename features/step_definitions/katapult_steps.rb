@@ -8,7 +8,7 @@ end
 When 'I generate the application model' do
   next if @no_clobber
   with_aruba_timeout 10 do
-    run_simple 'rails generate katapult:install'
+    run_simple 'rails generate katapult:app_model'
   end
 end
 

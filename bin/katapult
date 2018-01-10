@@ -63,8 +63,8 @@ when 'new'
     file.puts "gem 'katapult'#{ ENV['KATAPULT_GEMFILE_OPTIONS'] }, group: :development"
   end
   util.run 'bundle install --quiet'
-  util.run 'bundle exec rails generate katapult:install'
-  util.git_commit 'rails generate katapult:install', '--quiet'
+  util.run 'bundle exec rails generate katapult:app_model'
+  util.git_commit 'rails generate katapult:app_model', '--quiet'
 
   util.pink 'Generating katapult basics ...'
   util.run basics_command
