@@ -9,7 +9,6 @@ gem 'webpacker'
 # Internals and security
 gem 'exception_notification'
 # gem 'admin_cleaner', git: 'git@code.makandra.de:makandra/admin_cleaner.git'
-# gem 'breach-mitigation-rails' # broken
 
 # Models
 gem 'active_type'
