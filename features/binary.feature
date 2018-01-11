@@ -12,7 +12,6 @@ Feature: Katapult binary `katapult`
       And I type "test_app"
       And I type "katapult"
       And I type "secret"
-      And I type the current Ruby version
     Then the output should contain "Creating new Rails application"
 
     # Aruba seemingly cannot test output interleaved with input, so the output
@@ -21,7 +20,6 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Please enter the database user"
     Then the output should contain "Please enter the application name"
     Then the output should contain "Please enter the database password"
-    Then the output should contain "Please enter the Ruby version for the new project"
 
 
   Scenario: App name gets normalized
@@ -34,7 +32,7 @@ Feature: Katapult binary `katapult`
     # Rails new including yarn install + installing basics takes quite some time
     Given the aruba exit timeout is 90 seconds
 
-    When I successfully run `katapult new binary_test -u katapult -p secret -r 2.4.1`
+    When I successfully run `katapult new binary_test -u katapult -p secret`
     Then the output should contain "Creating new Rails application"
       And the output should contain "Installing katapult"
       And the output should contain "Generating katapult basics"
@@ -53,7 +51,6 @@ Feature: Katapult binary `katapult`
 
       And the file "config/database.yml" should contain "username: katapult"
       And the file "config/database.yml" should contain "password: secret"
-      And the file ".ruby-version" should contain "2.4.1"
 
     When I run `bundle check`
     Then the output should contain "The Gemfile's dependencies are satisfied"

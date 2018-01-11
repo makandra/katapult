@@ -5,11 +5,11 @@
 
 usage = 'Usage: katapult [new APP_NAME | fire [path/to/model] ]'
 
+require_relative '../lib/katapult/version'
 require_relative '../lib/katapult/binary_util'
 util = Katapult::BinaryUtil
 
 require 'optparse'
-
 options = {}
 OptionParser.new do |opts|
   opts.on '-u', '--db-user USER', 'Database user name' do |name|
@@ -18,13 +18,23 @@ OptionParser.new do |opts|
   opts.on '-p', '--db-password PASS', 'Database password' do |password|
     options[:dbpass] = password
   end
-  opts.on '-r', '--ruby-version VERSION', 'Ruby version' do |version|
-    options[:rubyversion] = version
-  end
   opts.on '-v', '--verbose', 'Verbose output' do |verbose|
     options[:verbose] = verbose
   end
 end.parse!
+
+# Check Ruby version ###########################################################
+supported_ruby = Katapult::RUBY_VERSION
+current_ruby = `ruby -v`.chomp # Long version string à la "ruby 2.5.0p0 ..."
+
+current_ruby.include?(supported_ruby) or util.fail <<-MSG
+Ruby version error
+
+Your current Ruby (#{current_ruby})
+is not supported by this version of katapult.
+Please switch to Ruby #{supported_ruby} and run again.
+MSG
+
 
 case ARGV.shift
 when 'new'
@@ -35,11 +45,6 @@ when 'new'
   # Any options that haven't be passed via command line should be asked for
   options[:dbuser] ||= util.ask 'Please enter the database user:'
   options[:dbpass] ||= util.ask 'Please enter the database password:'
-  options[:rubyversion] ||= begin
-    ruby_version = `ruby -v`.chomp
-    puts '', "Current Ruby version is: #{ruby_version}"
-    util.ask 'Please enter the Ruby version for the new project:'
-  end
 
   basics_command = 'bundle exec rails generate katapult:basics'
   basics_command << ' --db-user ' << options[:dbuser]
