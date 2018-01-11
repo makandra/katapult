@@ -1,6 +1,7 @@
 # Generates model-independent application basics (see method names).
 
 require 'katapult/generator_goodies'
+require 'katapult/version' # For writing .ruby-version
 
 module Katapult
   module Generators
@@ -25,6 +26,9 @@ module Katapult
       class_option :db_password, type: :string, default: '',
         description: 'The password to set in config/database.yml'
 
+      def write_ruby_version
+        template '.ruby-version'
+      end
 
       def add_gitignore
         template '.gitignore', force: true

@@ -3,7 +3,7 @@
 # This script simplifies the usage of `katapult` by grouping relevant actions
 # that the user else had to perform manually.
 
-usage = 'Usage: katapult [new APP_NAME | fire [path/to/model] ]'
+usage = 'Usage: katapult new APP_NAME | fire [path/to/model] | version'
 
 require_relative '../lib/katapult/version'
 require_relative '../lib/katapult/binary_util'
@@ -54,11 +54,6 @@ when 'new'
   util.create_rails_app app_name
   Dir.chdir app_name
 
-  util.pink 'Writing .ruby-version ...'
-  File.open('.ruby-version', 'w') do |file|
-    file.puts options[:rubyversion]
-  end
-
   util.pink 'Initializing git repository ...'
   util.run 'git init --quiet'
   util.git_commit "rails new #{ app_name }", '--quiet'
@@ -99,6 +94,12 @@ Model transformation done.
 Now boot up your development server (e.g. with `rails server`) and try your
 kickstarted application in the browser!
   INSTRUCTIONS
+
+when 'version'
+  puts <<-VERSION
+Katapult #{Katapult::VERSION}
+Generating a Rails #{Katapult::RAILS_VERSION} app on Ruby #{Katapult::RUBY_VERSION}.
+  VERSION
 
 else
   puts usage

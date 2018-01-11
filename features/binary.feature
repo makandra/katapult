@@ -4,7 +4,14 @@ Feature: Katapult binary `katapult`
 
   Scenario: Run without arguments
     When I run `katapult`
-    Then the output should contain "Usage: katapult [new APP_NAME | fire [path/to/model] ]"
+    Then the output should contain "Usage: katapult new APP_NAME | fire [path/to/model] | version"
+
+
+  Scenario: Print versions
+    When I run `katapult version`
+    Then the output should contain "Katapult"
+      And the output should contain "Generating a Rails 5."
+      And the output should contain " app on Ruby 2."
 
 
   Scenario: Missing options are asked for
