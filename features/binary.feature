@@ -44,13 +44,11 @@ Feature: Katapult binary `katapult`
       And the output should contain "Installing katapult"
       And the output should contain "Generating katapult basics"
       And the output should contain the configured Rails version
-      And the output should contain:
-    """
-    Application initialization done.
 
-    Next step: Model your application in lib/katapult/application_model.rb and
-    transform it into code by running `katapult fire`.
-    """
+      And the output should contain "Application initialization done."
+      And the output should contain "Model your application in lib/katapult/application_model.rb"
+      And the output should contain "Configure public/robots.txt"
+      And the output should contain "Write a README"
 
     When I cd to "binary_test"
     Then the file "Gemfile" should contain "gem 'katapult'"

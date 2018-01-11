@@ -26,16 +26,11 @@ module Katapult
       class_option :db_password, type: :string, default: '',
         description: 'The password to set in config/database.yml'
 
-      def write_ruby_version
+      def add_basic_files
         template '.ruby-version'
-      end
-
-      def add_gitignore
         template '.gitignore', force: true
-      end
-
-      def add_robots_txt
         template 'public/robots.txt', force: true
+        template 'README.md', force: true
       end
 
       # Gems ###################################################################

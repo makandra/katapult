@@ -10,6 +10,7 @@ Feature: Preparation of a new Rails app (basics generator)
     Then the ruby-version file should be up-to-date
 
     And the file ".gitignore" should contain "config/database.yml"
+    And the file "README.md" should contain "# Katapult Test App"
     And the file ".bundle/config" should match /NOKOGIRI.*--use-system-libraries/
     And the file "Guardfile" should contain:
       """

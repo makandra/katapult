@@ -74,8 +74,12 @@ when 'new'
   util.pink <<-INSTRUCTIONS
 Application initialization done.
 
-Next step: Model your application in lib/katapult/application_model.rb and
-transform it into code by running `katapult fire`.
+Next steps:
+
+- Model your application in lib/katapult/application_model.rb and transform it
+  into code by running `katapult fire`
+- Configure public/robots.txt
+- Write a README
   INSTRUCTIONS
 
 when 'fire'
