@@ -52,12 +52,8 @@ module Katapult
     end
 
 
-    def get_model(name)
-      models.find { |m| m.name == name }
-    end
-
     def get_model!(name)
-      get_model(name) or raise NotFound,
+      models.find { |m| m.name == name } or raise NotFound,
         "Could not find a model named #{ name }"
     end
 
