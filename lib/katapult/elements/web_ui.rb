@@ -41,8 +41,7 @@ module Katapult
 
     def model
       model_name = @model || self.name
-      application_model.get_model(model_name) or raise UnknownModelError,
-        "Cannot find a model named #{model_name}"
+      application_model.get_model! model_name
     end
 
     def params

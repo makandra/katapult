@@ -3,7 +3,7 @@ require 'generators/katapult/clearance/clearance_generator'
 module Katapult
   class Authentication < Element
 
-    # attr name: The user model name
+    # @attr name: The user model name
     attr_accessor :system_email
 
     def ensure_user_model_attributes_present

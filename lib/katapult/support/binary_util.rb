@@ -2,7 +2,8 @@
 
 # This module is used inside the `katapult` binary and thus should not
 # require any gems in order to prevent version conflicts
-require_relative '../katapult/version'
+
+require_relative '../../katapult/version'
 require 'bundler'
 require 'io/console'
 

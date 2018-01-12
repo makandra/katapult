@@ -10,8 +10,7 @@ module Katapult
     UnknownOptionError = Class.new(StandardError)
     UnknownFormattingError = Class.new(StandardError)
 
-    attr_accessor :name, :options
-    attr_reader :application_model
+    attr_accessor :name, :options, :application_model
 
     # Improve semantics in element classes
     class << self
@@ -26,10 +25,6 @@ module Katapult
       set_attributes(options)
 
       yield(self) if block_given?
-    end
-
-    def set_application_model(app_model)
-      @application_model = app_model
     end
 
     def name(kind = nil)

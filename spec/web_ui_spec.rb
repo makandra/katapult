@@ -37,41 +37,30 @@ describe Katapult::WebUI do
 
   describe '#model' do
     it 'returns the model object' do
-      subject = described_class.new('Customer', model: 'User')
-      model = Katapult::Model.new('User')
+      application_model.model 'User'
 
-      application_model.add_web_ui(subject)
-      application_model.add_model(model)
+      subject = described_class.new('Customer',
+        model: 'User',
+        application_model: application_model,
+      )
 
-      expect(subject.model).to eql(model)
+      expect(subject.model).to be application_model.models.first
     end
 
     it 'detects the model from its own name, if not stated explicitly' do
-      subject = described_class.new('Customer')
-      model = Katapult::Model.new('Customer')
+      application_model.model 'Customer'
+      subject = described_class.new('Customer', application_model: application_model)
 
-      application_model.add_web_ui(subject)
-      application_model.add_model(model)
-
-      expect(subject.model).to eql(model)
-    end
-
-    it 'raises an error if it cannot find the model' do
-      subject = described_class.new('MissingModel')
-      application_model.add_web_ui(subject)
-
-      expect{ subject.model }.to raise_error(Katapult::WebUI::UnknownModelError)
+      expect(subject.model).to be application_model.models.first
     end
   end
 
   describe '#render' do
     it 'raises an error when its model does not have a label attribute' do
-      subject = described_class.new('user')
-      model = Katapult::Model.new('user')
+      application_model.model 'user'
+      application_model.web_ui 'user'
 
-      application_model.add_web_ui(subject)
-      application_model.add_model(model)
-
+      subject = application_model.get_web_ui('user')
       expect{ subject.render }.to raise_error Katapult::WebUI::MissingLabelAttrError,
         'Cannot render a WebUI without a model with a label attribute'
     end

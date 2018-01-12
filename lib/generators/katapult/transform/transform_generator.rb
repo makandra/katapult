@@ -1,11 +1,8 @@
 # Generate files and directories from an application model file. Afterwards do
 # any setup left necessary (e.g. updating the database).
 
-# The application model transformation is split into two parts:
-# 1) parse the model into an object-based representation
-# 2) render the parsed model into code
-
-require 'katapult/parser'
+# A normal #require would load the application model from the generated app
+require_relative '../../../katapult/application_model'
 require 'katapult/support/generator_goodies'
 
 module Katapult
@@ -20,7 +17,7 @@ module Katapult
     def transform_application_model
       say_status :parse, path
       application_model = File.read(path)
-      @app_model = Katapult::Parser.new.parse(application_model, path)
+      @app_model = Katapult::ApplicationModel.parse(application_model, path)
 
       say_status :render, "into #{app_name}"
       @app_model.render
