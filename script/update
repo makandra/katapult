@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/katapult/version'
-require_relative '../lib/katapult/binary_util'
+require_relative '../lib/katapult/support/binary_util'
 
 u = Katapult::BinaryUtil
 version_path = 'lib/katapult/version.rb'

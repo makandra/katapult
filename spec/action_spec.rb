@@ -1,4 +1,4 @@
-require 'katapult/action'
+require 'katapult/elements/action'
 
 describe Katapult::Action do
 

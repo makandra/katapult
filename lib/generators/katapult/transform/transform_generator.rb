@@ -6,7 +6,7 @@
 # 2) render the parsed model into code
 
 require 'katapult/parser'
-require 'katapult/generator_goodies'
+require 'katapult/support/generator_goodies'
 
 module Katapult
   class TransformGenerator < Rails::Generators::Base

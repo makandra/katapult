@@ -4,7 +4,7 @@
 # Run `script/console` from the gem root to start an IRB with the gem loaded.
 
 # Remember to require classes before using them,
-# i.e. `require 'katapult/model'` before `Katapult::Model.new :example_name`
+# i.e. `require 'katapult/elements/model'` before using `Katapult::Model`
 
 require 'bundler/setup'
 

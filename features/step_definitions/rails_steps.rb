@@ -1,4 +1,4 @@
-require 'katapult/binary_util'
+require 'katapult/support/binary_util'
 
 module RailsHelper
 

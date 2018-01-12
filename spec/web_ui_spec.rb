@@ -1,5 +1,5 @@
-require 'katapult/web_ui'
-require 'katapult/model'
+require 'katapult/elements/web_ui'
+require 'katapult/elements/model'
 require 'katapult/application_model'
 
 describe Katapult::WebUI do

@@ -1,6 +1,6 @@
 # Generates model-independent application basics (see method names).
 
-require 'katapult/generator_goodies'
+require 'katapult/support/generator_goodies'
 require 'katapult/version' # For writing .ruby-version
 
 module Katapult

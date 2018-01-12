@@ -1,4 +1,4 @@
-require 'katapult/attribute'
+require 'katapult/elements/attribute'
 
 describe Katapult::Attribute do
 

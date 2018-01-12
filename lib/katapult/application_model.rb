@@ -1,4 +1,4 @@
-# Internal representation of an application model file.
+# Root of the internal representation of an application model file
 
 module Katapult
   class ApplicationModel

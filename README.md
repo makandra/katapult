@@ -204,6 +204,28 @@ Create a dedicated account on your local PostgreSQL server:
 Whenever you start working on `katapult`, you should run `script/update`, which
 will guide you through a quick update process.
 
+### Architecture
+`katapult` is roughly split into three parts: the `katapult` binary in bin/,
+the model in lib/katapult/ and the generators in lib/generators. Also, there
+is a script/ directory that holds some scripts to ease development. It is not
+part of the `katapult` gem, however.
+
+The generators of `katapult` base on the `rails/generators` you probably know
+from generating migration files or scaffolds; however, it lifts their usage on a
+new level by invoking generators programmatically with a "model object". Instead
+of plain text input, the `katapult` generators can explore the whole application
+model. They are all to be run from within a Rails application.
+
+There are three base generators that can be considered the next-lower level API
+of `katapult`:
+
+- `basics` generator: Enhances a pristine Rails app with all of the basic
+  configuration `katapult` brings.
+- `app_model` generator: Installs a boilerplate application model that serves as
+  a starting point for modeling your own application.
+- `transform` generator: Parses the application model into an internal
+  representation, which will be turned into code by all the other generators.
+
 ### Suggested workflow
 When adding a feature to `katapult`, it will usually take you some time to
 figure out how exactly the generated code should look like. You'll be switching

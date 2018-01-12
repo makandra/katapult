@@ -1,11 +1,11 @@
 # This class reads an application model file and turns it into an
-# ApplicationModel instance.
+# ApplicationModel instance
 
 require_relative 'application_model'
-require 'katapult/model'
-require 'katapult/web_ui'
-require 'katapult/navigation'
-require 'katapult/authentication'
+require 'katapult/elements/model'
+require 'katapult/elements/web_ui'
+require 'katapult/elements/navigation'
+require 'katapult/elements/authentication'
 
 module Katapult
   class Parser

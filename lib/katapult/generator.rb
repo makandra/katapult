@@ -1,7 +1,7 @@
-# The katapult generator base class, slightly adapted from Rails generators.
+# The base class for katapult element generators
 
 require 'rails/generators'
-require 'katapult/generator_goodies'
+require 'katapult/support/generator_goodies'
 
 module Katapult
   class Generator < Rails::Generators::NamedBase

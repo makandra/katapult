@@ -2,7 +2,7 @@
 # class for the Attribute element.
 
 require 'katapult/element'
-require 'katapult/action'
+require 'katapult/elements/action'
 require 'generators/katapult/web_ui/web_ui_generator'
 
 module Katapult

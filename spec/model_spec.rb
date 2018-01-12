@@ -1,5 +1,5 @@
-require 'katapult/model'
-require 'katapult/attribute'
+require 'katapult/elements/model'
+require 'katapult/elements/attribute'
 
 describe Katapult::Model do
 

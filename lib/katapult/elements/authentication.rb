@@ -3,14 +3,11 @@ require 'generators/katapult/clearance/clearance_generator'
 module Katapult
   class Authentication < Element
 
-    MissingUserModel = Class.new(StandardError)
-
     # attr name: The user model name
     attr_accessor :system_email
 
     def ensure_user_model_attributes_present
-      user_model = application_model.get_model(name) or raise MissingUserModel,
-        "Could not find a model named #{ name }"
+      user_model = application_model.get_model!(name)
       user_attrs = user_model.attrs.map(&:name)
 
       user_model.attr(:email) unless user_attrs.include?('email')

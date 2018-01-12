@@ -6,7 +6,7 @@
 usage = 'Usage: katapult new APP_NAME | fire [path/to/model] | version'
 
 require_relative '../lib/katapult/version'
-require_relative '../lib/katapult/binary_util'
+require_relative '../lib/katapult/support/binary_util'
 util = Katapult::BinaryUtil
 
 require 'optparse'
