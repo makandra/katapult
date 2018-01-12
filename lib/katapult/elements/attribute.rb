@@ -9,10 +9,12 @@ module Katapult
   class Attribute < Element
 
     options :type, :default, :assignable_values, :allow_blank, :skip_db
+    attr_accessor :model, :associated_model
 
     UnknownTypeError = Class.new(StandardError)
     MissingOptionError = Class.new(StandardError)
-    TYPES = %i(string email password url integer money text flag datetime json plain_json)
+    TYPES = %i[string email password url integer money text flag datetime json
+      plain_json foreign_key]
 
     def initialize(*args)
       super
@@ -21,13 +23,13 @@ module Katapult
       self.type ||= :password if name.to_s =~ /password/
       self.type ||= :string
 
-      validate
+      validate!
     end
 
     delegate :flag?, to: :type_inquiry
 
     def has_defaults?
-      default and not [flag?, assignable_values].any?
+      !default.nil? and not [flag?, assignable_values].any?
     end
 
     def for_migration
@@ -37,13 +39,16 @@ module Katapult
       when :money then 'decimal{10,2}' # {precision,scale} = total digits, decimal places
       when :json then 'jsonb' # Indexable JSON
       when :plain_json then 'json' # Only use this if you need to
+      when :foreign_key then 'integer'
       else type end
 
       "#{name}:#{db_type}"
     end
 
     def test_value
-      if assignable_values
+      if type == :foreign_key
+        associated_model.label_attr.test_value
+      elsif assignable_values
         assignable_values.first
 
       else
@@ -62,13 +67,17 @@ module Katapult
       end
     end
 
+    def assignable_values_as_list?
+      assignable_values.try(:to_a).present?
+    end
+
     private
 
     def type_inquiry
       @type.to_s.inquiry
     end
 
-    def validate
+    def validate!
       TYPES.include?(type) or raise UnknownTypeError,
         "Attribute type :#{type} is not supported. Use one of #{TYPES.inspect}."
 

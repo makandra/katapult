@@ -19,7 +19,7 @@ module Katapult
       no_tasks do
         def specable_attrs
           model.attrs.select do |attr|
-            attr.assignable_values.present? or attr.default != nil
+            attr.assignable_values_as_list? or !attr.default.nil?
           end
         end
 

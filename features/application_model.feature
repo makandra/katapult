@@ -1,5 +1,5 @@
 #@announce-output
-Feature: The application model prepared by Katapult
+Feature: The default application model prepared by Katapult
 
   Scenario: Generating the application model template
     Given a new Rails application with Katapult basics installed
@@ -19,6 +19,9 @@ Feature: The application model prepared by Katapult
       product.attr :mode, assignable_values: %w[public private]
       product.attr :provider, type: :url
       product.attr :import_data, type: :json
+
+      # Reference other models just like you called them
+      product.belongs_to 'user'
     end
 
     # Define a model

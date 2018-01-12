@@ -14,7 +14,6 @@ module Katapult
     RAILS_ACTIONS = %w[ index show new create edit update destroy ]
     UnknownActionError = Class.new(StandardError)
     UnknownModelError = Class.new(StandardError)
-    MissingLabelAttrError = Class.new(StandardError)
 
     def initialize(*args)
       self.actions = []
@@ -80,15 +79,7 @@ module Katapult
     end
 
     def render
-      validate!
       Generators::WebUIGenerator.new(self).invoke_all
-    end
-
-    private
-
-    def validate!
-      model.label_attr.present? or raise MissingLabelAttrError,
-        'Cannot render a WebUI without a model with a label attribute'
     end
 
   end

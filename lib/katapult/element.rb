@@ -12,7 +12,7 @@ module Katapult
 
     attr_accessor :name, :options, :application_model
 
-    # Improve semantics in element classes
+    # Use #options for DSL/API, attr_accessor for internal attributes
     class << self
       alias_method :options, :attr_accessor
     end

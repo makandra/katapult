@@ -4,36 +4,39 @@
 <% web_ui.model.editable_attrs.each do |attribute| -%>
   .form-group
     = form.label <%= attribute.name(:symbol) %>
-  <%- if attribute.assignable_values -%>
+<% if attribute.type == :foreign_key -%>
+    = form.collection_select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables).sub(/_ids$/, 's') %>,
+      :id, <%= attribute.associated_model.label_attr.name(:symbol) %>, { include_blank: true }, class: 'form-control'
+<% elsif attribute.assignable_values -%>
     = form.select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables) %>
-  <%- else -%>
-    <%- case attribute.type -%>
-    <%- when :string -%>
+<% else -%>
+  <%- case attribute.type -%>
+  <%- when :string -%>
     = form.text_field <%= attribute.name(:symbol) %>, class: 'form-control'
-    <%- when :email -%>
+  <%- when :email -%>
     = form.email_field <%= attribute.name(:symbol) %>, class: 'form-control'
-    <%- when :password -%>
+  <%- when :password -%>
     = form.password_field <%= attribute.name(:symbol) %>, class: 'form-control',
       autocomplete: 'new-password'
-    <%- when :url -%>
+  <%- when :url -%>
     = form.url_field <%= attribute.name(:symbol) %>, class: 'form-control'
-    <%- when :integer -%>
+  <%- when :integer -%>
     = form.number_field <%= attribute.name(:symbol) %>, class: 'form-control'
-    <%- when :money -%>
+  <%- when :money -%>
     .input-group
       = form.number_field <%= attribute.name(:symbol) %>, class: 'form-control'
       .input-group-addon
         €
-    <%- when :text -%>
+  <%- when :text -%>
     = form.text_area <%= attribute.name(:symbol) %>, rows: 5, class: 'form-control'
-    <%- when :flag -%>
+  <%- when :flag -%>
     .checkbox
       = form.label <%= attribute.name(:symbol) %> do
         = form.check_box <%= attribute.name(:symbol) %>
-    <%- when :datetime -%>
+  <%- when :datetime -%>
     = form.date_field <%= attribute.name(:symbol) %>, class: 'form-control'
-    <%- end -%>
   <%- end -%>
+<% end -%>
 <% end -%>
 
   .action-bar

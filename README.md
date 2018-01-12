@@ -136,6 +136,18 @@ Defined on Model. Takes a name and options:
     model.attr :avoid, type: :plain_json # PostgreSQL "json"
 
 
+### Association
+Defined on Model; takes the name of another model just like you called it in the
+model. Adds a foreign key attribute to the model and `belongs_to`/`has_many`
+calls to the respective models.
+
+    model 'Customer' do |customer|
+      customer.belongs_to 'Group'
+    end
+
+    model 'Group'
+
+
 ### WebUI
 Takes a name, options and a block:
 

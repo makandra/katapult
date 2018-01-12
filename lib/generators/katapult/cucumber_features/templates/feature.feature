@@ -2,6 +2,9 @@ Feature: <%= model.name(:humans).titleize %>
 
   Scenario: CRUD <%= model.name(:humans) %>
     Given I am on the list of <%= model.name(:variables) %>
+<% belongs_tos.each do |model| -%>
+      And there is a <%= model.name(:human) %> with the <%= model.label_attr.name(:human) %> "<%= model.label_attr.test_value %>"
+<% end -%>
 
     # create
     When I follow "Add <%= model.name(:human) %>"
@@ -25,7 +28,7 @@ Feature: <%= model.name(:humans).titleize %>
     Then I should be on the page for the <%= model.name(:variable) %> above
 <% model.attrs.each do |attr| -%>
   <%- case attr.type -%>
-    <%- when :string, :email, :url, :integer, :money, :text -%>
+    <%- when :string, :email, :url, :integer, :money, :text, :foreign_key -%>
       And I should see "<%= attr.test_value %>"
   <%- when :flag -%>
       And I should see "<%= attr.name.humanize %> Yes"
@@ -52,7 +55,6 @@ Feature: <%= model.name(:humans).titleize %>
   <%- end -%>
 <% end -%>
 
-<% if model.label_attr -%>
     # destroy
     When I go to the list of <%= model.name(:variables) %>
     Then I should see "<%= model.label_attr.test_value %>"
@@ -60,4 +62,3 @@ Feature: <%= model.name(:humans).titleize %>
     When I follow "Destroy <%= model.label_attr.test_value %>"
     Then I should be on the list of <%= model.name(:variables) %>
     But I should not see "<%= model.label_attr.test_value %>"
-<% end -%>

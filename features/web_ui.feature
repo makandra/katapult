@@ -9,7 +9,7 @@ Feature: Web User Interface
   Scenario: Generate a Web User Interface
     When I write to "lib/katapult/application_model.rb" with:
       """
-      model 'customer' do |customer|
+      crud 'customer' do |customer|
         customer.attr :name
         customer.attr :age, type: :integer
 
@@ -22,11 +22,11 @@ Feature: Web User Interface
         customer.attr :first_visit, type: :datetime
         customer.attr :indexable_data, type: :json
         customer.attr :plain_data, type: :plain_json
+
+        customer.belongs_to 'project'
       end
 
-      web_ui 'customer', model: 'customer' do |web_ui|
-        web_ui.crud
-      end
+      model('project') { |p| p.attr :title }
       """
     And I successfully transform the application model including migrations
     Then the file "app/controllers/customers_controller.rb" should contain exactly:
@@ -107,6 +107,7 @@ Feature: Web User Interface
             :first_visit,
             :indexable_data,
             :plain_data,
+            :project_id,
           )
         end
 
@@ -195,6 +196,10 @@ Feature: Web User Interface
           = Customer.human_attribute_name(:first_visit)
         %dd
           = l(@customer.first_visit.to_date) if @customer.first_visit
+        %dt
+          = Customer.human_attribute_name(:project_id)
+        %dd
+          = @customer.project
 
       """
     And the file "app/views/customers/new.html.haml" should contain exactly:
@@ -250,6 +255,10 @@ Feature: Web User Interface
         .form-group
           = form.label :first_visit
           = form.date_field :first_visit, class: 'form-control'
+        .form-group
+          = form.label :project_id
+          = form.collection_select :project_id, form.object.assignable_projects,
+            :id, :title, { include_blank: true }, class: 'form-control'
 
         .action-bar
           - cancel_path = @customer.new_record? ? customers_path : customer_path(@customer)
@@ -272,6 +281,7 @@ Feature: Web User Interface
 
         Scenario: CRUD customers
           Given I am on the list of customers
+            And there is a project with the title "title-string"
 
           # create
           When I follow "Add customer"
@@ -284,6 +294,7 @@ Feature: Web User Interface
             And I check "Locked"
             And I fill in "Notes" with "notes-text"
             And I fill in "First visit" with "2022-03-25"
+            And I select "title-string" from "Project"
             And I press "Save"
 
           # read
@@ -296,6 +307,7 @@ Feature: Web User Interface
             And I should see "Locked Yes"
             And I should see "notes-text"
             And I should see "2022-03-25"
+            And I should see "title-string"
 
           # update
           When I follow "Edit"
@@ -308,6 +320,7 @@ Feature: Web User Interface
             And the "Locked" checkbox should be checked
             And the "Notes" field should contain "notes-text"
             And the "First visit" field should contain "2022-03-25"
+            And "title-string" should be selected for "Project"
 
           # destroy
           When I go to the list of customers
@@ -318,7 +331,6 @@ Feature: Web User Interface
           But I should not see "name-string"
 
       """
-
     When I run cucumber
     Then the features should pass
 

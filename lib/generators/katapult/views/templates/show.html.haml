@@ -35,5 +35,7 @@
     = <%= model_attribute %> ? 'Yes' : 'No'
   <%- when :datetime -%>
     = l(<%= model_attribute %>.to_date) if <%= model_attribute %>
+  <%- when :foreign_key -%>
+    = <%= model_attribute.sub /_id$/, '' %>
   <%- end -%>
 <%- end -%>

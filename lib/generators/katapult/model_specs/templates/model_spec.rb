@@ -1,7 +1,7 @@
 describe <%= model.name :class %> do
 
   describe '#to_s' do
-  <%- if model.label_attr -%>
+  <%- if model.label_attr? -%>
     it 'returns the #<%= model.label_attr.name %> attribute' do
       subject.<%= model.label_attr.name %> = <%= model.label_attr.test_value.inspect %>
       expect(subject.to_s).to eq(<%= model.label_attr.test_value.to_s.inspect %>)

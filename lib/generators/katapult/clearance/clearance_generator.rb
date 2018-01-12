@@ -122,8 +122,12 @@ resources :users do
       end
 
       def add_user_factory
-        inject_into_file 'spec/factories/factories.rb', <<-'CONTENT', after: 'FactoryBot.define do'
+        factories_file = 'spec/factories/factories.rb'
 
+        # Remove empty factory, if it exists
+        gsub_file factories_file, "  factory :user\n\n", ''
+
+        inject_into_file factories_file, <<-'CONTENT', before: /end\n\z/
   factory :user do
     sequence(:email) { |i| "user-#{ i }@example.com" }
     password 'password'

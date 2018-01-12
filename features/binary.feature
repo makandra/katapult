@@ -67,7 +67,7 @@ Feature: Katapult binary `katapult`
       And the output should contain "Author: katapult <katapult@makandra.com>"
 
 
-  Scenario: Transform the application model
+  Scenario: Transform the default application model
     Given a new Rails application with Katapult basics installed
       And the default aruba exit timeout is 45 seconds
 

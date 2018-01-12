@@ -1,5 +1,4 @@
 require 'katapult/elements/model'
-require 'katapult/elements/attribute'
 
 describe Katapult::Model do
 
@@ -12,6 +11,10 @@ describe Katapult::Model do
       subject.attr 'third_attr'
 
       expect(subject.label_attr.name).to eql('second_attr')
+    end
+
+    it 'raises an error when someone needs/wants/expect a label attribute but there is none' do
+      expect{ subject.label_attr }.to raise_error Katapult::Model::MissingLabelAttributeError
     end
   end
 

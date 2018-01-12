@@ -30,11 +30,26 @@ module Katapult
         template 'app/models/shared/does_flag.rb' if flag_attrs.any?
       end
 
+      def write_factory
+        insert_into_file 'spec/factories/factories.rb', <<-FACTORY, before: /end\n\z/
+  factory #{ model.name(:symbol) }
+
+        FACTORY
+      end
+
       def generate_unit_tests
         Generators::ModelSpecsGenerator.new(model).invoke_all
       end
 
       no_commands do
+        def belongs_tos
+          model.application_model.get_belongs_tos_for model.name
+        end
+
+        def has_manys
+          model.application_model.get_has_manys_for model.name
+        end
+
         def flag_attrs
           model.attrs.select(&:flag?)
         end

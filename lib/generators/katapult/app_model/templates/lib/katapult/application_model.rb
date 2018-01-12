@@ -13,6 +13,9 @@ crud 'product' do |product|
   product.attr :mode, assignable_values: %w[public private]
   product.attr :provider, type: :url
   product.attr :import_data, type: :json
+
+  # Reference other models just like you called them
+  product.belongs_to 'user'
 end
 
 # Define a model

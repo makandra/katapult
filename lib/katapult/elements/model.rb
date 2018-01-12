@@ -8,6 +8,7 @@ module Katapult
   class Model < Element
 
     UnknownAttributeError = Class.new(StandardError)
+    MissingLabelAttributeError = Class.new(StandardError)
 
     attr_accessor :attrs, :belongs_tos, :has_manys
 
@@ -22,18 +23,24 @@ module Katapult
 
     # DSL
     def attr(attr_name, options = {})
+      options[:model] = self
       attrs << Attribute.new(attr_name, options)
     end
 
     # DSL
     def belongs_to(model_name)
-
-      # TODO create Association instead
-      _belongs_tos << model_name.to_s
+      application_model.association name, belongs_to: model_name
     end
 
+
     def label_attr
-      renderable_attrs.first
+      renderable_attrs.first.presence or raise MissingLabelAttributeError
+    end
+
+    def label_attr?
+      label_attr.present?
+    rescue MissingLabelAttributeError
+      false
     end
 
     def db_fields
@@ -48,13 +55,12 @@ module Katapult
       attrs.reject { |a| %w[plain_json json].include? a.type.to_s }
     end
 
-    # TODO obsolete
-    def resolve_associations
-      _belongs_tos.each do |model_name|
-        model = application_model.get_model!(model_name)
-
-        belongs_tos << model
-        model.has_manys << self
+    def add_foreign_key_attrs(belongs_tos)
+      belongs_tos.each do |other_model|
+        attr "#{ other_model.name :variable }_id", type: :foreign_key,
+          assignable_values: "#{ other_model.name(:class) }.all.to_a",
+          allow_blank: true,
+          associated_model: other_model
       end
     end
 

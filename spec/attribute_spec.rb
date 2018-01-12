@@ -57,4 +57,38 @@ describe Katapult::Attribute do
     end
   end
 
+  describe '#asset_values_as_list?' do
+    it 'returns false when there are no assignable values given' do
+      subject = described_class.new('name')
+      expect(subject.assignable_values_as_list?).to be false
+    end
+
+    it 'returns false when assignable values are give as a string (= custom code)' do
+      subject = described_class.new('name', assignable_values: 'NameProvider.all')
+      expect(subject.assignable_values_as_list?).to be false
+    end
+
+    it 'returns true when assignable values are an Array' do
+      subject = described_class.new('name', assignable_values: %w[andi andy])
+      expect(subject.assignable_values_as_list?).to be true
+    end
+
+    it 'returns true when assignable values are a Range' do
+      subject = described_class.new('age', assignable_values: (1..99))
+      expect(subject.assignable_values_as_list?).to be true
+    end
+  end
+
+  describe '#has_defaults?' do
+    it 'returns false when it is an "assignable values" attribute' do
+      subject = described_class.new('kind', assignable_values: %w[customer guest])
+      expect(subject.has_defaults?).to be false
+    end
+
+    it 'returns false when it is a flag attribute' do
+      subject = described_class.new('active', type: :flag, default: true)
+      expect(subject.has_defaults?).to be false
+    end
+  end
+
 end

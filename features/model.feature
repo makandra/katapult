@@ -1,4 +1,5 @@
 #@announce-output
+#@announce-stderr
 Feature: Generate Models
 
   Background:
@@ -13,11 +14,13 @@ Feature: Generate Models
     And I successfully transform the application model
     Then the file "app/models/car.rb" should contain exactly:
       """
-      class Car < ActiveRecord::Base
+      class Car < ApplicationRecord
+
 
         def to_s
           "Car##{id}"
         end
+
       end
 
       """
@@ -47,6 +50,10 @@ Feature: Generate Models
       end
 
       """
+    And the file "spec/factories/factories.rb" should contain:
+      """
+        factory :car
+      """
 
 
   Scenario: Generate ActiveRecord Model with attributes
@@ -72,13 +79,16 @@ Feature: Generate Models
     And I successfully transform the application model including migrations
     Then the file "app/models/person.rb" should contain exactly:
       """
-      class Person < ActiveRecord::Base
+      class Person < ApplicationRecord
+
         include DoesFlag[:locked, default: false]
+
         has_defaults({:homepage=>"http://www.makandra.de"})
 
         def to_s
           age.to_s
         end
+
       end
 
       """
@@ -148,6 +158,31 @@ Feature: Generate Models
     Then the output should contain "Katapult::Attribute does not support option :invalid_option. (Katapult::Element::UnknownOptionError)"
 
 
+  Scenario: Specify model associations
+    When I write to "lib/katapult/application_model.rb" with:
+      """
+      model('Company') { |c| c.attr :name }
+      model 'User' do |user|
+        user.belongs_to 'Company'
+      end
+      """
+    And I successfully transform the application model including migrations
+    Then the file "app/models/company.rb" should contain "has_many :users"
+    And the file "app/models/user.rb" should contain "belongs_to :company"
+    And the file "app/models/user.rb" should contain:
+      """
+        assignable_values_for :company, {:allow_blank=>true} do
+          Company.all.to_a
+        end
+      """
+
+    And there should be a migration with:
+      """
+          create_table :users do |t|
+            t.integer :company_id
+      """
+
+
   Scenario: Specify assignable values
     When I write to "lib/katapult/application_model.rb" with:
       """
@@ -159,10 +194,13 @@ Feature: Generate Models
     And I successfully transform the application model including migrations
     Then the file "app/models/person.rb" should contain exactly:
       """
-      class Person < ActiveRecord::Base
+      class Person < ApplicationRecord
+
+
         assignable_values_for :age, {} do
           9..99
         end
+
         assignable_values_for :hobby, {:allow_blank=>true, :default=>"soccer"} do
           ["soccer", "baseball"]
         end
@@ -170,6 +208,7 @@ Feature: Generate Models
         def to_s
           age.to_s
         end
+
       end
 
       """

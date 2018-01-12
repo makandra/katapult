@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 on 2018-01-15
+
+### Features
+- Support for has_many/belongs_to associations
+- Create a project README
+- New CHANGELOG
+
+### Fixes
+- Models now inherit from `ApplicationRecord`
+
+
 ## 0.3.0 on 2018-01-11
 
 ### Features
@@ -7,7 +18,7 @@
 - Dropped asset pipeline in favor of Webpacker
 - The generated application now has a sleek, simple design based on Bootstrap
 - Employing [Unpoly](https://unpoly.com)
-- New application model DSL shortcut `crud` for creating Model plus WebUI
+- New DSL command `crud` for creating Model plus WebUI
 - The generated application model is now a transformable example of katapult's features
 
 ### Development improvements

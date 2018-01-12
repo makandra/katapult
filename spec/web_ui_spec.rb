@@ -55,15 +55,4 @@ describe Katapult::WebUI do
     end
   end
 
-  describe '#render' do
-    it 'raises an error when its model does not have a label attribute' do
-      application_model.model 'user'
-      application_model.web_ui 'user'
-
-      subject = application_model.get_web_ui('user')
-      expect{ subject.render }.to raise_error Katapult::WebUI::MissingLabelAttrError,
-        'Cannot render a WebUI without a model with a label attribute'
-    end
-  end
-
 end
