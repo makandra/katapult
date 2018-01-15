@@ -15,7 +15,7 @@ module NavigationHelpers
       action_prose, model_prose = $1, $2
       route = "#{action_prose == 'form' ? 'edit_' : ''}#{model_prose_to_route_segment(model_prose)}_path"
       model = model_prose_to_class(model_prose)
-      send(route, model.last)
+      send(route, model.reorder(:id).last!)
 
     when /^the (page|form) for the (.*?) "(.*?)"$/
       action_prose, model_prose, identifier = $1, $2, $3
