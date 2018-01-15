@@ -37,17 +37,17 @@ module Katapult
       human_name = machine_name.humanize.downcase
 
       case kind.to_s
-      when ''          then @name
-      when 'symbol'    then ":#{machine_name}"
-      when 'symbols'   then ":#{machine_name.pluralize}"
-      when 'variable'  then machine_name
-      when 'variables' then machine_name.pluralize
-      when 'ivar'      then "@#{machine_name}"
-      when 'ivars'     then "@#{machine_name.pluralize}"
-      when 'human'     then human_name
-      when 'humans'    then human_name.pluralize
-      when 'class'     then machine_name.classify
-      when 'classes'   then machine_name.classify.pluralize
+      when ''          then @name                           ## Example
+      when 'symbol'    then ":#{machine_name}"              # :user_task
+      when 'symbols'   then ":#{machine_name.pluralize}"    # :user_tasks
+      when 'variable'  then machine_name                    # user_task
+      when 'variables' then machine_name.pluralize          # user_tasks
+      when 'ivar'      then "@#{machine_name}"              # @user_task
+      when 'ivars'     then "@#{machine_name.pluralize}"    # @user_tasks
+      when 'human'     then human_name                      # user task
+      when 'humans'    then human_name.pluralize            # user tasks
+      when 'class'     then machine_name.classify           # UserTask
+      when 'classes'   then machine_name.classify.pluralize # UserTasks
       else raise UnknownFormattingError, "Unknown name formatting: #{ kind.inspect }"
       end
     end
