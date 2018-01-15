@@ -99,15 +99,18 @@ has the following syntax, taking a name, options, and a block:
 
 
 ### Model
-Takes a name and a block:
+Takes a name and a block. Generates a Rails model, a migration, and a spec.
 
     model 'Customer' do |customer|
       # customer.attr :name etc, see Attribute element
+      # customer.belongs_to :group, see Association element
     end
 
 
 #### Attribute
-Defined on Model. Takes a name and options:
+Defined on Model; takes a name and options. Adds a database field in the model
+migration, form fields in a WebUI, and configuration code in the model as
+needed.
 
     # Default type :string
     model.attr :name
@@ -149,7 +152,8 @@ calls to the respective models.
 
 
 ### WebUI
-Takes a name, options and a block:
+Takes a name, options and a block. Generates controller, routes, views, and a
+passing Cucumber feature.
 
     web_ui 'Customer', model: 'User' do |web_ui|
       web_ui.crud # Create all the standard rails actions
@@ -162,7 +166,8 @@ Takes a name, options and a block:
 
 
 #### Action
-Defined on WebUI. Takes a name and options:
+Defined on WebUI; takes a name and options. Adds an action to the controller,
+and a route as needed.
 
     # Select single Rails actions
     web_ui.action :index
@@ -176,7 +181,7 @@ Defined on WebUI. Takes a name and options:
     web_ui.action :other_action, method: :get, scope: :collection
     
 ### Crud
-This is a shortcut for creating a model together with a WebUI with CRUD actions.
+Shortcut for creating a model together with a WebUI with CRUD actions.
 
     crud 'Customer' do |customer|
       customer.attr :name
@@ -184,8 +189,7 @@ This is a shortcut for creating a model together with a WebUI with CRUD actions.
 
 
 ### Navigation
-No arguments, will generate a main menu with links to the index pages of all
-WebUIs.
+Generates a main menu with links to the index pages of all WebUIs.
 
     navigation
 
@@ -196,8 +200,8 @@ email address. Generates authentication with [Clearance](https://github.com/thou
 
     authenticate 'User', system_email: 'system@example.com'
 
-The email address will be the sender for Clearance mails like password reset
-requests.
+The given email address will be configured as the sender for all mails sent by
+Rails, including Clearance mails like password reset requests.
 
 
 ## Development
@@ -238,6 +242,9 @@ of `katapult`:
 - `transform` generator: Parses the application model into an internal
   representation, which will be turned into code by all the other generators.
 
+Note that the `katapult` binary is the only Rails-independent part of Katapult;
+everything else runs in the context of the Rails appplication.
+
 ### Suggested workflow
 When adding a feature to `katapult`, it will usually take you some time to
 figure out how exactly the generated code should look like. You'll be switching
@@ -258,6 +265,13 @@ Here's a the suggested process:
    generators.
 7) Remove the @no-clobber tag and run the scenario normally to see if it's still
    green. Remember to stop the development server first.
+
+### Guidelines
+Please respect the following guidelines during development:
+
+- The application model should be order-agnostic. There is a #prepare_render
+  method in `ApplicationModel` for things that need to happen between parsing
+  and rendering the application model.
 
 ### Debugging
 Add the `@announce-output` tag to `katapult` features in order to have any output
