@@ -6,9 +6,12 @@
 # Remember to require classes before using them,
 # i.e. `require 'katapult/model'` before `Katapult::Model.new :example_name`
 
+require 'bundler/setup'
+
 irb_options = [
   '-Ilib',      # add lib/ to load_path
-  '-d',         # set $DEBUG = true
+  # '-d',         # set $DEBUG = true
+
   # Requires
   '-rkatapult/version',
   '-rrails',
