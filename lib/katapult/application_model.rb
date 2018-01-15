@@ -42,9 +42,7 @@ module Katapult
     # DSL
     def authenticate(user_model_name, system_email:)
       @authentication = Authentication.new(user_model_name,
-        system_email: system_email,
-        application_model: self,
-      )
+        system_email: system_email, application_model: self)
     end
 
     # DSL

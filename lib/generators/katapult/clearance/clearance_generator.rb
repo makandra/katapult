@@ -19,7 +19,7 @@ module Katapult
 
       def install_clearance
         insert_into_file 'Gemfile', <<-GEM, before: "gem 'katapult'"
-gem 'clearance', '< 1.14.0' # Has broken InstallGenerator :(
+gem 'clearance'
 
         GEM
         run 'bundle install --quiet'
