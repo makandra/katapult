@@ -180,7 +180,7 @@ config.time_zone = 'Berlin'
       # Configure 3rd party ####################################################
 
       def setup_spring
-        run 'spring binstub --all'
+        run 'bundle exec spring binstub --all'
 
         # Enhance Spring config
         config = 'config/spring.rb'
