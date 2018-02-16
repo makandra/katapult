@@ -26,7 +26,7 @@ gem 'whenever'
 group :development do
   gem 'query_diet'
   gem 'better_errors'
-  gem 'binding_of_caller'
+  gem 'binding_of_caller', '>= 0.8.0' # Fixes a bug with Ruby 2.5.0
 
   gem 'web-console'
   gem 'listen', '< 3.2'
