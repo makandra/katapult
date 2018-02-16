@@ -3,6 +3,12 @@
 When 'I install katapult' do
   next if @no_clobber
   append_to_file 'Gemfile', "gem 'katapult', path: '../../..'"
+
+  # Make sure katapult's version of Rails is used
+  # Cannot use #run_simple because it already expects a working Bundler setup
+  Dir.chdir expand_path('.') do
+    Katapult::BinaryUtil.run 'bundle update rails --quiet'
+  end
 end
 
 When 'I generate the application model' do

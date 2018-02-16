@@ -86,8 +86,10 @@ Given 'a new Rails application with Katapult basics installed' do
           create_app(RailsHelper::APP_WITH_BASICS)
 
           Dir.chdir(RailsHelper::APP_WITH_BASICS) do
-            # :path will be correct when copied to the TEST_APP path
+            # :path is correct within the TEST_APP path
             Katapult::BinaryUtil.run %(echo "gem 'katapult', path: '../../..'" >> Gemfile)
+            # Make sure katapult's version of Rails is used
+            Katapult::BinaryUtil.run 'bundle update rails --quiet'
             Katapult::BinaryUtil.run 'bin/rails generate katapult:basics --db-user katapult --db-password secret'
             # Spring running in the cache dir is of no further use, but would
             # break things when the cache dir is removed
