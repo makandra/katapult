@@ -43,7 +43,7 @@ module Katapult
       end
 
       def bundle_install
-        run 'bundle install'
+        run 'bundle install --quiet'
 
         # Fix Bundler for parallel_tests
         run 'bundle config --local disable_exec_load true'
@@ -296,7 +296,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
       # Bundler prefers installed gems, but we want the newest versions possible
       def update_gems
-        run 'bundle install'
+        run 'bundle update --quiet'
       end
 
       private

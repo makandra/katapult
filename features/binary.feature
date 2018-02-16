@@ -43,7 +43,6 @@ Feature: Katapult binary `katapult`
     Then the output should contain "Creating new Rails application"
       And the output should contain "Installing katapult"
       And the output should contain "Generating katapult basics"
-      And the output should contain the configured Rails version
 
       And the output should contain "Application initialization done."
       And the output should contain "Model your application in lib/katapult/application_model.rb"
@@ -52,6 +51,7 @@ Feature: Katapult binary `katapult`
 
     When I cd to "binary_test"
     Then the file "Gemfile" should contain "gem 'katapult'"
+      And the configured Rails version should be listed in the Gemfile.lock
       And a file named "lib/katapult/application_model.rb" should exist
 
       And the file "config/database.yml" should contain "username: katapult"

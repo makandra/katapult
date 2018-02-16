@@ -1,7 +1,7 @@
 module Katapult::GeneratorGoodies
 
   def yarn(*args)
-    command =  'bin/yarn ' + args.join(' ')
+    command =  'bin/yarn --silent --non-interactive ' + args.join(' ')
     run command
   end
 
