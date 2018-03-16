@@ -7,10 +7,12 @@ Feature: Add authentication to an application
 
 
   Scenario: Authenticate with the user model
+    # Have a custom "label attr" (:name)
     When I write to "lib/katapult/application_model.rb" with:
       """
-      model 'user'
-      web_ui('user', &:crud)
+      crud 'user' do |user|
+        user.attr :name
+      end
       authenticate 'user', system_email: 'system@example.com'
       """
     And I successfully transform the application model including migrations
@@ -267,11 +269,11 @@ Feature: Add authentication to an application
 
 
         Scenario: Reset password as a signed-in user
-          Given there is a user with the email "henry@example.com"
+          Given there is a user with the email "henry@example.com" and the name "name-string"
             And I sign in as the user above
 
           When I go to the homepage
-            And I follow "henry@example.com" within the navbar
+            And I follow "name-string" within the navbar
           Then I should be on the form for the user above
 
           When I fill in "Password" with "new-password"

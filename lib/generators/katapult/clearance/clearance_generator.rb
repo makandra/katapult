@@ -136,6 +136,12 @@ resources :users do
         CONTENT
       end
 
+      private
+
+      def user
+        @element.user
+      end
+
     end
   end
 end

@@ -7,15 +7,18 @@ module Katapult
     attr_accessor :system_email
 
     def ensure_user_model_attributes_present
-      user_model = application_model.get_model!(name)
-      user_attrs = user_model.attrs.map(&:name)
+      user_attrs = user.attrs.map(&:name)
 
-      user_model.attr(:email) unless user_attrs.include?('email')
-      user_model.attr(:password, type: :password, skip_db: true) unless user_attrs.include?('password')
+      user.attr(:email) unless user_attrs.include?('email')
+      user.attr(:password, type: :password, skip_db: true) unless user_attrs.include?('password')
     end
 
     def render
       Generators::ClearanceGenerator.new(self).invoke_all
+    end
+
+    def user
+      @user ||= application_model.get_model!(name)
     end
 
   end
