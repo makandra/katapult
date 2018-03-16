@@ -36,7 +36,7 @@ MESSAGE
       end
 
       def generate_views
-        Generators::ViewsGenerator.new(web_ui).invoke_all
+        Generators::ViewsGenerator.new(web_ui, options).invoke_all
       end
 
       no_tasks do

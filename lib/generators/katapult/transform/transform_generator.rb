@@ -20,7 +20,7 @@ module Katapult
       @app_model = Katapult::ApplicationModel.parse(application_model, path)
 
       say_status :render, "into #{app_name}"
-      @app_model.render
+      @app_model.render options.slice(:force)
     end
 
     def write_root_route

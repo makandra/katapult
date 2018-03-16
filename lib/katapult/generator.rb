@@ -9,10 +9,13 @@ module Katapult
 
     attr_accessor :element
 
-    def initialize(element)
+    # @option :force (from Thor): Overwrite on conflict
+    def initialize(element, options = {})
       self.element = element
+      args = [element.name]
+      config = {}
 
-      super([element.name], {}, {}) # args, opts, config
+      super args, options, config
     end
 
     private
@@ -20,6 +23,13 @@ module Katapult
     def render_partial(template_path, given_binding = nil)
       path = File.join(self.class.source_root, template_path)
       ERB.new(::File.binread(path), nil, '%').result(given_binding || binding)
+    end
+
+    def generate(generator_name)
+      args = []
+      args << '--force' if options[:force]
+
+      super generator_name, *args
     end
 
   end

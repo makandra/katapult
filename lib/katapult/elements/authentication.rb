@@ -13,8 +13,8 @@ module Katapult
       user.attr(:password, type: :password, skip_db: true) unless user_attrs.include?('password')
     end
 
-    def render
-      Generators::ClearanceGenerator.new(self).invoke_all
+    def render(options = {})
+      Generators::ClearanceGenerator.new(self, options).invoke_all
     end
 
     def user

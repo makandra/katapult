@@ -64,8 +64,8 @@ module Katapult
       end
     end
 
-    def render
-      Generators::ModelGenerator.new(self).invoke_all
+    def render(options = {})
+      Generators::ModelGenerator.new(self, options).invoke_all
     end
 
     private

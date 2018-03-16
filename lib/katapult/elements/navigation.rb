@@ -19,8 +19,8 @@ module Katapult
       end
     end
 
-    def render
-      Generators::NavigationGenerator.new(self).invoke_all
+    def render(options = {})
+      Generators::NavigationGenerator.new(self, options).invoke_all
     end
 
   end
