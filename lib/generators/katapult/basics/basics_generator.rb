@@ -280,7 +280,7 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         inject_into_file 'config/webpack/environment.js', <<~JQUERY, after: /\A.*\n/ # 1st line
         const webpack = require('webpack')
 
-        environment.plugins.set('Provide', new webpack.ProvidePlugin({
+        environment.plugins.prepend('Provide', new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
           })

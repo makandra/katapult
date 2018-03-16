@@ -156,7 +156,7 @@ Then 'Webpacker should be employed' do
 
   step 'the file "config/webpacker.yml" should contain "source_path: app/webpack"'
   step 'the file "config/webpack/environment.js" should contain:', <<-CONTENT
-environment.plugins.set('Provide', new webpack.ProvidePlugin({
+environment.plugins.prepend('Provide', new webpack.ProvidePlugin({
     $: 'jquery',
   CONTENT
 
