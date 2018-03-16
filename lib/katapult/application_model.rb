@@ -78,13 +78,13 @@ module Katapult
       associations.select { |a| a.belongs_to == model_name }.map(&:model)
     end
 
-    def render
+    def render(options = {})
       prepare_render
 
-      models.each &:render
-      web_uis.each &:render
-      navigation.render if navigation
-      authentication.render if authentication
+      models.each { |m| m.render(options) }
+      web_uis.each { |w| w.render(options) }
+      navigation.render(options) if navigation
+      authentication.render(options) if authentication
     end
 
     private

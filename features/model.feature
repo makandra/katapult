@@ -247,12 +247,12 @@ Feature: Generate Models
 
   Scenario: Transform the application model multiple times
 
-    Do not add routes twice.
+    Some generators inject code snippets into files. They should not do this
+    if their snippet is already present.
 
     When I write to "lib/katapult/application_model.rb" with:
       """
-      model('Car') { |c| c.attr :model }
-      web_ui 'Car', &:crud
+      crud('Car') { |c| c.attr :model }
       """
       And I successfully transform the application model
     Then the file named "config/routes.rb" should contain:
@@ -261,7 +261,8 @@ Feature: Generate Models
         root 'cars#index'
         resources :cars
       """
-      And I successfully transform the application model
+
+    When I successfully transform the application model
     Then the file named "config/routes.rb" should contain:
       """
       Rails.application.routes.draw do
@@ -271,3 +272,5 @@ Feature: Generate Models
       And the file named "config/routes.rb" should contain "root 'cars#index'" exactly once
       And the file named "config/routes.rb" should contain "resources :cars" exactly once
       And the output should contain "Routes for :cars already exist! Not updated."
+
+      And the file named "spec/factories/factories.rb" should contain "factory :car" exactly once

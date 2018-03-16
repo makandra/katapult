@@ -353,3 +353,18 @@ Feature: Add authentication to an application
 
     When I run cucumber
     Then the features should pass
+
+
+  Scenario: Generate a model with authentication twice
+    Given I write to "lib/katapult/application_model.rb" with:
+      """
+      crud 'user'
+      authenticate 'user', system_email: 'system@example.com'
+      """
+
+    When I successfully transform the application model
+      And I successfully transform the application model, ignoring conflicts
+    Then the file named "spec/factories/factories.rb" should contain "factory :user" exactly once
+
+    When I run cucumber
+    Then the features should pass

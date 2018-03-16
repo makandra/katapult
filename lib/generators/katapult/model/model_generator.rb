@@ -31,14 +31,19 @@ module Katapult
       end
 
       def write_factory
-        insert_into_file 'spec/factories/factories.rb', <<-FACTORY, before: /end\n\z/
-  factory #{ model.name(:symbol) }
+        factory = "factory #{ model.name(:symbol) }"
+        factories_file = 'spec/factories/factories.rb'
+        # Can happen in multiple transformation runs with authentication
+        return if file_contains?(factories_file, factory)
+
+        insert_into_file factories_file, <<-FACTORY, before: /end\n\z/
+  #{factory}
 
         FACTORY
       end
 
       def generate_unit_tests
-        Generators::ModelSpecsGenerator.new(model).invoke_all
+        Generators::ModelSpecsGenerator.new(model, options).invoke_all
       end
 
       no_commands do

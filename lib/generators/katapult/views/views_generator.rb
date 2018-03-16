@@ -50,7 +50,7 @@ module Katapult
 
       def generate_integration_tests
         if web_ui.model.present?
-          Generators::CucumberFeaturesGenerator.new(web_ui.model).invoke_all
+          Generators::CucumberFeaturesGenerator.new(web_ui.model, options).invoke_all
         end
       end
 

@@ -78,8 +78,8 @@ module Katapult
       model.name(kind)
     end
 
-    def render
-      Generators::WebUIGenerator.new(self).invoke_all
+    def render(options = {})
+      Generators::WebUIGenerator.new(self, options).invoke_all
     end
 
   end

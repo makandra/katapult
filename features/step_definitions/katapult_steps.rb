@@ -27,17 +27,19 @@ When /^I generate katapult basics$/ do
 end
 
 # By default, transforming the application model will not recreate and migrate
-# the test app database (massive test suite speedup).
-# If a scenario relies on the database being set up (e.g. running Cucumber), be
-# sure to use this step with trailing "including migrations".
-When /^I( successfully)? transform the application model( including migrations)?$/ do |require_success, run_migrations|
+# the test app database (massive test suite speedup). If a scenario relies on
+# the database being set up (e.g. running Cucumber), be sure to use this step
+# with trailing "including migrations".
+When /^I( successfully)? transform the application model( including migrations)?(, ignoring conflicts)?$/ do |require_success, run_migrations, ignore_conflicts|
   next if @no_clobber
 
   ENV['SKIP_MIGRATIONS'] = 'true' unless run_migrations # Speedup
+  command = 'rails generate katapult:transform lib/katapult/application_model.rb'
+  command << ' --force' if ignore_conflicts
 
   with_aruba_timeout 60 do
     # The second argument of #run_simple defaults to `true`
-    run_simple 'rails generate katapult:transform lib/katapult/application_model.rb', !!require_success
+    run_simple command, !!require_success
   end
 end
 After { ENV.delete 'SKIP_MIGRATIONS' }

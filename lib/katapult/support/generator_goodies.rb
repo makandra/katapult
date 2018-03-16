@@ -1,8 +1,16 @@
+# This module holds methods that are shared between Katapult's element generators
+# and the Rails generators it uses (e.g. BasicsGenerator)
+#
 module Katapult::GeneratorGoodies
 
   def yarn(*args)
     command =  'bin/yarn --silent --non-interactive ' + args.join(' ')
     run command
+  end
+
+  def file_contains?(path, content)
+    file_content = File.read(path)
+    file_content.include? content
   end
 
   private

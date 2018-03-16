@@ -124,16 +124,19 @@ resources :users do
       def add_user_factory
         factories_file = 'spec/factories/factories.rb'
 
-        # Remove empty factory, if it exists
-        gsub_file factories_file, "  factory :user\n\n", ''
+        # Remove empty factory
+        gsub_file factories_file, "\n  factory :user\n", ''
 
-        inject_into_file factories_file, <<-'CONTENT', before: /end\n\z/
+        # In a second `transform` run, this might already be present
+        unless file_contains? factories_file, 'factory :user'
+          inject_into_file factories_file, <<-'CONTENT', before: /end\n\z/
   factory :user do
     sequence(:email) { |i| "user-#{ i }@example.com" }
     password 'password'
   end
 
-        CONTENT
+          CONTENT
+        end
       end
 
       private
