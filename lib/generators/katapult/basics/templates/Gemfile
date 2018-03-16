@@ -33,7 +33,7 @@ group :development do
 
   gem 'thin'
 
-  gem 'parallel_tests'
+  gem 'parallel_tests', '< 2.19' # Breaks compatibility with Cucumber 2
 
   gem 'guard-livereload', require: false
   gem 'rack-livereload'
