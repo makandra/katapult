@@ -31,15 +31,20 @@ module Katapult
       end
 
       def write_factory
-        factory = "factory #{ model.name(:symbol) }"
+        factory = "  factory #{ model.name(:symbol) }"
         factories_file = 'spec/factories/factories.rb'
         # Can happen in multiple transformation runs with authentication
         return if file_contains?(factories_file, factory)
 
-        insert_into_file factories_file, <<-FACTORY, before: /end\n\z/
-  #{factory}
+        factory_attrs = model.required_attrs.map do |a|
+          "    #{ a.name(:human) } #{ a.test_value.inspect }"
+        end
 
-        FACTORY
+        if factory_attrs.any?
+          factory << " do\n#{ factory_attrs.join "\n" }\n  end"
+        end
+
+        insert_into_file factories_file, factory + "\n\n", before: /end\n\z/
       end
 
       def generate_unit_tests
