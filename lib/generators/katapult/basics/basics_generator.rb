@@ -40,6 +40,7 @@ module Katapult
         # installed with a custom :path option
         @katapult = File.readlines('Gemfile').find{ |line| line =~ /^gem 'katapult'/ }
         template 'Gemfile', force: true
+        template 'Gemfile.lock', force: true
       end
 
       def bundle_install

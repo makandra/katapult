@@ -48,6 +48,7 @@ Feature: Katapult binary `katapult`
       And the output should contain "Model your application in lib/katapult/application_model.rb"
       And the output should contain "Configure public/robots.txt"
       And the output should contain "Write a README"
+      And the output should contain "Run `bundle update`"
 
     When I cd to "binary_test"
     Then the file "Gemfile" should contain "gem 'katapult'"
