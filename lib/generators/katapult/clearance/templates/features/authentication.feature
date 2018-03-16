@@ -47,11 +47,11 @@ Feature: Everything about user authentication
 
 
   Scenario: Reset password as a signed-in user
-    Given there is a user with the email "henry@example.com"
+    Given there is a user with the email "henry@example.com" and the <%= user.label_attr.name(:variable) %> "<%= user.label_attr.test_value %>"
       And I sign in as the user above
 
     When I go to the homepage
-      And I follow "henry@example.com" within the navbar
+      And I follow "<%= user.label_attr.test_value %>" within the navbar
     Then I should be on the form for the user above
 
     When I fill in "Password" with "new-password"
@@ -59,7 +59,7 @@ Feature: Everything about user authentication
     Then I should be on the page for the user above
 
     When I follow "Sign out"
-      And I fill in "Email" with "henry@example.com"
+      And I fill in "Email" with "<%= (user.label_attr.type == :email) ? user.label_attr.test_value : "henry@example.com" %>"
       And I fill in "Password" with "new-password"
       And I press "Sign in"
     Then I should be on the homepage
