@@ -1,29 +1,27 @@
-# Katapult
+# Katapult 0.4.1
+Generating a Rails 5.1.4 app on Ruby 2.5.0.
 
 <img src="katapult.png" width="200px" align="right" />
 
 
-`Katapult` is a kickstart generator for Rails applications. It creates new Rails
+Katapult is a kickstart generator for Rails applications. It creates new Rails
 applications with [lots of pre-configuration](https://github.com/makandra/katapult/blob/master/lib/generators/katapult/basics/basics_generator.rb)
 and offers [makandra-flavored](https://leanpub.com/growing-rails) code
 generation from an application model. These two features significally speed up
 the initial phase of a Rails project by doing in minutes what otherwise would
 cost you weeks.
-After modeling your application, which typically takes about an hour, you can
-instantly start implementing the meat of your application.
-
-`Katapult` only supports a single Ruby and Rails version, currently it's Rails
-5.1.4 and Ruby 2.5.0.
+After modeling your application, which takes about an hour, you can instantly
+start implementing the meat of your application.
 
 
 ## Prerequisites
 
 Katapult uses *PostgreSQL* as database, so you'll need to install that upfront.
-Also, it drops the asset pipeline in favor of *Webpacker*, so you'll need Node
-and Yarn (see <https://makandracards.com/makandra/47477>).
+Also, it drops the Rails asset pipeline in favor of *Webpacker*, so you'll need
+*Node* and *Yarn* (see <https://makandracards.com/makandra/47477>).
 
-Also, it requires the *Bundler* and *Rake* Ruby gems, which are probably already
-installed on your system.
+The required *Ruby* version is 2.5.0. You'll need the *Bundler* and *Rake* gems,
+which are probably already installed on your system.
 
 
 ## Installation
@@ -38,11 +36,11 @@ in your Gemfile.
 
 ## Usage
 
-`katapult` does two distinct things for you:
+Katapult does two distinct things for you:
 
-1. It creates a new Rails application, set up with many standard gems, snippets,
-   useful configuration, databases, testing libraries etc.
-2. It generates code from an application model, i.e. it creates models and
+1. It creates a new Rails application, prepared with gems, snippets,
+   configuration, databases, testing libraries etc.
+2. It generates code from an application model, i.e. it generates models and
    views, controllers, styles etc. 
 
 You may use both or only one of them. Read on for details.
@@ -50,7 +48,7 @@ You may use both or only one of them. Read on for details.
 
 ## 1) Creating a new Rails application
 
-Run the following command:
+To get started, run the following command:
 
     katapult new $APPLICATION_NAME
 
@@ -59,13 +57,13 @@ Read the [BasicsGenerator](https://github.com/makandra/katapult/blob/master/lib/
 for details: Its methods are executed one-by-one, while the method names are a
 description of what they do.
 
-### Alternative: Using Katapult in an existing Rails application
-`katapult` expects a fresh application (which it would usually generate itself).
-If you have an existing Rails application, you *may* use `katapult`, but be
-warned: it is not designed to respect existing files, although it will usually
+#### Alternative: Using Katapult in an existing Rails application
+Katapult generates a fresh application. If you have an existing Rails
+application, you *may* use Katapult to configure it.
+Be warned: it is not designed to respect existing files, although it will usually
 ask before overwriting something.
 
-After adding it to the Gemfile, run the basics generator manually:
+After adding it to the Gemfile, invoke the basics generator manually:
 
     bin/rails generate katapult:basics
 
@@ -73,28 +71,36 @@ After adding it to the Gemfile, run the basics generator manually:
 ## 2) Generating code from an application model
 
 After running `katapult new`, you will find a default application model in
- `lib/katapult/application_model.rb`. It contains a full example of `katapult`'s
-features that you should replace with _your_ application model.
+ `lib/katapult/application_model.rb`. It contains a full example of Katapult's
+features that you can use as an inspiration for creating _your_ application model.
 
-When you are done, transform the model using:
+When your application model is ready, transform it using:
 
     katapult fire [path/to/application_model]
 
-The path is optional and only needs to be specified when you've renamed the
-application model file. Note that you may well use separate model files for
-separate runs.
+The path is optional and defaults to the generated application model. If you
+later want to extend your application, you may create a second application model
+and invoke `katapult fire` with its path.
 
-See an overview of the DSL below. The respective sections hold examples of what
-options are available to each element. For details, dive into
-`lib/generators/katapult` where all generators are stored. The method names
+Below you find an overview of the application model DSL. The respective sections
+hold examples of what options are available to each element. For details, dive
+into `lib/generators/katapult` where all generators are stored. The method names
 of a generator tell what it does.
 
 ### Generic DSL syntax example
-The DSL consists of _elements_, e.g. `Model` or `WebUI`. Each `katapult` element
+The DSL consists of _elements_, e.g. `Model` or `WebUI`. Each Katapult element
 has the following syntax, taking a name, options, and a block:
 
     element_type 'name', options: 'example' do |element|
       element.some_method
+    end
+
+### Crud
+Shortcut for creating a model together with a WebUI with CRUD actions. The block
+is passed the model instance.
+
+    crud 'Customer' do |customer|
+      # customer.attr :name
     end
 
 
@@ -139,9 +145,9 @@ needed.
     model.attr :avoid, type: :plain_json # PostgreSQL "json"
 
 
-### Association
-Defined on Model; takes the name of another model just like you called it in the
-model. Adds a foreign key attribute to the model and `belongs_to`/`has_many`
+#### Association
+Defined on Model; takes the name of another model (just as you called it in the
+application model). Adds a foreign key attribute to the model and `belongs_to`/`has_many`
 calls to the respective models.
 
     model 'Customer' do |customer|
@@ -157,7 +163,6 @@ passing Cucumber feature.
 
     web_ui 'Customer', model: 'User' do |web_ui|
       web_ui.crud # Create all the standard rails actions
-
       # web_ui.action :custom etc, see Action element
     end
 
@@ -180,13 +185,6 @@ and a route as needed.
     web_ui.action :custom_action, method: :post, scope: :member
     web_ui.action :other_action, method: :get, scope: :collection
     
-### Crud
-Shortcut for creating a model together with a WebUI with CRUD actions.
-
-    crud 'Customer' do |customer|
-      customer.attr :name
-    end
-
 
 ### Navigation
 Generates a main menu with links to the index pages of all WebUIs.
@@ -206,65 +204,75 @@ Rails, including Clearance mails like password reset requests.
 
 ## Development
 
-### Getting started + continuing development
+### Getting started
 `Katapult` is tested with [RSpec](http://rspec.info/) and
 [Cucumber](https://cucumber.io/) + [Aruba](https://github.com/cucumber/aruba)
 ([API-Doc](http://www.rubydoc.info/github/cucumber/aruba/master/)).
 
-For its full-stack integration tests, `katapult` requires a PostgreSQL account.
+For its full-stack integration tests, Katapult requires a PostgreSQL account.
 Create a dedicated account on your local PostgreSQL server:
 
     $> sudo -u postgres psql
     postgres=# CREATE ROLE katapult WITH createdb LOGIN;
 
-Whenever you start working on `katapult`, you should run `script/update`, which
+
+### Continuing Development
+Whenever you start working on Katapult, you should run `script/update`, which
 will guide you through a quick update process.
 
 ### Architecture
-`katapult` is roughly split into three parts: the `katapult` binary in bin/,
+Katapult's code is roughly split into three parts: the `katapult` binary in bin/,
 the model in lib/katapult/ and the generators in lib/generators. Also, there
-is a script/ directory that holds some scripts to ease development. It is not
-part of the `katapult` gem, however.
+is a script/ directory that holds some scripts to simplify development. It is not
+included in the `katapult` gem.
 
-The generators of `katapult` base on the `rails/generators` you probably know
-from generating migration files or scaffolds; however, it lifts their usage on a
-new level by invoking generators programmatically with a "model object". Instead
-of plain text input, the `katapult` generators can explore the whole application
-model. They are all to be run from within a Rails application.
+The generators of Katapult extend the `rails/generators` you probably know
+from generating migration files or scaffolds. However, Katapult lifts them on a
+new level by invoking them programmatically with a model object instead
+of plain text arguments. This way, the Katapult generators can explore the whole
+application model and are not restricted to a few string's they've been given.
 
-There are three base generators that can be considered the next-lower level API
-of `katapult`:
+There are three Rails generators that are intended for invocation from bash.
+They can be considered the next-lower level API of Katapult:
 
-- `basics` generator: Enhances a pristine Rails app with all of the basic
-  configuration `katapult` brings.
-- `app_model` generator: Installs a boilerplate application model that serves as
+- `katapult:basics` generator: Enhances a pristine Rails app with all of the basic
+  configuration Katapult brings.
+- `katapult:app_model` generator: Installs a boilerplate application model that serves as
   a starting point for modeling your own application.
-- `transform` generator: Parses the application model into an internal
+- `katapult:transform` generator: Parses the application model into an internal
   representation, which will be turned into code by all the other generators.
 
 Note that the `katapult` binary is the only Rails-independent part of Katapult;
-everything else runs in the context of the Rails appplication.
+everything else runs in the context of the Rails application.
 
 ### Suggested workflow
-When adding a feature to `katapult`, it will usually take you some time to
+When adding a feature to Katapult, it will usually take you some time to
 figure out how exactly the generated code should look like. You'll be switching
-between `katapult`'s tests, its generators and the generated code.
+between Katapult's tests, its generators and the generated code.
 
-Here's a the suggested process:
+Here's a process for building larger code generation features:
 
-1) Run a scenario (create one if needed)
-2) Tag that scenario with @no-clobber. This will leave the generated test app
-   untouched in subsequent test runs.
+1) **Start with a test:** Create a Cucumber scenario that creates and transforms
+   an application model. Also, write a first draft of the code that generates
+   what you expect.
+2) Run your scenario.
 3) Make a commit inside the generated test application, so you'll have a clean
    working directory: `script/kta git add --all && script/kta git commit -m 'x'`
-4) Modify the test app as needed. Boot a development server with
-   `script/kta rails s` if you like.
-5) Re-run the @no-clobber scenario (modify it as needed) until test and test app
-   meet the expectations.
-6) Now look at the git diff in the test app and model everything with katapult's
-   generators.
-7) Remove the @no-clobber tag and run the scenario normally to see if it's still
-   green. Remember to stop the development server first.
+4) **Tune the generated code to meet your expectations.** Boot a development
+   server with `script/kta rails s` if you like.
+5) **Finish your test:** Once you've figured how the generated code should look
+   like, it's time to write steps that test it. For this purpose, tag your
+   scenario with @no-clobber and comment out the model transformation step. This
+   will leave the generated test app untouched in subsequent test runs, so you
+   will be able to run your scenario repeatedly, without losing what you've
+   built, until you have covered every change. Use `git diff` in the test app to
+   see your changes.
+6) **Write code:** When you've completed your scenario, write the code that
+   generates what is needed to satisfy the test.
+7) Remove the @no-clobber tag and comment in the transformation step. Stop the
+   development server if you've started one.
+8) Run your scenario normally and iterate over your code generation code until
+   your scenario is green.
 
 ### Guidelines
 Please respect the following guidelines during development:
@@ -272,21 +280,24 @@ Please respect the following guidelines during development:
 - The application model should be order-agnostic. There is a #prepare_render
   method in `ApplicationModel` for things that need to happen between parsing
   and rendering the application model.
+- The application model should be idempotent, meaning it should be possible to
+  generate it over and over again without breaking code.
 
 ### Debugging
-Add the `@announce-output` tag to `katapult` features in order to have any output
+Add the `@announce-output` tag to Katapult features in order to have any output
 logged to your terminal. Note that each step will print all output to date, so
 you will see things multiple times.
 
 To precisely debug errors occurring _inside_ the generated application, use
-`script/kta`. You could also just cd to the test app directory, but since it is
-destroyed between test runs, you'd need to `cd ../../aruba/katapult_test_app`
-after each test.
+`script/kta`. It is a helper script that will execute whatever command you pass
+it, but in the directory of the generated application. While you could cd to the
+test app and run your command there, you'd need to `cd ../../aruba/katapult_test_app`
+after each test run, because the tmp/aruba directory gets wiped before each test.
 
 When fixing issues in the generated app, make a commit in the app first. When
 you've fixed it, the diff will show you what you need to port back to katapult.
 
-### Typical issues
+#### Typical issues
 Be sure to check this list when you encounter strange issues during development.
 
 - Spring was running in a directory that does not exist any more. This will
@@ -295,10 +306,10 @@ Be sure to check this list when you encounter strange issues during development.
 - An outdated Rails application in `tmp/cached_*`
 - Timeout error because of a script waiting for user input
 
-### Fast tests
+#### Fast tests
 Generating basics and transforming the application model take quite some time
 (about 20s), because it boots the Rails application, resolves Yarn dependencies
-and migrates databases. To speed that up, `katapult` tests cache prepared Rails
+and migrates databases. To speed that up, Katapult tests cache prepared Rails
 applications in tmp/.
 
 When debugging test suite speed, `bundle exec cucumber --format usage` is your

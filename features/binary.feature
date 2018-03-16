@@ -13,6 +13,11 @@ Feature: Katapult binary `katapult`
       And the output should contain "Generating a Rails 5."
       And the output should contain " app on Ruby 2."
 
+    When I run `katapult -v`
+    Then the output should contain "Katapult"
+      And the output should contain "Generating a Rails 5."
+      And the output should contain " app on Ruby 2."
+
 
   Scenario: Missing options are asked for
     When I run `katapult new` interactively
