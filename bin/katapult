@@ -103,7 +103,8 @@ Now boot up your development server (e.g. with `rails server`) and try your
 kickstarted application in the browser!
   INSTRUCTIONS
 
-when 'version'
+when 'version', '-v'
+  # This output is also used as README heading
   puts <<-VERSION
 Katapult #{Katapult::VERSION}
 Generating a Rails #{Katapult::RAILS_VERSION} app on Ruby #{Katapult::RUBY_VERSION}.
