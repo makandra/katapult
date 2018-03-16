@@ -188,17 +188,19 @@ Feature: Generate Models
       """
       model 'Person' do |person|
         person.attr :age, type: :integer, assignable_values: 9..99
+        person.attr :mood, assignable_values: %w[happy pensive]
         person.attr :hobby, assignable_values: %w[soccer baseball], default: 'soccer', allow_blank: true
       end
       """
     And I successfully transform the application model including migrations
-    Then the file "app/models/person.rb" should contain exactly:
+    Then the file "app/models/person.rb" should contain:
       """
-      class Person < ApplicationRecord
-
-
         assignable_values_for :age, {} do
           9..99
+        end
+
+        assignable_values_for :mood, {} do
+          ["happy", "pensive"]
         end
 
         assignable_values_for :hobby, {:allow_blank=>true, :default=>"soccer"} do
@@ -208,24 +210,17 @@ Feature: Generate Models
         def to_s
           age.to_s
         end
-
-      end
-
       """
-    And the file "spec/models/person_spec.rb" should contain exactly:
+    And the file "spec/models/person_spec.rb" should contain:
       """
-      describe Person do
-
-        describe '#to_s' do
-          it 'returns the #age attribute' do
-            subject.age = 9
-            expect(subject.to_s).to eq("9")
-          end
-        end
-
         describe '#age' do
           it { is_expected.to allow_value(99).for(:age) }
           it { is_expected.to_not allow_value(100).for(:age) }
+        end
+
+        describe '#mood' do
+          it { is_expected.to allow_value("pensive").for(:mood) }
+          it { is_expected.to_not allow_value("pensive-unassignable").for(:mood) }
         end
 
         describe '#hobby' do
@@ -236,12 +231,30 @@ Feature: Generate Models
             expect(subject.hobby).to eq("soccer")
           end
         end
-
-      end
-
+      """
+      And the file "spec/factories/factories.rb" should contain:
+      """
+        factory :person do
+          age 9
+          mood "happy"
+        end
       """
 
-    When I run rspec
+    When I write to "spec/models/factory_spec.rb" with:
+      """
+      describe Person do
+
+        describe 'person factory' do
+          subject { create :person }
+
+          it 'generates a valid record' do
+            expect(subject).to be_valid
+          end
+        end
+
+      end
+      """
+      And I run rspec
     Then the specs should pass
 
 

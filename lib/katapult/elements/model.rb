@@ -48,11 +48,15 @@ module Katapult
     end
 
     def renderable_attrs
-      attrs.reject { |a| %w[plain_json json password].include? a.type.to_s }
+      attrs.select &:renderable?
     end
 
     def editable_attrs
-      attrs.reject { |a| %w[plain_json json].include? a.type.to_s }
+      attrs.select &:editable?
+    end
+
+    def required_attrs
+      attrs.select &:required?
     end
 
     def add_foreign_key_attrs(belongs_tos)

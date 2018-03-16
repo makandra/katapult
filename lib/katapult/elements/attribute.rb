@@ -32,6 +32,22 @@ module Katapult
       !default.nil? and not [flag?, assignable_values].any?
     end
 
+    def renderable?
+      %i[plain_json json password].exclude? type
+    end
+
+    def editable?
+      %i[plain_json json].exclude? type
+    end
+
+    def required?
+      if assignable_values.present?
+        default.blank? && allow_blank.blank?
+      else
+        false
+      end
+    end
+
     def for_migration
       db_type = case type
       when :email, :url, :password then 'string'
