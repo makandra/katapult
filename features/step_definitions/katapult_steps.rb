@@ -77,7 +77,7 @@ after 'deploy:published', 'db:show_dump_usage'
 after 'deploy:finished', 'deploy:cleanup' # https://makandracards.com/makandra/1432
   CONTENT
 
-  step 'the file "config/deploy.rb" should contain:', <<-CONTENT
+  step 'the file "config/deploy.rb" should contain:', <<-'CONTENT'
 # Default value for :format is :pretty
 # set :format, :pretty
 
@@ -105,8 +105,7 @@ set :ssh_options, {
 set :repo_url, 'git@code.makandra.de:makandra/katapult_test_app.git'
 
 # set :whenever_roles, :cron
-# set :whenever_environment, defer { stage }
-# set :whenever_command, 'bundle exec whenever'
+# set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 set :maintenance_template_path, 'public/maintenance.html.erb'
 CONTENT

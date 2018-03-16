@@ -30,7 +30,6 @@ set :ssh_options, {
 set :repo_url, 'git@code.makandra.de:makandra/<%= app_name %>.git'
 
 # set :whenever_roles, :cron
-# set :whenever_environment, defer { stage }
-# set :whenever_command, 'bundle exec whenever'
+# set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 set :maintenance_template_path, 'public/maintenance.html.erb'
