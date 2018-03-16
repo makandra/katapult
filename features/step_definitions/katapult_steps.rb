@@ -215,8 +215,15 @@ Then 'styles should be prepared' do
   step 'a directory named "app/webpack/assets/stylesheets/blocks" should exist'
   step 'a directory named "app/webpack/assets/stylesheets/ext" should exist'
 
-  # JS support for Bootstrap dropdowns
-  step %(the file "app/webpack/assets/javascripts/bootstrap.js" should contain "import 'bootstrap-sass/assets/javascripts/bootstrap/dropdown'")
+  # JS support for Bootstrap dropdowns and mobile navbar
+  step 'the file "app/webpack/assets/javascripts/bootstrap.js" should contain:', <<-CONTENT
+import 'bootstrap-sass/assets/javascripts/bootstrap/transition'
+// import 'bootstrap-sass/assets/javascripts/bootstrap/alert'
+// import 'bootstrap-sass/assets/javascripts/bootstrap/button'
+// import 'bootstrap-sass/assets/javascripts/bootstrap/carousel'
+import 'bootstrap-sass/assets/javascripts/bootstrap/collapse'
+import 'bootstrap-sass/assets/javascripts/bootstrap/dropdown'
+  CONTENT
 end
 
 Then 'binstubs should be set up' do
