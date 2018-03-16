@@ -25,6 +25,7 @@ Feature: Preparation of a new Rails app (basics generator)
 
     And the configured Rails version should be listed in the Gemfile.lock
     And the file "Gemfile" should contain "gem 'katapult', path: '../../..'"
+    And a file named "Gemfile.lock" should exist
 
     And the file "app/controllers/application_controller.rb" should contain:
     """

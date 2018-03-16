@@ -67,7 +67,11 @@ end
 sleep 1
 puts <<-DEBUG
 
-This script is done. Now you need to fix whatever was broken by the updates.
+This script is done. You'll probably want to update
+  lib/generators/katapult/basics/templates/Gemfile.lock
+with recent versions.
+
+Next, you need to fix whatever was broken by the updates.
 
 The suggested way is to run the following features one by one, fixing issues as
 they occur:

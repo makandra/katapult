@@ -4,6 +4,7 @@
 .config
 .yardoc
 Gemfile.lock
+!lib/generators/katapult/basics/templates/Gemfile.lock
 InstalledFiles
 _yardoc
 coverage

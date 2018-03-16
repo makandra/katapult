@@ -74,14 +74,15 @@ when 'new'
   # Do not use `basics_command` as commit message, it contains the db password!
   util.git_commit 'rails generate katapult:basics', '--quiet'
 
-  util.pink <<-INSTRUCTIONS
+  util.pink <<-'INSTRUCTIONS'
 Application initialization done.
 
 Next steps:
 
+- Run `bundle update` if you want to use the latest versions of all gems
+- Configure public/robots.txt
 - Model your application in lib/katapult/application_model.rb and transform it
   into code by running `katapult fire`
-- Configure public/robots.txt
 - Write a README
   INSTRUCTIONS
 
