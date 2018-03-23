@@ -26,6 +26,10 @@ module Katapult::GeneratorGoodies
     end
   end
 
+  def bundle_exec(command)
+    run 'bundle exec ' + command
+  end
+
   # Override Thor method
   def run(command, config={})
     config[:capture] ||= false # false = return boolean instead of cmd output

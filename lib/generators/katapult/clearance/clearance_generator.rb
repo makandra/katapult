@@ -14,7 +14,7 @@ module Katapult
 
 
       def migrate
-        rake 'db:migrate' # Clearance must see the users table in the db
+        bundle_exec 'rake db:migrate' # Clearance must see the users table
       end
 
       def install_clearance

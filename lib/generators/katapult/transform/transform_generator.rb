@@ -33,9 +33,9 @@ module Katapult
     def remigrate_all_databases
       return if ENV['SKIP_MIGRATIONS'] # Used to speed up tests
 
-      run 'rake db:drop db:create db:migrate'
+      bundle_exec 'rake db:drop db:create db:migrate'
       # See comment to Katapult::BasicsGenerator#create_databases
-      run 'unset RAILS_ENV; rake parallel:drop parallel:create parallel:prepare'
+      run 'unset RAILS_ENV; bundle exec rake parallel:drop parallel:create parallel:prepare'
     end
 
   end
