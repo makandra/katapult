@@ -316,6 +316,14 @@ When debugging test suite speed, `bundle exec cucumber --format usage` is your
 friend.
 
 
+#### Trying Katapult locally
+If you want to try Katapult locally, you can install it to your current Ruby
+version with `rake install`. If you want to run the `katapult` binary without
+installing Katapult, you can do so like this:
+
+    ruby -I katapult/lib katapult/bin/katapult
+
+
 ## Credits
 
 Development: Dominik Schöler from [makandra](makandra.com)<br />
