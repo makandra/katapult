@@ -7,6 +7,11 @@ module RailsHelper
   APP_WITH_BASICS = 'cached_test_app_with_basics'
   PRISTINE_APP = 'cached_pristine_test_app'
 
+  # List of all directories where Katapult tests generate applications
+  APP_DIRECTORIES = [TEST_APP, APP_WITH_BASICS, PRISTINE_APP,
+    'binary_test', # From binary.feature
+  ]
+
   def with_aruba_timeout(timeout, &block)
     original_aruba_timeout = aruba.config.exit_timeout
     aruba.config.exit_timeout = timeout.to_i
