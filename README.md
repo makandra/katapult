@@ -257,9 +257,9 @@ Here's a process for building larger code generation features:
    what you expect.
 2) Run your scenario.
 3) Make a commit inside the generated test application, so you'll have a clean
-   working directory: `script/kta git add --all && script/kta git commit -m 'x'`
+   working directory: `./t git add --all && ./t git commit -m 'x'`
 4) **Tune the generated code to meet your expectations.** Boot a development
-   server with `script/kta rails s` if you like.
+   server with `./t rails s` if you like.
 5) **Finish your test:** Once you've figured how the generated code should look
    like, it's time to write steps that test it. For this purpose, tag your
    scenario with @no-clobber and comment out the model transformation step. This
@@ -289,7 +289,7 @@ logged to your terminal. Note that each step will print all output to date, so
 you will see things multiple times.
 
 To precisely debug errors occurring _inside_ the generated application, use
-`script/kta`. It is a helper script that will execute whatever command you pass
+`./t`. It is a helper script that will execute whatever command you pass
 it, but in the directory of the generated application. While you could cd to the
 test app and run your command there, you'd need to `cd ../../aruba/katapult_test_app`
 after each test run, because the tmp/aruba directory gets wiped before each test.

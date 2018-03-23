@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-# kta = katapult_test_app
 # This script executes its arguments as shell command inside the generated
 # katapult test app directory
 
