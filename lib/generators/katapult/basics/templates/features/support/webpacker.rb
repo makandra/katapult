@@ -3,7 +3,10 @@ module WebpackerHelper
   module_function def compile_once
     digest_file = Rails.root.join("tmp/webpacker_#{Rails.env}_digest")
 
-    packable_contents = Dir[Webpacker.config.source_path.join('**/*')]
+    contents = Dir[Webpacker.config.source_path.join('**/*')]
+    contents << Rails.root.join('yarn.lock')
+
+    packable_contents = contents
       .sort
       .map { |filename| File.read(filename) if File.file?(filename) }
       .join
