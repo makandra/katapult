@@ -184,7 +184,6 @@ end
 
 Then 'Unpoly should be installed' do
   step 'the file "package.json" should contain "unpoly"'
-  step 'a file named "config/webpack/loaders/unpoly.js" should exist'
 
   step %(the file "app/webpack/packs/application.js" should contain "import 'unpoly/dist/unpoly'")
   step %(the file "app/webpack/packs/application.js" should contain "import 'unpoly/dist/unpoly-bootstrap3'")

@@ -275,7 +275,6 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
       def setup_webpacker
         remove_dir 'app/javascript'
         directory WEBPACK_DIR
-        directory 'config/webpack'
 
         gsub_file 'config/webpacker.yml', /^(  source_path:).*$/, '\1 ' + WEBPACK_DIR
         inject_into_file 'config/webpack/environment.js', <<~JQUERY, after: /\A.*\n/ # 1st line
