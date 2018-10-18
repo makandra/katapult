@@ -314,6 +314,10 @@ end
   CONTENT
 end
 
+Then 'Jasmine should be configured' do
+ step 'the file named "jasmine/support/jasmine.yml" should contain'
+end
+
 Then 'initializers should be installed' do
   step 'the file "config/initializers/better_errors.rb" should contain "BetterErrors::ErrorPage.prepend(BetterErrorsHugeInspectWarning)"'
 

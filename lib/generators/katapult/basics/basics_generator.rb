@@ -256,6 +256,12 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         CONTENT
       end
 
+      def install_jasmine
+        generate 'jasmine:install'
+        generate 'jasmine:examples'
+
+      end
+
       def install_capistrano
         # Create Capfile *before* installing Capistrano to prevent annoying
         # Harrow.io ad
