@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ### New Features
 - Deployment ready for Opscomplete
 - Copying view and controller templates over to target application via new
-  command `katapult template` or generator `katapult:templates`.
+  command `katapult templates` or generator `katapult:templates`.
 
 ### Improvements
 - Generating a fixed Gemfile.lock. Run `bundle update` after code generation to
