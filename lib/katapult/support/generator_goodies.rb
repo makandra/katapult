@@ -35,4 +35,10 @@ module Katapult::GeneratorGoodies
     end
   end
 
+  # Override Thor method
+  def rake(command, config = {})
+    command.prepend 'bundle exec rake '
+    run command, config
+  end
+
 end
