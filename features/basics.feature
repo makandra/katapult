@@ -142,95 +142,17 @@ Feature: Preparation of a new Rails app (basics generator)
 
 
     # Lib
-    And the file "lib/ext/active_record/find_by_anything.rb" should contain:
-    """
-    ActiveRecord::Base.class_eval do
-
-      def self.find_by_anything(identifier)
-    """
-    And the file "lib/ext/action_view/spec_label.rb" should contain:
-    """
-    ActionView::Helpers::FormBuilder.class_eval do
-
-      def spec_label(field, text = nil, options = {})
-    """
-    And the file "lib/ext/action_view/form_for_with_development_errors.rb" should contain:
-    """
-    if Rails.env.development?
-
-      ActionView::Helpers::FormHelper.module_eval do
-        def form_for_with_development_errors
-    """
-    And the file "lib/ext/active_record/these.rb" should contain:
-    """
-    ActiveRecord::Base.class_eval do
-
-      def self.these(arg)
-        where(id: arg.collect_ids)
-      end
-    """
-    And the file "lib/ext/array/xss_aware_join.rb" should contain:
-    """
-    Array.class_eval do
-      def xss_aware_join(delimiter = '')
-        ''.html_safe.tap do |str|
-          each_with_index do |element, i|
-            str << delimiter if i > 0
-            str << element
-          end
-        end
-      end
-    end
-    """
-    And the file "lib/ext/enumerable/natural_sort.rb" should contain:
-    """
-    module Enumerable
-
-      def natural_sort
-    """
-    And the file "lib/ext/hash/infinite.rb" should contain:
-    """
-    class Hash
-
-      def self.infinite
-        new { |h, k| h[k] = new(&h.default_proc) }
-      end
-
-    end
-    """
-    And the file "lib/ext/string/html_entities.rb" should contain:
-    """
-    class String
-
-      def self.nbsp
-        ' '
-      end
-
-      def self.ndash
-        '–'
-      end
-
-    end
-    """
-    And the file "lib/ext/string/to_sort_atoms.rb" should contain:
-    """
-    String.class_eval do
-
-      def to_sort_atoms
-        SmartSortAtom.parse(self)
-      end
-
-    end
-    """
-    And the file "lib/tasks/pending_migrations.rake" should contain:
-    """
-          pending_migrations = ActiveRecord::Migrator.new(:up, all_migrations).pending_migrations
-
-          if pending_migrations.any?
-            puts ''
-            puts '======================================================='
-            puts "You have #{ pending_migrations.size } pending migrations:"
-    """
+    And a file "lib/ext/active_record/find_by_anything.rb" should exist
+    And a file "lib/ext/action_view/spec_label.rb" should exist
+    And a file "lib/ext/action_view/form_for_with_development_errors.rb" should exist
+    And a file "lib/ext/active_record/these.rb" should exist
+    And a file "lib/ext/array/xss_aware_join.rb" should exist
+    And a file "lib/ext/enumerable/natural_sort.rb" should exist
+    And a file "lib/ext/hash/infinite.rb" should exist
+    And the file "lib/ext/string/html_entities.rb" should contain "def self.nbsp"
+    And the file "lib/ext/string/html_entities.rb" should contain "def self.ndash"
+    And a file "lib/ext/string/to_sort_atoms.rb" should exist
+    And a file "lib/tasks/pending_migrations.rake" should exist
 
 
     # Tests
