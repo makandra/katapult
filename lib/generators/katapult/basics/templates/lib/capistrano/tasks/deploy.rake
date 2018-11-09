@@ -1,8 +1,4 @@
 namespace :deploy do
-  desc 'Restart application'
-  task :restart do
-    invoke 'passenger:restart'
-  end
 
   desc 'Show deployed revision'
   task :revision do
@@ -12,4 +8,5 @@ namespace :deploy do
       end
     end
   end
+
 end

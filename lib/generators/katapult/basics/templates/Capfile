@@ -4,6 +4,10 @@ require 'capistrano/setup'
 # Include default deployment tasks
 require 'capistrano/deploy'
 
+# Configure Opscomplete deployment
+require 'capistrano/opscomplete'
+require 'capistrano/passenger'
+
 # Use Git
 require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git
@@ -23,6 +27,7 @@ Dir.glob('lib/capistrano/tasks/*.rake').sort.each do |r|
 end
 
 before 'deploy:updating', 'db:dump'
+after 'deploy:updating', 'opscomplete:ruby:ensure'
 after 'deploy:published', 'deploy:restart'
 after 'deploy:published', 'db:warn_if_pending_migrations'
 after 'deploy:published', 'db:show_dump_usage'

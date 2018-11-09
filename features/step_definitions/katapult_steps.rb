@@ -45,12 +45,24 @@ end
 After { ENV.delete 'SKIP_MIGRATIONS' }
 
 Then 'Capistrano should be configured' do
+  steps %(
+    And the file "Gemfile" should contain "capistrano-rails"
+    And the file "Gemfile" should contain "capistrano-bundler"
+    And the file "Gemfile" should contain "capistrano-maintenance"
+    And the file "Gemfile" should contain "capistrano-opscomplete"
+    And the file "Gemfile" should contain "capistrano-passenger"
+  )
+
   step 'the file "Capfile" should contain:', <<-CONTENT
 # Load DSL and set up stages
 require 'capistrano/setup'
 
 # Include default deployment tasks
 require 'capistrano/deploy'
+
+# Configure Opscomplete deployment
+require 'capistrano/opscomplete'
+require 'capistrano/passenger'
 
 # Use Git
 require 'capistrano/scm/git'
@@ -71,6 +83,7 @@ Dir.glob('lib/capistrano/tasks/*.rake').sort.each do |r|
 end
 
 before 'deploy:updating', 'db:dump'
+after 'deploy:updating', 'opscomplete:ruby:ensure'
 after 'deploy:published', 'deploy:restart'
 after 'deploy:published', 'db:warn_if_pending_migrations'
 after 'deploy:published', 'db:show_dump_usage'
@@ -117,7 +130,7 @@ set :deploy_to, '/var/www/katapult_test_app-staging'
 set :rails_env, 'staging'
 set :branch, ENV['DEPLOY_BRANCH'] || 'master'
 
-# server 'example.com', user: 'deploy-user', roles: %w(app web cron db)
+# server 'example.com', user: 'deploy-user', roles: %w[app web cron db]
 CONTENT
 
   step 'the file "config/deploy/production.rb" should contain exactly:', <<-CONTENT
@@ -127,13 +140,12 @@ set :deploy_to, '/var/www/katapult_test_app'
 set :rails_env, 'production'
 set :branch, 'production'
 
-# server 'one.example.com', user: 'deploy-user', roles: %w(app web cron db)
-# server 'two.example.com', user: 'deploy-user', roles: %w(app web)
+# server 'one.example.com', user: 'deploy-user', roles: %w[app web cron db]
+# server 'two.example.com', user: 'deploy-user', roles: %w[app web]
 CONTENT
 
   step 'the file "lib/capistrano/tasks/db.rake" should contain ":warn_if_pending_migrations"'
   step 'the file "lib/capistrano/tasks/deploy.rake" should contain "Show deployed revision"'
-  step 'the file "lib/capistrano/tasks/passenger.rake" should contain "Restart Application"'
 
 end
 

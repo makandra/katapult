@@ -71,4 +71,6 @@ group :deploy do
   gem 'capistrano-rails', require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-maintenance'
+  gem 'capistrano-opscomplete'
+  gem 'capistrano-passenger'
 end
