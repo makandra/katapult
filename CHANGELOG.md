@@ -6,7 +6,7 @@ segmented into: New Features / Improvements.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## 0.5.0
+## 0.5.0 - 2018-11-09
 
 ### New Features
 - Deployment ready for Opscomplete
