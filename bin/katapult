@@ -3,8 +3,6 @@
 # This script simplifies the usage of `katapult` by grouping relevant actions
 # that the user else had to perform manually.
 
-usage = 'Usage: katapult new APP_NAME | fire [path/to/model] | version'
-
 require_relative '../lib/katapult/version'
 require_relative '../lib/katapult/support/binary_util'
 util = Katapult::BinaryUtil
@@ -34,6 +32,25 @@ Your current Ruby (#{current_ruby})
 is not supported by this version of katapult.
 Please switch to Ruby #{supported_ruby} and run again.
 MSG
+
+# Prepare output ###############################################################
+
+# This is also used as README heading
+version = <<-VERSION
+Katapult #{Katapult::VERSION}
+Generating a Rails #{Katapult::RAILS_VERSION} app on Ruby #{Katapult::RUBY_VERSION}.
+VERSION
+
+usage = <<-USAGE
+Usage: katapult <command>
+
+Commands:
+new APP_NAME    Generate a configured Rails application
+fire [PATH]     Transform application model into code
+                Default path: lib/katapult/application_model.rb
+templates       Copy templates to lib/templates/katapult
+version         Print version
+USAGE
 
 
 case ARGV.shift
@@ -74,17 +91,19 @@ when 'new'
   # Do not use `basics_command` as commit message, it contains the db password!
   util.git_commit 'rails generate katapult:basics', '--quiet'
 
-  util.pink <<-'INSTRUCTIONS'
+  util.pink <<-INSTRUCTIONS
 Application initialization done.
 
 Next steps:
-
-- Run `bundle update` if you want to use the latest versions of all gems
-- Configure public/robots.txt
+- \`cd #{app_name}\`
+- Customize Katapult's template files in lib/templates/katapult
 - Model your application in lib/katapult/application_model.rb and transform it
-  into code by running `katapult fire`
+  into code by running \`katapult fire\`
+- Run \`bundle update\` if you want to use the latest versions of all gems
+- Configure public/robots.txt
 - Write a README
   INSTRUCTIONS
+
 
 when 'fire'
   app_model_path = ARGV.shift || 'lib/katapult/application_model.rb'
@@ -103,13 +122,18 @@ Now boot up your development server (e.g. with `rails server`) and try your
 kickstarted application in the browser!
   INSTRUCTIONS
 
-when 'version', '-v'
-  # This output is also used as README heading
-  puts <<-VERSION
-Katapult #{Katapult::VERSION}
-Generating a Rails #{Katapult::RAILS_VERSION} app on Ruby #{Katapult::RUBY_VERSION}.
-  VERSION
+
+when 'templates'
+  util.run 'bundle exec rails generate katapult:templates'
+  util.pink 'Templates copied to lib/templates/katapult.'
+
+
+when 'version'
+  puts version
+
 
 else
+  puts version
+  puts
   puts usage
 end

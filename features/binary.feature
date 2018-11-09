@@ -4,7 +4,17 @@ Feature: Katapult binary `katapult`
 
   Scenario: Run without arguments
     When I run `katapult`
-    Then the output should contain "Usage: katapult new APP_NAME | fire [path/to/model] | version"
+    Then the output should contain:
+    """
+    Usage: katapult <command>
+
+    Commands:
+    new APP_NAME    Generate a configured Rails application
+    fire [PATH]     Transform application model into code
+                    Default path: lib/katapult/application_model.rb
+    templates       Copy templates to lib/templates/katapult
+    version         Print version
+    """
 
 
   Scenario: Print versions
@@ -50,10 +60,12 @@ Feature: Katapult binary `katapult`
       And the output should contain "Generating katapult basics"
 
       And the output should contain "Application initialization done."
+      And the output should contain "cd binary_test"
       And the output should contain "Model your application in lib/katapult/application_model.rb"
       And the output should contain "Configure public/robots.txt"
       And the output should contain "Write a README"
       And the output should contain "Run `bundle update`"
+      And the output should contain "Customize Katapult's template files"
 
     When I cd to "binary_test"
     Then the file "Gemfile" should contain "gem 'katapult'"
