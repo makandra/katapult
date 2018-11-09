@@ -51,6 +51,10 @@ Feature: Katapult binary `katapult`
 
 #  @announce-output
   Scenario: Start new Rails application
+
+    This scenario is particularly prone to "Spring zombies". If it fails, make
+    sure there are no broken Spring instances (see README).
+
     # Rails new including yarn install + installing basics takes quite some time
     Given the aruba exit timeout is 90 seconds
 
