@@ -164,6 +164,10 @@ config.time_zone = 'Berlin'
         directory 'app/helpers'
       end
 
+      def prepare_application_record
+        template 'app/models/application_record.rb', force: true
+      end
+
       def install_errors_controller
         template 'app/controllers/errors_controller.rb'
         route 'resources :errors, only: :new'

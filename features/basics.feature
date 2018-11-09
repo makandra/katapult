@@ -64,6 +64,9 @@ Feature: Preparation of a new Rails app (basics generator)
     And binstubs should be set up
 
 
+    And the file "app/models/application_record.rb" should contain "def these"
+    And the file "app/models/application_record.rb" should contain "def find_by_anything"
+
     # Config
     And the file "config/application.rb" should contain "config.time_zone = 'Berlin'"
     And the file "config/application.rb" should contain "config.system_email = 'system@katapult_test_app.com'"
@@ -144,10 +147,8 @@ Feature: Preparation of a new Rails app (basics generator)
     # Lib
     And Katapult templates should have been copied to the application
 
-    And a file "lib/ext/active_record/find_by_anything.rb" should exist
     And a file "lib/ext/action_view/spec_label.rb" should exist
     And a file "lib/ext/action_view/form_for_with_development_errors.rb" should exist
-    And a file "lib/ext/active_record/these.rb" should exist
     And a file "lib/ext/array/xss_aware_join.rb" should exist
     And a file "lib/ext/enumerable/natural_sort.rb" should exist
     And a file "lib/ext/hash/infinite.rb" should exist
