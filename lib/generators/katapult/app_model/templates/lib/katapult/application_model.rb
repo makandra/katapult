@@ -2,8 +2,8 @@
 # by the full-fledged example below (which you can generate right away).
 
 # Define a model + generate views with CRUD actions
-# Since this generates the first web UI with an index action, the products list
-# will become the home page of the generated app
+# The products list will become the home page of the generated app, because it
+# (implicitly) defines the first index action.
 crud 'product' do |product|
   # The first attribute of each model is taken as a human identifier/label
   product.attr :title # Default type "string"
