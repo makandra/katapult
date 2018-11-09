@@ -136,6 +136,7 @@ Feature: Preparation of a new Rails app (basics generator)
       require filename
     end
     """
+    And a file "config/schedule.rb" should exist
     And the file "config/secrets.yml" should contain:
     """
     staging:

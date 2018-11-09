@@ -277,6 +277,9 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
 
         directory 'lib/capistrano/tasks'
         template 'lib/tasks/pending_migrations.rake'
+
+        # Whenever needs this file for deployment
+        create_file 'config/schedule.rb'
       end
 
       def setup_webpacker
