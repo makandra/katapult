@@ -19,7 +19,7 @@ task :update_readme do
 
   readme = File.read readme_path
   readme.sub! /\A# Katapult.*\nGenerating.*\n/, '# ' + `bin/katapult version`
-  readme.sub! /(required Ruby version is )[\d\.]+\d/, "\\1#{Katapult::RUBY_VERSION}"
+  readme.sub! /(required .Ruby. version is )[\d\.]+\d/, "\\1#{Katapult::RUBY_VERSION}"
 
   File.open readme_path, 'w' do |f|
     f.write readme
