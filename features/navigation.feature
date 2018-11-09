@@ -65,3 +65,5 @@ Feature: Navigation
       """
       root 'customers#index'
       """
+    But a file "app/views/layouts/_navigation.html.haml" should not exist
+    And the file "app/views/layouts/_menu_bar.html.haml" should not contain "render 'layouts/navigation"

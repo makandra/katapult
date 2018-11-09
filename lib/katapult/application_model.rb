@@ -11,7 +11,7 @@ module Katapult
 
     NotFound = Class.new(StandardError)
 
-    attr_reader :models, :web_uis, :navigation, :authentication, :associations
+    attr_reader :models, :web_uis, :nav, :authentication, :associations
 
     def self.parse(application_model_string, path_to_model = '')
       new.tap do |model|
@@ -38,7 +38,7 @@ module Katapult
 
     # DSL
     def navigation(name = :main)
-      @navigation = Navigation.new(name, application_model: self)
+      @nav = Navigation.new(name, application_model: self)
     end
 
     # DSL
@@ -83,7 +83,7 @@ module Katapult
 
       models.each { |m| m.render(options) }
       web_uis.each { |w| w.render(options) }
-      navigation.render(options) if navigation
+      nav.render(options) if nav
       authentication.render(options) if authentication
     end
 
