@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Unreleased
 
+### Changed
+- Generating a fixed Gemfile.lock. Run `bundle update` after code generation to
+  update all gems to recent versions.
+- Some minor fixes
+
+## 0.4.1 - 2018-02-16
+- Minor fixes and improvements
+
 ### Compatible changes
 - Changed CHANGELOG to satisfy [How to write a good changelog](https://makandracards.com/makandra/54223-how-to-write-a-good-changelog) format
 
