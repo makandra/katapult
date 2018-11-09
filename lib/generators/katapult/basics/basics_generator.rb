@@ -177,6 +177,9 @@ config.time_zone = 'Berlin'
         directory 'lib/ext'
       end
 
+      def copy_templates
+        invoke 'katapult:templates'
+      end
 
       # Configure 3rd party ####################################################
 

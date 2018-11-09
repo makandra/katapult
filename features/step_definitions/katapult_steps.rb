@@ -331,3 +331,15 @@ Then 'the errors controller should be installed' do
   step 'a file named "app/controllers/errors_controller.rb" should exist'
   step 'the file "config/routes.rb" should contain "resources :errors, only: :new"'
 end
+
+Then 'Katapult templates should have been copied to the application' do
+  steps %(
+    And a file "lib/templates/katapult/views/index.html.haml" should exist
+    And a file "lib/templates/katapult/views/show.html.haml" should exist
+    And a file "lib/templates/katapult/views/new.html.haml" should exist
+    And a file "lib/templates/katapult/views/edit.html.haml" should exist
+    And a file "lib/templates/katapult/views/_form.html.haml" should exist
+
+    And a file "lib/templates/katapult/web_ui/controller.rb" should exist
+  )
+end

@@ -103,10 +103,10 @@ Feature: Katapult binary `katapult`
     """
     model 'custom'
     """
-    And I run `katapult fire lib/katapult/custom_model.rb`
+      And I run `katapult fire lib/katapult/custom_model.rb`
     Then the output should contain "Loading katapult"
-    And the output should contain "parse  lib/katapult/custom_model"
-    And a file named "app/models/custom.rb" should exist
+      And the output should contain "parse  lib/katapult/custom_model"
+      And a file named "app/models/custom.rb" should exist
 
 
   Scenario: When the transformation fails, an error message is printed
@@ -121,3 +121,14 @@ Feature: Katapult binary `katapult`
     And I run `katapult fire`
     Then the output should not contain "Model transformation done"
     But the output should contain "x Something went wrong"
+
+
+  Scenario: Copying templates to the application
+    Given a pristine Rails application
+
+    When I install katapult
+    Then a directory named "lib/templates/katapult" should not exist
+
+    When I run `katapult templates`
+    Then a directory named "lib/templates/katapult" should exist
+      And Katapult templates should have been copied to the application
