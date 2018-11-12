@@ -1,0 +1,107 @@
+From 99f82080cef3a9989661b96e3607990152b3cd51 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Dominik=20Sch=C3=B6ler?= <dominik.schoeler@makandra.de>
+Date: Mon, 12 Nov 2018 17:55:29 +0100
+Subject: [PATCH] wip
+
+---
+ app/controllers/jasmine_controller.rb      |  8 ++++++++
+ app/views/jasmine/run.html.haml            |  0
+ app/views/layouts/jasmine.html.haml        | 23 +++++++++++++++++++++++
+ config/routes.rb                           |  3 +++
+ features/jasmine.feature                   |  6 ++++++
+ features/step_definitions/jasmine_steps.rb |  9 +++++++++
+ 6 files changed, 49 insertions(+)
+ create mode 100644 app/controllers/jasmine_controller.rb
+ create mode 100644 app/views/jasmine/run.html.haml
+ create mode 100644 app/views/layouts/jasmine.html.haml
+ create mode 100644 features/jasmine.feature
+ create mode 100644 features/step_definitions/jasmine_steps.rb
+
+diff --git a/app/controllers/jasmine_controller.rb b/app/controllers/jasmine_controller.rb
+new file mode 100644
+index 0000000..e8d1920
+--- /dev/null
++++ b/app/controllers/jasmine_controller.rb
+@@ -0,0 +1,8 @@
++class JasmineController < ApplicationController
++
++  layout 'jasmine'
++  
++  def run
++  end
++
++end
+diff --git a/app/views/jasmine/run.html.haml b/app/views/jasmine/run.html.haml
+new file mode 100644
+index 0000000..e69de29
+diff --git a/app/views/layouts/jasmine.html.haml b/app/views/layouts/jasmine.html.haml
+new file mode 100644
+index 0000000..0067462
+--- /dev/null
++++ b/app/views/layouts/jasmine.html.haml
+@@ -0,0 +1,23 @@
++!!!
++%html
++
++  %head
++    %meta(charset='utf-8')
++    %meta(http-equiv='x-ua-compatible' content='ie=edge')
++    %meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
++
++    %link(rel='shortcut icon' type='image/png' href='jasmine/lib/jasmine-3.1.0/jasmine_favicion.png')
++    %link(rel='stylesheet' type='text/css' href='jasmine/lib/jasmine-3.1.0/jasmine.css')
++
++    %title
++      Jasmine Test Runner
++
++    = javascript_pack_tag 'application'
++    = stylesheet_pack_tag 'application'
++
++  %body{ data: {env: Rails.env} }
++    = yield
++
++    %script(type='text/javascript' src='jasmine/lib/jasmine-3.1.0/jasmine.js')
++    %script(type='text/javascript' src='jasmine/lib/jasmine-3.1.0/jasmine-hmtl.js')
++    %script(type='text/javascript' src='jasmine/lib/jasmine-3.1.0/boot.js')
+diff --git a/config/routes.rb b/config/routes.rb
+index f643d84..302552f 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -1,4 +1,7 @@
+ Rails.application.routes.draw do
++  get '/jasmine', to: 'jasmine#run'
++  root to: 'jasmine#run'
++  
+   resources :errors, only: :new
+   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+ end
+diff --git a/features/jasmine.feature b/features/jasmine.feature
+new file mode 100644
+index 0000000..10c468e
+--- /dev/null
++++ b/features/jasmine.feature
+@@ -0,0 +1,6 @@
++@javascript
++Feature: Run Jasmine specs
++
++  Scenario: Run javascript unit tests with Jasmine
++    When I run jasmine tests
++    Then all specs should have passed
+diff --git a/features/step_definitions/jasmine_steps.rb b/features/step_definitions/jasmine_steps.rb
+new file mode 100644
+index 0000000..6eded58
+--- /dev/null
++++ b/features/step_definitions/jasmine_steps.rb
+@@ -0,0 +1,9 @@
++When 'I run jasmine tests' do
++  visit jasmine_path
++end
++
++Then 'all specs should have passed' do
++  page.should have_content('finished in') # Wait for all tests to finish
++  page.should_not have_css('.jasmine-failed .jasmine-description') # Better error messages
++  page.should have_css('.jasmine-bar.jasmine-passed') # Safer check
++end
+-- 
+2.7.4
+
