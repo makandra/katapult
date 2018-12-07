@@ -72,5 +72,15 @@ module Katapult
       string.gsub(/([a-z])([A-Z])/,'\1_\2').downcase
     end
 
+    def install_katapult
+      File.open('Gemfile', 'a') do |file|
+        file.puts "gem 'katapult', '#{ Katapult::VERSION }', group: :development #{ ENV['KATAPULT_GEMFILE_OPTIONS'] }"
+      end
+      # "update rails" ensures the application uses the Rails version that
+      # katapult requires (the default Gemfile listed Rails with ~>, meaning the
+      # patch level may mismatch). It also installs katapult.
+      run 'bundle update rails --quiet'
+    end
+
   end
 end

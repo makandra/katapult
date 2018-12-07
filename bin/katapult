@@ -46,9 +46,9 @@ Usage: katapult <command>
 
 Commands:
 new APP_NAME    Generate a configured Rails application
+enhance         Prepare an existing Rails application for code generation
 fire [PATH]     Transform application model into code
-                Default path: lib/katapult/application_model.rb
-templates       Copy templates to lib/templates/katapult
+                Default PATH: lib/katapult/application_model.rb
 version         Print version
 USAGE
 
@@ -59,7 +59,7 @@ when 'new'
   app_name = util.snake_case(app_name)
   puts "Normalized application name: #{app_name}" if options[:verbose]
 
-  # Any options that haven't be passed via command line should be asked for
+  # Any options that haven't been passed via command line should be asked for
   options[:dbuser] ||= util.ask 'Please enter the database user:'
   options[:dbpass] ||= util.ask 'Please enter the database password:'
 
@@ -76,13 +76,7 @@ when 'new'
   util.git_commit "rails new #{ app_name }", '--quiet'
 
   util.pink 'Installing katapult ...'
-  File.open('Gemfile', 'a') do |file|
-    file.puts "gem 'katapult', '#{ Katapult::VERSION }', group: :development #{ ENV['KATAPULT_GEMFILE_OPTIONS'] }"
-  end
-  # "update rails" ensures the application uses the Rails version that katapult
-  # requires (the default Gemfile lists Rails with ~>, meaning the patch level
-  # may mismatch). It also installs katapult.
-  util.run 'bundle update rails --quiet'
+  util.install_katapult
   util.run 'bundle exec rails generate katapult:app_model'
   util.git_commit 'rails generate katapult:app_model', '--quiet'
 
@@ -102,7 +96,28 @@ Next steps:
 - Run \`bundle update\` if you want to use the latest versions of all gems
 - Configure public/robots.txt
 - Write a README
-  INSTRUCTIONS
+INSTRUCTIONS
+
+
+when 'enhance'
+  util.pink 'Installing katapult ...'
+  util.install_katapult
+  util.run 'bundle exec rails generate katapult:app_model'
+  util.git_commit 'rails generate katapult:app_model', '--quiet'
+
+  util.pink 'Copying template files to lib/templates ...'
+  templates_command = 'rails generate katapult:templates'
+  util.run 'bundle exec ' + templates_command
+  util.git_commit templates_command, '--quiet'
+
+  util.pink <<-INSTRUCTIONS
+Installation of Katapult completed.
+
+Next steps:
+- Customize Katapult's template files in lib/templates/katapult
+- Model your application in lib/katapult/application_model.rb and transform it
+  into code by running \`katapult fire\`
+INSTRUCTIONS
 
 
 when 'fire'
@@ -121,11 +136,6 @@ Model transformation done.
 Now boot up your development server (e.g. with `rails server`) and try your
 kickstarted application in the browser!
   INSTRUCTIONS
-
-
-when 'templates'
-  util.run 'bundle exec rails generate katapult:templates'
-  util.pink 'Templates copied to lib/templates/katapult.'
 
 
 when 'version'

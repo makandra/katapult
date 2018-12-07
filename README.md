@@ -1,4 +1,4 @@
-# Katapult 0.5.0
+# Katapult 0.6.0
 Generating a Rails 5.1.4 app on Ruby 2.5.0.
 
 <img src="katapult.png" width="200px" align="right" />
@@ -35,7 +35,7 @@ When you're using the `katapult` binary (you should), you'll also need *Git*.
 There are two usage scenarios for Katapult:
 
 1. Starting a fresh Rails application
-2. Extending an existing Rails application
+2. Enhancing an existing Rails application
 
 Choose your use case and read on below.
 
@@ -75,43 +75,28 @@ When this is done, your application is ready to use! Start a development
 server and try it out.
 
 
-## Extending an existing Rails application
+## Enhancing an existing Rails application
 
 You can use Katapult for code generation in an existing application as well.
 
-First, add Katapult to the development group in your Gemfile:
-```
-  gem 'katapult'
-```
+`cd` to the project root and run
 
-Next, generate the default application model:
+    katapult enhance
 
-```
-bundle exec rails generate katapult:app_model
-```
+This will install Katapult, generate the default application model, and copy
+some of Katapult's templates over to `lib/templates/katapult`.
 
 You'll find the application model at `lib/katapult/application_model.rb`. It
 contains a full example of Katapult's features: Use it as an inspiration for
-modeling your own application. (When you're used to the application model DSL,
-you don't need to generate the default model. Just create a Ruby file and start
-modeling.)
+modeling your own application.
 
-Next, copy Katapult's template files to your application:
-
-```
-katapult templates
-```
-
-This will copy some of Katapult's file templates to `lib/templates/katapult`.
-Modify them, especially the view templates, to match the current state of your
-application. You can customize even more templates, see the "Starting …" section
-above.
+Modify the templates in `lib/templates` to match the current state of your
+application. You can customize even more templates than these few (see the
+"Starting" section above).
 
 When model and templates are ready, trigger code generation with:
 
-```
-katapult fire path/to/your_model.rb
-```
+    katapult fire
 
 
 ## DSL reference

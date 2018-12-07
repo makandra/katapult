@@ -5,6 +5,13 @@ segmented into: New Features / Improvements.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.6.0 - 2018-11-09
+
+### New Features
+- Turned `katapult templates` command into `katapult enhance`. It will now
+  perform all required steps for enhancing an existing application: install
+  Katapult, generate an application model, and copy over Katapult's templates.
+
 
 ## 0.5.0 - 2018-11-09
 
@@ -21,11 +28,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - "Usage" section in README rewritten
 - Some minor fixes
 
+
 ## 0.4.1 - 2018-02-16
 
 ### Improvements
 - Changed CHANGELOG to satisfy [How to write a good changelog](https://makandracards.com/makandra/54223-how-to-write-a-good-changelog) format
 - Minor fixes and improvements
+
 
 ## 0.4.0 - 2018-01-15
 
@@ -34,6 +43,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Create a project README
 - New CHANGELOG
 - Models now inherit from `ApplicationRecord`
+
 
 ## 0.3.0 2018-01-11
 

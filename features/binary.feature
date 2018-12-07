@@ -10,9 +10,9 @@ Feature: Katapult binary `katapult`
 
     Commands:
     new APP_NAME    Generate a configured Rails application
+    enhance         Prepare an existing Rails application for code generation
     fire [PATH]     Transform application model into code
-                    Default path: lib/katapult/application_model.rb
-    templates       Copy templates to lib/templates/katapult
+                    Default PATH: lib/katapult/application_model.rb
     version         Print version
     """
 
@@ -75,6 +75,7 @@ Feature: Katapult binary `katapult`
     Then the file "Gemfile" should contain "gem 'katapult'"
       And the configured Rails version should be listed in the Gemfile.lock
       And a file named "lib/katapult/application_model.rb" should exist
+      And Katapult templates should have been copied to the application
 
       And the file "config/database.yml" should contain "username: katapult"
       And the file "config/database.yml" should contain "password: secret"
@@ -139,12 +140,25 @@ Feature: Katapult binary `katapult`
     But the output should contain "x Something went wrong"
 
 
-  Scenario: Copying templates to the application
+  Scenario: Enhancing an existing application
     Given a pristine Rails application
+      And the aruba exit timeout is 20 seconds
 
-    When I install katapult
-    Then a directory named "lib/templates/katapult" should not exist
+    When I run `katapult enhance`
+    Then the file "Gemfile" should contain "gem 'katapult'"
 
-    When I run `katapult templates`
-    Then a directory named "lib/templates/katapult" should exist
+      And the output should contain "Installing katapult"
+      And the output should contain "Copying template files"
+
+      And the output should contain "Installation of Katapult completed"
+      And the output should contain "Customize Katapult's template files"
+      And the output should contain "Model your application in lib/katapult/application_model.rb"
+
+      And the file "Gemfile" should contain "gem 'katapult'"
+      And a file named "lib/katapult/application_model.rb" should exist
       And Katapult templates should have been copied to the application
+
+    When I run `git log`
+      And the output should contain "rails generate katapult:app_model"
+      And the output should contain "rails generate katapult:templates"
+      And the output should contain "Author: katapult <katapult@makandra.com>"
