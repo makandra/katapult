@@ -1,7 +1,6 @@
 # Katapult 0.6.0
 Generating a Rails 5.1.4 app on Ruby 2.5.0.
 
-<img src="katapult.png" width="200px" align="right" />
 
 
 Katapult is a kickstart generator for Rails. It prepares a new

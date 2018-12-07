@@ -21,18 +21,6 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-# Check Ruby version ###########################################################
-supported_ruby = Katapult::RUBY_VERSION
-current_ruby = `ruby -v`.chomp # Long version string à la "ruby 2.5.0p0 ..."
-
-current_ruby.include?(supported_ruby) or util.fail <<-MSG
-Ruby version error
-
-Your current Ruby (#{current_ruby})
-is not supported by this version of katapult.
-Please switch to Ruby #{supported_ruby} and run again.
-MSG
-
 # Prepare output ###############################################################
 
 # This is also used as README heading
@@ -55,6 +43,16 @@ USAGE
 
 case ARGV.shift
 when 'new'
+  supported_ruby = Katapult::RUBY_VERSION
+  current_ruby = `ruby -v`.chomp # Long version string à la "ruby 2.5.0p0 ..."
+  current_ruby.include?(supported_ruby) or util.fail <<-MSG
+Ruby version error
+
+Your current Ruby (#{current_ruby})
+is not supported by this version of katapult.
+Please switch to Ruby #{supported_ruby} and run again.
+  MSG
+
   app_name = ARGV.shift || util.ask('Please enter the application name:')
   app_name = util.snake_case(app_name)
   puts "Normalized application name: #{app_name}" if options[:verbose]
@@ -67,6 +65,8 @@ when 'new'
   basics_command << ' --db-user ' << options[:dbuser]
   basics_command << ' --db-password ' << options[:dbpass]
 
+
+  # Go #########################################################################
   util.pink "Creating new Rails application in #{app_name} ..."
   util.create_rails_app app_name
   Dir.chdir app_name
@@ -101,7 +101,7 @@ INSTRUCTIONS
 
 when 'enhance'
   util.pink 'Installing katapult ...'
-  util.install_katapult
+  util.install_katapult(update_rails: false)
   util.run 'bundle exec rails generate katapult:app_model'
   util.git_commit 'rails generate katapult:app_model', '--quiet'
 
