@@ -90,7 +90,7 @@ You'll find the application model at `lib/katapult/application_model.rb`. It
 contains a full example of Katapult's features: Use it as an inspiration for
 modeling your own application.
 
-Modify the templates in `lib/templates` to match the current state of your
+Edit the templates in `lib/templates` to match the current state of your
 application. You can customize even more templates than these few (see the
 "Starting" section above).
 

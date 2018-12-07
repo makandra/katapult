@@ -11,6 +11,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - Turned `katapult templates` command into `katapult enhance`. It will now
   perform all required steps for enhancing an existing application: install
   Katapult, generate an application model, and copy over Katapult's templates.
+- Enhancing an application multiple times will not generate file conflicts.
+  Katapult will leave existing templates untouched and only generate missing
+  files. It will also respect existing application models and generate new ones
+  with a counter.
 
 
 ## 0.5.0 - 2018-11-09

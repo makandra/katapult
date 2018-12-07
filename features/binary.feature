@@ -162,3 +162,38 @@ Feature: Katapult binary `katapult`
       And the output should contain "rails generate katapult:app_model"
       And the output should contain "rails generate katapult:templates"
       And the output should contain "Author: katapult <katapult@makandra.com>"
+
+
+#  @announce-stdout
+  Scenario: Enhancing an existing application again
+
+    Enhancing an application that has already been run through Katapult, nothing
+    should be overwritten. Instead, Katapult should generate a new application
+    model file and leave existing templates untouched.
+
+    Given a pristine Rails application
+      And the aruba exit timeout is 20 seconds
+
+    When I run `katapult enhance`
+    Then a file named "lib/templates/katapult/views/index.html.haml" should exist
+
+    # Modify files
+    When I write to "lib/katapult/application_model.rb" with:
+      """
+      custom
+      """
+      And I write to "lib/templates/katapult/views/index.html.haml" with:
+      """
+      geändert
+      """
+      And I remove the file "lib/templates/katapult/views/show.html.haml"
+
+    # Enhance again
+    When I run `katapult enhance`
+    Then the file "lib/katapult/application_model.rb" should contain "custom"
+      And a file "lib/katapult/application_model2.rb" should exist
+
+      # Existing template untouched …
+      And the file "lib/templates/katapult/views/index.html.haml" should contain "geändert"
+      # … but missing template created
+      And the file "lib/templates/katapult/views/show.html.haml" should exist

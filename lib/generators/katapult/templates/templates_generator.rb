@@ -27,7 +27,8 @@ module Katapult
         source = File.join generator_name, 'templates', filename
         destination = File.join 'lib/templates/katapult', generator_name, filename
 
-        copy_file source, destination
+        copy_file source, destination,
+          skip: true # If existing; do not overwrite user templates
       end
     end
 

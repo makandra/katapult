@@ -20,3 +20,20 @@ Feature: The default application model prepared by Katapult
 
     When I run rspec
     Then the specs should pass
+
+
+  Scenario: Generating a second application model
+
+    An existing application model should not be overwritten.
+
+    Given a new Rails application with Katapult basics installed
+
+    When I generate the application model
+    Then the file "lib/katapult/application_model.rb" should exist
+
+    When I generate the application model
+    Then a file "lib/katapult/application_model2.rb" should exist
+
+    Given a file "lib/katapult/application_model42.rb" with "many"
+    When I generate the application model
+    Then a file "lib/katapult/application_model43.rb" should exist
