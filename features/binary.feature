@@ -60,8 +60,8 @@ Feature: Katapult binary `katapult`
 
     When I successfully run `katapult new binary_test -u katapult -p secret`
     Then the output should contain "Creating new Rails application"
-      And the output should contain "Installing katapult"
-      And the output should contain "Generating katapult basics"
+      And the output should contain "Installing Katapult"
+      And the output should contain "Generating Katapult basics"
 
       And the output should contain "Application initialization done."
       And the output should contain "cd binary_test"
@@ -96,7 +96,7 @@ Feature: Katapult binary `katapult`
 
     When I generate the application model
       And I run `katapult fire`
-    Then the output should contain "Loading katapult"
+    Then the output should contain "Loading Katapult"
     And the output should contain "parse  lib/katapult/application_model"
     And the output should contain "render  into katapult_test_app"
 
@@ -121,7 +121,7 @@ Feature: Katapult binary `katapult`
     model 'custom'
     """
       And I run `katapult fire lib/katapult/custom_model.rb`
-    Then the output should contain "Loading katapult"
+    Then the output should contain "Loading Katapult"
       And the output should contain "parse  lib/katapult/custom_model"
       And a file named "app/models/custom.rb" should exist
 
@@ -147,7 +147,7 @@ Feature: Katapult binary `katapult`
     When I run `katapult enhance`
     Then the file "Gemfile" should contain "gem 'katapult'"
 
-      And the output should contain "Installing katapult"
+      And the output should contain "Installing Katapult"
       And the output should contain "Copying template files"
 
       And the output should contain "Installation of Katapult completed"
@@ -159,7 +159,8 @@ Feature: Katapult binary `katapult`
       And Katapult templates should have been copied to the application
 
     When I run `git log`
-      And the output should contain "rails generate katapult:app_model"
+      And the output should contain "(before katapult enhance)"
+      And the output should contain "Install Katapult"
       And the output should contain "rails generate katapult:templates"
       And the output should contain "Author: katapult <katapult@makandra.com>"
 

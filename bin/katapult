@@ -75,12 +75,12 @@ Please switch to Ruby #{supported_ruby} and run again.
   util.run 'git init --quiet'
   util.git_commit "rails new #{ app_name }", '--quiet'
 
-  util.pink 'Installing katapult ...'
+  util.pink 'Installing Katapult ...'
   util.install_katapult
   util.run 'bundle exec rails generate katapult:app_model'
   util.git_commit 'rails generate katapult:app_model', '--quiet'
 
-  util.pink 'Generating katapult basics ...'
+  util.pink 'Generating Katapult basics ...'
   util.run basics_command
   # Do not use `basics_command` as commit message, it contains the db password!
   util.git_commit 'rails generate katapult:basics', '--quiet'
@@ -100,10 +100,12 @@ INSTRUCTIONS
 
 
 when 'enhance'
-  util.pink 'Installing katapult ...'
+  util.git_commit '(before katapult enhance)'
+
+  util.pink 'Installing Katapult ...'
   util.install_katapult(update_rails: false)
   util.run 'bundle exec rails generate katapult:app_model'
-  util.git_commit 'rails generate katapult:app_model', '--quiet'
+  util.git_commit 'Install Katapult', '--quiet'
 
   util.pink 'Copying template files to lib/templates ...'
   templates_command = 'rails generate katapult:templates'
@@ -124,7 +126,7 @@ when 'fire'
   app_model_path = ARGV.shift || 'lib/katapult/application_model.rb'
   transform_command = 'bin/rails generate katapult:transform ' + app_model_path
 
-  util.pink 'Loading katapult ...'
+  util.pink 'Loading Katapult ...'
   util.run transform_command
 
   util.pink 'Committing result ...'
