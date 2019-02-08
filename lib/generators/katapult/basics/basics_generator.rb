@@ -27,7 +27,7 @@ module Katapult
         description: 'The password to set in config/database.yml'
 
       def add_basic_files
-        template '.ruby-version'
+        template '.ruby-version', force: true
         template '.gitignore', force: true
         template 'public/robots.txt', force: true
         template 'README.md', force: true
@@ -40,7 +40,7 @@ module Katapult
         # installed with a custom :path option
         @katapult = File.readlines('Gemfile').find{ |line| line =~ /^gem 'katapult'/ }
         template 'Gemfile', force: true
-        template 'Gemfile.lock', force: true
+        # template 'Gemfile.lock', force: true
       end
 
       def bundle_install
@@ -97,12 +97,12 @@ module Katapult
         template 'config/environments/staging.rb'
 
         # Cheating in the "staging" secret between "test" and "production"
-        secret = run('bundle exec rake secret', capture: true).chomp
-        insert_into_file 'config/secrets.yml', <<~SECRET, after: "test:\n"
-          secret_key_base: #{ secret }
-
-        staging:
-        SECRET
+        # secret = run('bundle exec rake secret', capture: true).chomp
+        # insert_into_file 'config/secrets.yml', <<~SECRET, after: "test:\n"
+        #   secret_key_base: #{ secret }
+        #
+        # staging:
+        # SECRET
       end
 
       def configure_test_environment
@@ -287,16 +287,16 @@ config.autoload_paths << "#{Rails.root}/app/controllers/shared"
         directory WEBPACK_DIR
         directory 'config/webpack'
 
-        gsub_file 'config/webpacker.yml', /^(  source_path:).*$/, '\1 ' + WEBPACK_DIR
-        inject_into_file 'config/webpack/environment.js', <<~JQUERY, after: /\A.*\n/ # 1st line
-        const webpack = require('webpack')
-
-        environment.plugins.prepend('Provide', new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
-          })
-        )
-        JQUERY
+        # gsub_file 'config/webpacker.yml', /^(  source_path:).*$/, '\1 ' + WEBPACK_DIR
+        # inject_into_file 'config/webpack/environment.js', <<~JQUERY, after: /\A.*\n/ # 1st line
+        # const webpack = require('webpack')
+        #
+        # environment.plugins.prepend('Provide', new webpack.ProvidePlugin({
+        #     $: 'jquery',
+        #     jQuery: 'jquery'
+        #   })
+        # )
+        # JQUERY
 
         yarn :add, *YARN_PACKAGES
       end

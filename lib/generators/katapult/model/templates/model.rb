@@ -3,11 +3,11 @@ class <%= class_name %> < ApplicationRecord
 <%- flag_attrs.each do |attr| -%>
   include DoesFlag[<%= attr.name(:symbol) %>, default: <%= attr.default %>]
 <%- end -%>
-<% has_manys.each do |model| -%>
-  has_many <%= model.name(:symbols) %>
+<% has_manys.each do |association| -%>
+  has_many <%= association.belonging_model.name(:symbols) %>
 <% end -%>
-<% belongs_tos.each do |model| -%>
-  belongs_to <%= model.name(:symbol) %>, optional: true
+<% belongs_tos.each do |association| -%>
+  belongs_to <%= association.name(:symbol) %><%= ', polymorphic: true' if association.polymorphic.present? %>, optional: true
 <% end -%>
 <%- if defaults.any? -%>
 

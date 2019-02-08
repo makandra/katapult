@@ -161,26 +161,42 @@ Feature: Generate Models
   Scenario: Specify model associations
     When I write to "lib/katapult/application_model.rb" with:
       """
-      model('Company') { |c| c.attr :name }
+      # Associations can use models that are defined below
       model 'User' do |user|
         user.belongs_to 'Company'
       end
+
+      model('Company') { |c| c.attr :name }
+      model 'Note' do |note|
+        note.belongs_to :owner, polymorphic: %w[Company User]
+      end
+      model 'Employee' do |employee|
+        employee.belongs_to :employer, model: 'Company'
+      end
       """
-    And I successfully transform the application model including migrations
+      And I successfully transform the application model including migrations
+
     Then the file "app/models/company.rb" should contain "has_many :users"
-    And the file "app/models/user.rb" should contain "belongs_to :company"
-    And the file "app/models/user.rb" should contain:
+      And the file "app/models/company.rb" should contain "has_many :notes"
+      And the file "app/models/company.rb" should contain "has_many :employees"
+
+      And the file "app/models/user.rb" should contain "has_many :notes"
+      And the file "app/models/user.rb" should contain "belongs_to :company"
+      And the file "app/models/user.rb" should contain:
       """
         assignable_values_for :company, {:allow_blank=>true} do
           Company.all.to_a
         end
       """
-
-    And there should be a migration with:
+      And there should be a migration with:
       """
           create_table :users do |t|
             t.integer :company_id
       """
+
+      And the file "app/models/note.rb" should contain "belong_to :owner, polymorphic: true"
+
+      And the file "app/models/employee.rb" should contain "belongs_to :employer, class_name: 'Company'"
 
 
   Scenario: Specify assignable values

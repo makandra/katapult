@@ -25,7 +25,7 @@ module Katapult
 
       def create_rails_standard_action_views
         actions.select{ |a| a.get? && WebUI::RAILS_ACTIONS.include?(a.name) }.each do |action|
-          file_name = "#{action.name}.html.haml"
+          file_name = "#{action.name}.haml"
 
           create_view file_name, File.join(views_path, file_name)
         end
@@ -35,7 +35,7 @@ module Katapult
         _form_actions = (actions.map(&:name) & %w[new edit])
 
         if _form_actions.any?
-          file_name = '_form.html.haml'
+          file_name = '_form.haml'
 
           create_view file_name, File.join(views_path, file_name)
         end

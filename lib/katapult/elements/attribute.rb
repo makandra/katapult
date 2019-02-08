@@ -9,7 +9,7 @@ module Katapult
   class Attribute < Element
 
     options :type, :default, :assignable_values, :allow_blank, :skip_db
-    attr_accessor :model, :associated_model
+    attr_accessor :model, :association
 
     UnknownTypeError = Class.new(StandardError)
     MissingOptionError = Class.new(StandardError)
@@ -55,7 +55,7 @@ module Katapult
       when :money then 'decimal{10,2}' # {precision,scale} = total digits, decimal places
       when :json then 'jsonb' # Indexable JSON
       when :plain_json then 'json' # Only use this if you need to
-      when :foreign_key then 'integer'
+      when :foreign_key then 'integer:index'
       else type end
 
       "#{name}:#{db_type}"
@@ -63,7 +63,8 @@ module Katapult
 
     def test_value
       if type == :foreign_key
-        associated_model.label_attr.test_value
+        other_model = association.owning_models.first
+        other_model.label_attr.test_value
       elsif assignable_values
         assignable_values.first
 
@@ -78,7 +79,7 @@ module Katapult
         # Deterministically generate a value from the attribute's name
         when :integer    then Zlib.crc32(name).modulo(1000)
         when :money      then Zlib.crc32(name).modulo(1000) / 100.0
-        when :datetime   then Time.at(Zlib.crc32(name))
+        when :datetime   then Time.at(Zlib.crc32(name)).to_s
         end
       end
     end

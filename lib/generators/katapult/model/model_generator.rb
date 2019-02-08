@@ -32,7 +32,10 @@ module Katapult
 
       def write_factory
         factory = "  factory #{ model.name(:symbol) }"
+        # TODO factory per model
         factories_file = 'spec/factories/factories.rb'
+        # create_file factories_file
+        
         # Can happen in multiple transformation runs with authentication
         return if file_contains?(factories_file, factory)
 

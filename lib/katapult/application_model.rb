@@ -16,6 +16,7 @@ module Katapult
     def self.parse(application_model_string, path_to_model = '')
       new.tap do |model|
         model.instance_eval application_model_string, path_to_model
+        model.finalize_model
       end
     end
 
@@ -59,42 +60,40 @@ module Katapult
       associations << Association.new(name, options)
     end
 
+    def get_model(name)
+      models.find { |m| m.name == name }
+    end
+
     def get_model!(name)
-      models.find { |m| m.name == name } or raise NotFound,
-        "Could not find a model named #{ name }"
+      get_model(name) or raise NotFound, "Could not find a model named #{ name }"
     end
 
     def get_web_ui(name)
       web_uis.find { |w| w.name == name }
     end
 
-    # Returns all models that `model_name` belongs_to
     def get_belongs_tos_for(model_name)
-      associations.select { |a| a.name == model_name }.map(&:belongs_to_model)
+      associations.select { |a| a.belonging_model_name == model_name }
     end
 
-    # Returns all models that `model_name` has_many of
     def get_has_manys_for(model_name)
-      associations.select { |a| a.belongs_to == model_name }.map(&:model)
+      associations.select { |a| a.owning_model_names.include? model_name }
     end
 
-    def render(options = {})
-      prepare_render
-
-      models.each { |m| m.render(options) }
-      web_uis.each { |w| w.render(options) }
-      nav.render(options) if nav
-      authentication.render(options) if authentication
-    end
-
-    private
-
-    def prepare_render
+    def finalize_model
       authentication &.ensure_user_model_attributes_present
+      associations.each &:validate!
       models.each do |model|
         belongs_tos = get_belongs_tos_for(model.name)
         model.add_foreign_key_attrs(belongs_tos)
       end
+    end
+
+    def render(options = {})
+      models.each { |m| m.render(options) }
+      web_uis.each { |w| w.render(options) }
+      nav.render(options) if nav
+      authentication.render(options) if authentication
     end
 
   end

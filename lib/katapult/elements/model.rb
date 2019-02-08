@@ -28,13 +28,17 @@ module Katapult
     end
 
     # DSL
-    def belongs_to(model_name)
-      application_model.association name, belongs_to: model_name
+    def belongs_to(association_name, **options)
+      options[:belonging_model_name] = name
+      options[:owning_model_name] = options.delete(:model)
+
+      application_model.association association_name, options
     end
 
 
     def label_attr
-      renderable_attrs.first.presence or raise MissingLabelAttributeError
+      renderable_attrs.first.presence or raise MissingLabelAttributeError,
+        "Model #{name} is missing a label attribute"
     end
 
     def label_attr?
@@ -59,12 +63,21 @@ module Katapult
       attrs.select &:required?
     end
 
-    def add_foreign_key_attrs(belongs_tos)
-      belongs_tos.each do |other_model|
-        attr "#{ other_model.name :variable }_id", type: :foreign_key,
-          assignable_values: "#{ other_model.name(:class) }.all.to_a",
-          allow_blank: true,
-          associated_model: other_model
+    def add_foreign_key_attrs(belongs_to_associations)
+      belongs_to_associations.each do |association|
+        options = {
+          type: :foreign_key,
+          association: association,
+        }
+
+        unless association.polymorphic?
+          owner = association.owning_models.first
+
+          options[:assignable_values] = "#{ owner.name(:class) }.all.to_a"
+          options[:allow_blank] = true
+        end
+
+        attr "#{ association.name :variable }_id", options
       end
     end
 

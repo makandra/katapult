@@ -6,7 +6,7 @@
     = form.label <%= attribute.name(:symbol) %>
 <% if attribute.type == :foreign_key -%>
     = form.collection_select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables).sub(/_ids$/, 's') %>,
-      :id, <%= attribute.associated_model.label_attr.name(:symbol) %>, { include_blank: true }, class: 'form-control'
+      :id, <%= attribute.association.owning_models[0].label_attr.name(:symbol) %>, { include_blank: true }, class: 'form-control'
 <% elsif attribute.assignable_values -%>
     = form.select <%= attribute.name(:symbol) %>, form.object.assignable_<%= attribute.name(:variables) %>
 <% else -%>

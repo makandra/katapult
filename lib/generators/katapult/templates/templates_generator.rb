@@ -6,11 +6,11 @@ module Katapult
 
     def copy_view_templates
       copy_generator_templates 'views', %w[
-        _form.html.haml
-        edit.html.haml
-        index.html.haml
-        new.html.haml
-        show.html.haml
+        _form.haml
+        edit.haml
+        index.haml
+        new.haml
+        show.haml
       ]
     end
 

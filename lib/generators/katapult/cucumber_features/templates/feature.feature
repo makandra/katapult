@@ -2,12 +2,12 @@ Feature: <%= model.name(:humans).titleize %>
 
   Scenario: CRUD <%= model.name(:humans) %>
     Given I am on the list of <%= model.name(:variables) %>
-<% belongs_tos.each do |model| -%>
-      And there is a <%= model.name(:human) %> with the <%= model.label_attr.name(:human) %> "<%= model.label_attr.test_value %>"
+<% belongs_tos.flat_map(&:owning_models).each do |owning_model| -%>
+      And there is a <%= owning_model.name(:human) %> with the <%= owning_model.label_attr.name(:human) %> "<%= owning_model.label_attr.test_value %>"
 <% end -%>
 
     # create
-    When I follow "Add <%= model.name(:human) %>"
+    When I follow "New <%= model.name(:human) %>"
 <% model.attrs.each do |attr| -%>
   <%- if attr.assignable_values -%>
       And I select "<%= attr.test_value %>" from "<%= attr.name.humanize %>"

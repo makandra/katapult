@@ -13,8 +13,6 @@ Before do |scenario|
   bundler_env_keys = aruba.environment.keys.grep /^BUNDLE/
   bundler_env_keys.each &method(:delete_environment_variable)
 
-  run_simple 'spring stop # Ensure Spring is not running'
-
   scenario_tags = scenario.source_tag_names
   @no_clobber = scenario_tags.include? '@no-clobber'
 end

@@ -5,30 +5,46 @@ require 'katapult/element'
 module Katapult
   class Association < Element
 
-    IncompleteAssociationError = Class.new(StandardError)
+    ModelMissingError = Class.new(StandardError)
 
-    options :belongs_to
+    options :polymorphic, # List of associatable models
+      :belonging_model_name,
+      :owning_model_name # Optional, when differing from the association name
 
     def initialize(*args)
       super
-      validate!
-
-      self.belongs_to = belongs_to.to_s # Normalize
+      self.owning_model_name ||= name
     end
 
-    def model
-      application_model.get_model! name
+    def polymorphic?
+      polymorphic.present?
     end
 
-    def belongs_to_model
-      application_model.get_model! belongs_to
+    def belonging_model
+      application_model.get_model! belonging_model_name
     end
 
-    private
+    def owning_model_names
+      if polymorphic?
+        polymorphic
+      else
+        [owning_model_name]
+      end
+    end
+
+    # Models with "has_many <belonging_model_name>"
+    # TODO render all in _form
+    def owning_models
+      owning_model_names.map do |owning_model_name|
+        application_model.get_model owning_model_name
+      end
+    end
 
     def validate!
-      belongs_to.present? or raise IncompleteAssociationError,
-        'Missing :belongs_to option'
+      owning_models.each do |model|
+        model.present? or raise ModelMissingError,
+          "Association '#{name}' in #{belonging_model.name(:class)} is missing an associated model"
+      end
     end
 
   end
