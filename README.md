@@ -1,5 +1,5 @@
-# Katapult 0.5.0
-Generating a Rails 5.1.4 app on Ruby 2.5.0.
+# Katapult 0.5.1
+Generating a Rails 5.2.2 app on Ruby 2.6.1.
 
 <img src="katapult.png" width="200px" align="right" />
 

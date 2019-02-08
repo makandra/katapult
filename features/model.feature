@@ -26,7 +26,7 @@ Feature: Generate Models
       """
     And there should be a migration with:
       """
-      class CreateCars < ActiveRecord::Migration[5.1]
+      class CreateCars < ActiveRecord::Migration[5.2]
         def change
           create_table :cars do |t|
 
@@ -94,7 +94,7 @@ Feature: Generate Models
       """
     And there should be a migration with:
       """
-      class CreatePeople < ActiveRecord::Migration[5.1]
+      class CreatePeople < ActiveRecord::Migration[5.2]
         def change
           create_table :people do |t|
             t.integer :age
