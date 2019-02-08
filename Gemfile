@@ -8,6 +8,7 @@ gem 'rake'
 gem 'pry'
 
 # Test
-gem 'aruba', '~> 0.10'
-gem 'guard-cucumber'
-gem 'rspec', '~> 3.4'
+gem 'aruba', '< 0.14'
+gem 'cucumber', '< 2'
+gem 'guard-cucumber', '< 2'
+gem 'rspec', '< 3.5'
