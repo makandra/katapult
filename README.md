@@ -19,7 +19,7 @@ Katapult uses *PostgreSQL* as database, so you'll need to install that upfront.
 Also, it drops the Rails asset pipeline in favor of *Webpacker*, so you'll need
 *Node* and *Yarn* (see <https://makandracards.com/makandra/47477>).
 
-The required *Ruby* version is 2.5.0. You'll need the *Bundler* and *Rake* gems,
+The required *Ruby* version is 2.6.1. You'll need the *Bundler* and *Rake* gems,
 which are probably already installed on your system.
 
 When you're using the `katapult` binary (you should), you'll also need *Git*.
