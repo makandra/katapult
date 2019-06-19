@@ -1,3 +1,19 @@
+# Abandoned Project
+
+Katapult was an endeavor to dramatically speed up starting a new Rails
+application. However, it turned out to save less time than expected, while
+requiring more time for maintenance than anticipated. Since its benefits fell
+too low, we have decided to not continue developing Katapult.
+
+You can still use Katapult for generating ready-to-run applications with model
+CRUD, authentication and all of Katapult's features, but the rapid development
+of the web will quickly render the generated code antiquated. Nevertheless, its
+architecture may remain an inspiration on how to use the Rails generators
+programmatically.
+
+
+That being sad, here's the latest version of its README:
+
 # Katapult 0.5.0
 Generating a Rails 5.1.4 app on Ruby 2.5.0.
 
